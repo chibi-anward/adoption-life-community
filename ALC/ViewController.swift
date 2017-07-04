@@ -20,6 +20,7 @@ class ViewController: UIViewController {
                 print(user.email!)
             }
         }
+        
     }
 
     override func didReceiveMemoryWarning() {
