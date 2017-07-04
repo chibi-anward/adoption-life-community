@@ -140,7 +140,7 @@
 				TargetAttributes = {
 					783116D61F07D79D00397E4E = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = 7G7FW66Y3M;
+						DevelopmentTeam = L37S52DFQ3;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -359,11 +359,13 @@
 			baseConfigurationReference = 1C0D0A485ABEFE095BCF0FEE /* Pods-ALC.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 7G7FW66Y3M;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = L37S52DFQ3;
 				INFOPLIST_FILE = ALC/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = ninja.mooi.ALC;
+				PRODUCT_BUNDLE_IDENTIFIER = mooi.ninja.ALC;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -373,11 +375,13 @@
 			baseConfigurationReference = 5236153B6084B6BE2DCCA814 /* Pods-ALC.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 7G7FW66Y3M;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = L37S52DFQ3;
 				INFOPLIST_FILE = ALC/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = ninja.mooi.ALC;
+				PRODUCT_BUNDLE_IDENTIFIER = mooi.ninja.ALC;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
