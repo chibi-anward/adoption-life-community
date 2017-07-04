@@ -24,10 +24,32 @@ struct DummyB {
     static var Password = "password"
 }
 
+
+enum Roles: Int {
+    case Unknown = 0, SuperAdmin = 1, Admin = 2, Parent = 3, Adoptee = 4, Common = 5
+}
+
+
 struct Variables {
     static var IsLoggedIn : Bool = false
     static var CurrentUser: User? = nil
 }
+
+struct Profile {
+    var UID: String
+    var InviteCode: String
+    var FirstName: String
+    var LastName: String
+    var Birth: Date
+    var Email: String
+    var Password: String
+    var Country: String
+    var City: String
+    var Role: Int
+    var Agency: String
+    var ProfileImage: UIImage
+}
+
 
 
 class DataHandler {
@@ -118,8 +140,14 @@ class DataHandler {
         let userDetails = values
         
         databaseRef = Database.database().reference()
-        databaseRef.child("users").child(uid).updateChildValues(userDetails as! [AnyHashable : Any])
-        
-        completionHandler(true)
+        databaseRef.child("users").child(uid).updateChildValues(userDetails as! [AnyHashable : Any], withCompletionBlock: { (err , ref ) in
+            if let err = err {
+                print( "Failed to store data in db", err )
+                return
+            }
+            
+            print( "Successfully stored data in db" )
+            completionHandler(true)
+        })
     }
 }
