@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Firebase
 
 class CustomTabBar: UITabBarController, UITabBarControllerDelegate {
     let layout = UICollectionViewFlowLayout()
