@@ -9,21 +9,7 @@
 import UIKit
 
 class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
-    
-    let profileImageBtn: UIButton = {
-        let btn = UIButton(type: .system)
-        //btn.setImage(#imageLiteral(resourceName: "profile_main_image_default").withRenderingMode(.alwaysOriginal), for: .normal)
-        btn.addTarget(self, action: #selector(handleProfileImage), for: .touchUpInside)
-        btn.layer.cornerRadius = 70
-        btn.layer.masksToBounds = true
-        btn.layer.borderColor = UIColor.rgb(red: 253, green: 253, blue: 253, alpha: 1).cgColor
-        btn.layer.borderWidth = 3
-        btn.alpha = 0
-        btn.isEnabled = false
-        return btn
-    }()
-    
+
     let loginRegisterBtn: UIButton = {
         let btn = UIButton(type: .system)
         btn.setTitle("Login", for: .normal)
@@ -61,6 +47,39 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
         btn.isEnabled = false
         return btn
     }()
+   /*
+    let linkLabel: TextView = {
+        let label = TextView()
+        let formattedString = NSMutableAttributedString()
+        formattedString
+            .bold("Work is just a word we made up;")
+            .normal("\nWhat it means is you as a person adding some kind of value to the world.\n\n")
+            .bold("What do you want to be remembered for?")
+            .normal("\nImagine lying on your deathbed, what do you want to reminisce on with your loved ones? What are the values that you want to give to the world?\n\n")
+            .bold("Repeat the exercise and try to go a little bit deeper")
+            .normal("\nIt’s ok if your answers are the same, but it’s an awesome challenge to go closer to your core as a person.\n")
+        label.attributedText = formattedString
+        label.textColor = UIColor.rgb(red: 114, green: 114, blue: 114, alpha: 1)
+        label.backgroundColor = UIColor.rgb(red: 246, green: 246, blue: 246, alpha: 1)
+        label.textAlignment = .left
+        label.displayScrolling = true
+        label.isEditable = false
+        return label
+    }()
+    */
+    
+    let registerTextView: UITextView = {
+        let textView = UITextView()
+        let formattedString = NSMutableAttributedString()
+        formattedString
+            .bold("Register")
+            .normal("\nSome information about register…\nbla bla bla\n")
+        textView.attributedText = formattedString
+        textView.textColor = UIColor.rgb(red: 114, green: 114, blue: 114, alpha: 1)
+        textView.textAlignment = .center
+        textView.isUserInteractionEnabled = false
+        return textView
+    }()
     
     let loginRegisterSegmentedControl: UISegmentedControl = {
         let sc = UISegmentedControl(items: ["ALC", "CC"])
@@ -72,7 +91,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
     
     let emailTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Email"
+        textField.placeholder = "Firstname"
         textField.backgroundColor = UIColor(white: 0, alpha: 0.03)
         textField.font = UIFont.systemFont(ofSize: 14)
         textField.borderStyle = .roundedRect
@@ -82,7 +101,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
     
     let usernameTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Username"
+        textField.placeholder = "Lastname"
         textField.backgroundColor = UIColor(white: 0, alpha: 0.03)
         textField.font = UIFont.systemFont(ofSize: 14)
         textField.borderStyle = .roundedRect
@@ -92,7 +111,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
     
     let passwordTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Password"
+        textField.placeholder = "Email"
         textField.backgroundColor = UIColor(white: 0, alpha: 0.03)
         textField.font = UIFont.systemFont(ofSize: 14)
         textField.borderStyle = .roundedRect
@@ -156,18 +175,19 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
         super.viewDidLoad()
         print("CC")
         view.backgroundColor = UIColor.white
-        
-        view.addSubview(profileImageBtn)
-        profileImageBtn.anchor(top: view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 40, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 140, height: 140)
-        profileImageBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+
         self.hideKeyboardWhenTappedAround()
-        setupInputFields()
+        setupViews()
         
     }
     
     
     //MARK:
-    fileprivate func setupInputFields() {
+    
+    fileprivate func setupViews() {
+        view.addSubview(registerTextView)
+        registerTextView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 100, paddingLeft: 40, paddingBottom: 0, paddingRight: -40, width: 140, height: 140)
+        
         let stackview = UIStackView(arrangedSubviews: [loginRegisterSegmentedControl, emailTextField, usernameTextField, passwordTextField, loginRegisterBtn, registerParentBtn, registerAdopteeBtn])
         
         stackview.translatesAutoresizingMaskIntoConstraints = false
@@ -177,7 +197,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
         
         view.addSubview(stackview)
         
-        stackview.anchor(top: profileImageBtn.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 20, paddingLeft: 40, paddingBottom: 0, paddingRight: -40, width: 0, height: 300)
+        stackview.anchor(top: registerTextView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 20, paddingLeft: 40, paddingBottom: 0, paddingRight: -40, width: 0, height: 300)
     }
     
     func handleTextInputChange() {
@@ -214,15 +234,11 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
         let title = loginRegisterSegmentedControl.titleForSegment(at: loginRegisterSegmentedControl.selectedSegmentIndex)
         loginRegisterBtn.setTitle(title, for: .normal)
         if loginRegisterSegmentedControl.selectedSegmentIndex == 0 {
-            self.profileImageBtn.alpha = 0
-            self.profileImageBtn.isEnabled = false
             self.registerParentBtn.alpha = 0
             self.registerParentBtn.isEnabled = false
             self.registerAdopteeBtn.alpha = 0
             self.registerAdopteeBtn.isEnabled = false
         } else {
-            self.profileImageBtn.isEnabled = true
-            self.profileImageBtn.alpha = 1
             self.registerParentBtn.alpha = 1
             self.registerParentBtn.isEnabled = true
             self.registerAdopteeBtn.alpha = 1
@@ -250,10 +266,10 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
-            profileImageBtn.setImage(editedImage.withRenderingMode(.alwaysOriginal), for: .normal)
+            //profileImageBtn.setImage(editedImage.withRenderingMode(.alwaysOriginal), for: .normal)
             
         } else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
-            profileImageBtn.setImage(originalImage.withRenderingMode(.alwaysOriginal), for: .normal)
+            //profileImageBtn.setImage(originalImage.withRenderingMode(.alwaysOriginal), for: .normal)
             
         }
         dismiss(animated: true, completion: nil)

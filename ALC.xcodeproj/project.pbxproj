@@ -21,6 +21,7 @@
 		78E49AEC1F0BC74D00E86B31 /* BaseTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E49AEB1F0BC74D00E86B31 /* BaseTableCell.swift */; };
 		78E49AEE1F0BC77700E86B31 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E49AED1F0BC77700E86B31 /* CustomTabBar.swift */; };
 		78E49AF01F0BCE1C00E86B31 /* RegisterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E49AEF1F0BCE1C00E86B31 /* RegisterVC.swift */; };
+		78E49AF21F0BD83C00E86B31 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E49AF11F0BD83C00E86B31 /* HomeVC.swift */; };
 		BA7F2389F2C16FF95A6F69BF /* Pods_ALC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 095A71C0D2FC9C02CAAA5C0C /* Pods_ALC.framework */; };
 /* End PBXBuildFile section */
 
@@ -44,6 +45,7 @@
 		78E49AEB1F0BC74D00E86B31 /* BaseTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTableCell.swift; sourceTree = "<group>"; };
 		78E49AED1F0BC77700E86B31 /* CustomTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
 		78E49AEF1F0BCE1C00E86B31 /* RegisterVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterVC.swift; sourceTree = "<group>"; };
+		78E49AF11F0BD83C00E86B31 /* HomeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +97,7 @@
 				783116DC1F07D79D00397E4E /* ViewController.swift */,
 				78E49AEF1F0BCE1C00E86B31 /* RegisterVC.swift */,
 				78E49AE61F0BC6C100E86B31 /* StartTutorialVC.swift */,
+				78E49AF11F0BD83C00E86B31 /* HomeVC.swift */,
 				783116DE1F07D79D00397E4E /* Main.storyboard */,
 				783116E41F07D79D00397E4E /* Assets.xcassets */,
 				783116E61F07D79D00397E4E /* LaunchScreen.storyboard */,
@@ -265,6 +268,7 @@
 				783116E31F07D79D00397E4E /* ALC.xcdatamodeld in Sources */,
 				78E49AE71F0BC6C100E86B31 /* StartTutorialVC.swift in Sources */,
 				78E49AEA1F0BC70800E86B31 /* BaseCollectionCell.swift in Sources */,
+				78E49AF21F0BD83C00E86B31 /* HomeVC.swift in Sources */,
 				78E49AF01F0BCE1C00E86B31 /* RegisterVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
