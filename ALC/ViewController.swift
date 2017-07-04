@@ -13,13 +13,17 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
+        /*
         let dataHandler = DataHandler()
         if ( !dataHandler.isLoggedIn() ) {
             dataHandler.registerUser(email: DummyB.Email, password: DummyB.Password, inviteCode: ""){ user in
                 print(user.email!)
             }
         }
+        */
+        view.backgroundColor = UIColor.rgb(red: 246, green: 246, blue: 246, alpha: 1)
+        
+        print("ViewController")
         
     }
 
