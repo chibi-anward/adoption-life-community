@@ -7,12 +7,8 @@
 //
 
 import UIKit
-import Firebase
 
 class CustomTabBar: UITabBarController, UITabBarControllerDelegate {
-    
-    let checkStatus = false
-    
     let layout = UICollectionViewFlowLayout()
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
@@ -36,28 +32,15 @@ class CustomTabBar: UITabBarController, UITabBarControllerDelegate {
     }
     
     func checkIfUserIsLoggedIn() {
-        
-        if checkStatus == false {
+
+        let datahandler = DataHandler()
+        if ( !datahandler.isLoggedIn() == false) {
             DispatchQueue.main.async {
-            let startController = StartTutorialVC()
-            //let navController = UINavigationController(rootViewController: loginController)
-            self.present(startController, animated: true, completion: nil)
+                let startController = StartTutorialVC()
+                self.present(startController, animated: true, completion: nil)
             }
             return
         }
-       /*
-        guard let uid = FIRAuth.auth()?.currentUser?.uid else { return }
-        print("\n\n ===== \n \(uid)\n ===== \n")
-        if FIRAuth.auth()?.currentUser == nil {
-            //Show if not logged in
-            DispatchQueue.main.async {
-                let loginController = LoginRegisterViewController()
-                //let navController = UINavigationController(rootViewController: loginController)
-                self.present(loginController, animated: true, completion: nil)
-            }
-         
-        }
- */
     }
     
     func setupViewControllers() {
