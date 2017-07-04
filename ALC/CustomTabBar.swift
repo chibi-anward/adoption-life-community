@@ -47,11 +47,13 @@ class CustomTabBar: UITabBarController, UITabBarControllerDelegate {
     func setupViewControllers() {
       
     
-        let viewNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "home_tab_icon_unselected").withRenderingMode(.alwaysOriginal), selectedImage: #imageLiteral(resourceName: "home_tab_icon_selected").withRenderingMode(.alwaysOriginal), title: "Home", rootViewController: ViewController())
+        let viewNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "home_tab_icon_unselected").withRenderingMode(.alwaysOriginal), selectedImage: #imageLiteral(resourceName: "home_tab_icon_selected").withRenderingMode(.alwaysOriginal), title: "Test", rootViewController: ViewController())
+        
+        let homeNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "home_tab_icon_unselected").withRenderingMode(.alwaysOriginal), selectedImage: #imageLiteral(resourceName: "home_tab_icon_selected").withRenderingMode(.alwaysOriginal), title: "Home", rootViewController: HomeVC())
         
         tabBar.tintColor = UIColor.rgb(red: 109, green: 93, blue: 190, alpha: 1)
         
-        viewControllers = [viewNavController]
+        viewControllers = [viewNavController, homeNavController]
         
         //tab item insets
         guard let items = tabBar.items else { return }
