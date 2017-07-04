@@ -58,6 +58,20 @@ class DataHandler {
         defaults.synchronize()
     }
     
+    func isLoggedIn() -> Bool {
+        let uid = getLocalData(object: "uid")
+        let email = getLocalData(object: "email")
+        let password = getLocalData(object: "password")
+        let inviteCode = getLocalData(object: "invitecode")
+        
+        if( uid != "" ) {
+            loginUser(email: email, password: password, inviteCode: inviteCode){ user in
+            }
+            return true
+        }
+        return false
+    }
+    
     func registerUser(email: String, password: String, inviteCode: String, completionHandler:@escaping (User) -> ()) {
         Auth.auth().createUser(withEmail: email, password: password) { (user: User?, error: Error?) in
             if let err = error {
@@ -76,29 +90,13 @@ class DataHandler {
             let userDetails = ["uid": user?.uid,
                                "invitecode": inviteCode]
             
-            
             databaseRef = Database.database().reference()
-            
             databaseRef.child("users").child((user?.uid)!).updateChildValues(userDetails)
-            
             
             completionHandler(user!)
         }
     }
     
-    func isLoggedIn() -> Bool {
-        let uid = getLocalData(object: "uid")
-        let email = getLocalData(object: "email")
-        let password = getLocalData(object: "password")
-        let inviteCode = getLocalData(object: "invitecode")
-        
-        if( uid != "" ) {
-            loginUser(email: email, password: password, inviteCode: inviteCode){ user in
-            }
-            return true
-        }
-        return false
-    }
     
     func loginUser(email: String, password: String, inviteCode: String, completionHandler:@escaping (User) -> ()) {
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
@@ -114,5 +112,14 @@ class DataHandler {
             completionHandler(user!)
             
         }
+    }
+    
+    func updateUser(uid: String, values: Any, completionHandler:@escaping (Bool) -> ()) {
+        let userDetails = values
+        
+        databaseRef = Database.database().reference()
+        databaseRef.child("users").child(uid).updateChildValues(userDetails as! [AnyHashable : Any])
+        
+        completionHandler(true)
     }
 }
