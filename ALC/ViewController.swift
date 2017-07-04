@@ -13,6 +13,13 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        let dataHandler = DataHandler()
+        if ( !dataHandler.isLoggedIn() ) {
+            dataHandler.registerUser(email: Dummy.Email, password: Dummy.Password, inviteCode: ""){ user in
+                print(user.email!)
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
