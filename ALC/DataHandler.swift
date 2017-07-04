@@ -40,14 +40,14 @@ struct Profile {
     var InviteCode: String
     var FirstName: String
     var LastName: String
-    var Birth: Date
     var Email: String
     var Password: String
     var Country: String
     var City: String
     var Role: Int
-    var Agency: String
     var ProfileImage: UIImage
+    var Agency: String?
+    var Birth: Date?
 }
 
 
@@ -157,4 +157,37 @@ class DataHandler {
             completionHandler(true)
         })
     }
+    
+    func logOutUser(completionHandler:@escaping (Bool) -> ()) {
+        do {
+            try Auth.auth().signOut()
+            completionHandler(true)
+            return
+        } catch let err {
+            print("Failed to sign out", err)
+        }
+        completionHandler(false)
+        
+    }
+    
+    func fetchUser(uid: String, completionHandler:@escaping (Profile) -> ()) {
+        databaseRef = Database.database().reference()
+        databaseRef.child("users").child(uid).observeSingleEvent(of: .value, with: {( snapshot ) in
+            print(snapshot.value ?? "")
+            
+            completionHandler(Profile.init(UID: "", InviteCode: "", FirstName: "", LastName: "", Email: "", Password: "", Country: "", City: "", Role: 1, ProfileImage: UIImage(), Agency: "", Birth: Date()))
+        })
+        
+        
+        
+    }
 }
+
+
+
+
+
+
+
+
+
