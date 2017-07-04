@@ -19,6 +19,11 @@ struct Dummy {
     static var Password = "password"
 }
 
+struct DummyB {
+    static var Email = "chibi@mooi.ninja"
+    static var Password = "password"
+}
+
 struct Variables {
     static var IsLoggedIn : Bool = false
     static var CurrentUser: User? = nil

@@ -16,7 +16,7 @@ class ViewController: UIViewController {
         
         let dataHandler = DataHandler()
         if ( !dataHandler.isLoggedIn() ) {
-            dataHandler.registerUser(email: Dummy.Email, password: Dummy.Password, inviteCode: ""){ user in
+            dataHandler.registerUser(email: DummyB.Email, password: DummyB.Password, inviteCode: ""){ user in
                 print(user.email!)
             }
         }
