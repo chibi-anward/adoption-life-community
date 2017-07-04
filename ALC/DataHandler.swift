@@ -64,7 +64,6 @@ class DataHandler {
         }
     }
     
-    
     func storeLocalData(object: String, value: String) {
         let defaults = UserDefaults.standard
         defaults.set(value, forKey: object)
@@ -81,17 +80,21 @@ class DataHandler {
     }
     
     func isLoggedIn() -> Bool {
-        let uid = getLocalData(object: "uid")
-        let email = getLocalData(object: "email")
-        let password = getLocalData(object: "password")
-        let inviteCode = getLocalData(object: "invitecode")
         
-        if( uid != "" ) {
-            loginUser(email: email, password: password, inviteCode: inviteCode){ user in
+        guard (Auth.auth().currentUser?.uid) != nil else {
+            let uid = getLocalData(object: "uid")
+            let email = getLocalData(object: "email")
+            let password = getLocalData(object: "password")
+            let inviteCode = getLocalData(object: "invitecode")
+            if( uid != "" ) {
+                loginUser(email: email, password: password, inviteCode: inviteCode){ user in
+                }
+                return true
             }
-            return true
+            return false
         }
-        return false
+        
+        return (Auth.auth().currentUser != nil)
     }
     
     func registerUser(email: String, password: String, inviteCode: String, completionHandler:@escaping (User) -> ()) {
@@ -128,9 +131,13 @@ class DataHandler {
                 return
             }
             
-            print( "Successfully logged in as user", user?.uid ?? "" )
+            print( "Successfully logged in as user", user?.email ?? "" )
             Variables.CurrentUser = user
             Variables.IsLoggedIn = true
+            self.storeLocalData(object: "uid", value: (user?.uid)!)
+            self.storeLocalData(object: "email", value: (user?.email)!)
+            self.storeLocalData(object: "password", value: password)
+            self.storeLocalData(object: "invitecode", value: inviteCode)
             completionHandler(user!)
             
         }
