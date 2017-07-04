@@ -8,7 +8,10 @@
 
 import UIKit
 
-class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate {
+    
+    var scrollView: UIScrollView!
+    var containerView = UIView()
 
     let loginRegisterBtn: UIButton = {
         let btn = UIButton(type: .system)
@@ -22,6 +25,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
         return btn
     }()
     
+
     let registerParentBtn: UIButton = {
         let btn = UIButton(type: .system)
         btn.setTitle("Register Parent", for: .normal)
@@ -174,6 +178,16 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
     override func viewDidLoad() {
         super.viewDidLoad()
         print("CC")
+        
+        self.scrollView = UIScrollView()
+        self.scrollView.delegate = self
+        self.scrollView.contentSize = CGSize(width: view.bounds.width, height: 1000)
+        
+        containerView = UIView()
+        
+        scrollView.addSubview(containerView)
+        view.addSubview(scrollView)
+        
         view.backgroundColor = UIColor.white
 
         self.hideKeyboardWhenTappedAround()
@@ -181,14 +195,24 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
         
     }
     
-    
-    //MARK:
-    
-    fileprivate func setupViews() {
-        view.addSubview(registerTextView)
-        registerTextView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 100, paddingLeft: 40, paddingBottom: 0, paddingRight: -40, width: 140, height: 140)
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         
-        let stackview = UIStackView(arrangedSubviews: [loginRegisterSegmentedControl, emailTextField, usernameTextField, passwordTextField, loginRegisterBtn, registerParentBtn, registerAdopteeBtn])
+        scrollView.frame = view.bounds
+        containerView.frame = CGRect(x:0, y:0, width:scrollView.contentSize.width, height:scrollView.contentSize.height)
+    }
+    
+    //
+    fileprivate func setupViews() {
+        containerView.addSubview(registerTextView)
+        registerTextView.anchor(top: containerView.topAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, paddingTop: 100, paddingLeft: 40, paddingBottom: 0, paddingRight: -40, width: 0, height: 140)
+   
+        scrollView.addSubview(loginRegisterSegmentedControl)
+        loginRegisterSegmentedControl.anchor(top: registerTextView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 20, paddingLeft: 40, paddingBottom: 0, paddingRight: -40, width: 0, height: 40)
+        
+        
+        
+        let stackview = UIStackView(arrangedSubviews: [emailTextField, usernameTextField, passwordTextField, loginRegisterBtn, registerParentBtn, registerAdopteeBtn])
         
         stackview.translatesAutoresizingMaskIntoConstraints = false
         stackview.distribution = .fillEqually
@@ -197,7 +221,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
         
         view.addSubview(stackview)
         
-        stackview.anchor(top: registerTextView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 20, paddingLeft: 40, paddingBottom: 0, paddingRight: -40, width: 0, height: 300)
+        stackview.anchor(top: loginRegisterSegmentedControl.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 10, paddingLeft: 40, paddingBottom: 0, paddingRight: -40, width: 0, height: 300)
     }
     
     func handleTextInputChange() {
@@ -238,12 +262,14 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
             self.registerParentBtn.isEnabled = false
             self.registerAdopteeBtn.alpha = 0
             self.registerAdopteeBtn.isEnabled = false
+            self.view.backgroundColor = UIColor.white
         } else {
             self.registerParentBtn.alpha = 1
             self.registerParentBtn.isEnabled = true
             self.registerAdopteeBtn.alpha = 1
             self.registerAdopteeBtn.isEnabled = true
             self.loginRegisterBtn.isEnabled = true
+            self.view.backgroundColor = UIColor.brown
         }
     }
     
