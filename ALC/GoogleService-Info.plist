@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>379881122702-b6513ifmcblqq5ei8mh3oq85e3erjrim.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.379881122702-b6513ifmcblqq5ei8mh3oq85e3erjrim</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCFOLznkQ9FN9QKcWnX4mpM2ho9TLAwI3o</string>
+	<key>GCM_SENDER_ID</key>
+	<string>379881122702</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>anward.chibi.ALC</string>
+	<key>PROJECT_ID</key>
+	<string>adoption-life-community</string>
+	<key>STORAGE_BUCKET</key>
+	<string>adoption-life-community.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:379881122702:ios:33294498fd432e24</string>
+	<key>DATABASE_URL</key>
+	<string>https://adoption-life-community.firebaseio.com</string>
+</dict>
+</plist>

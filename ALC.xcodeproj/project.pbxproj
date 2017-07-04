@@ -7,15 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B1260871F07DDE900A17CC3 /* DataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1260861F07DDE900A17CC3 /* DataHandler.swift */; };
+		4BF6739A1F07DD3B008D53D5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4BF673991F07DD3B008D53D5 /* GoogleService-Info.plist */; };
 		783116DB1F07D79D00397E4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783116DA1F07D79D00397E4E /* AppDelegate.swift */; };
 		783116DD1F07D79D00397E4E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783116DC1F07D79D00397E4E /* ViewController.swift */; };
 		783116E01F07D79D00397E4E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 783116DE1F07D79D00397E4E /* Main.storyboard */; };
 		783116E31F07D79D00397E4E /* ALC.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 783116E11F07D79D00397E4E /* ALC.xcdatamodeld */; };
 		783116E51F07D79D00397E4E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 783116E41F07D79D00397E4E /* Assets.xcassets */; };
 		783116E81F07D79D00397E4E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 783116E61F07D79D00397E4E /* LaunchScreen.storyboard */; };
+		BA7F2389F2C16FF95A6F69BF /* Pods_ALC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 095A71C0D2FC9C02CAAA5C0C /* Pods_ALC.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		095A71C0D2FC9C02CAAA5C0C /* Pods_ALC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ALC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1C0D0A485ABEFE095BCF0FEE /* Pods-ALC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ALC.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ALC/Pods-ALC.debug.xcconfig"; sourceTree = "<group>"; };
+		4B1260861F07DDE900A17CC3 /* DataHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataHandler.swift; sourceTree = "<group>"; };
+		4BF673991F07DD3B008D53D5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		5236153B6084B6BE2DCCA814 /* Pods-ALC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ALC.release.xcconfig"; path = "Pods/Target Support Files/Pods-ALC/Pods-ALC.release.xcconfig"; sourceTree = "<group>"; };
 		783116D71F07D79D00397E4E /* ALC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ALC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		783116DA1F07D79D00397E4E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		783116DC1F07D79D00397E4E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -31,17 +39,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BA7F2389F2C16FF95A6F69BF /* Pods_ALC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4B1260851F07DDCE00A17CC3 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				4B1260861F07DDE900A17CC3 /* DataHandler.swift */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
 		783116CE1F07D79D00397E4E = {
 			isa = PBXGroup;
 			children = (
 				783116D91F07D79D00397E4E /* ALC */,
 				783116D81F07D79D00397E4E /* Products */,
+				85E045355481FA6EE55F7DF9 /* Pods */,
+				A44E2D62148DB3579C9BF51C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,15 +75,34 @@
 		783116D91F07D79D00397E4E /* ALC */ = {
 			isa = PBXGroup;
 			children = (
+				4B1260851F07DDCE00A17CC3 /* Helpers */,
 				783116DA1F07D79D00397E4E /* AppDelegate.swift */,
 				783116DC1F07D79D00397E4E /* ViewController.swift */,
 				783116DE1F07D79D00397E4E /* Main.storyboard */,
 				783116E41F07D79D00397E4E /* Assets.xcassets */,
 				783116E61F07D79D00397E4E /* LaunchScreen.storyboard */,
 				783116E91F07D79D00397E4E /* Info.plist */,
+				4BF673991F07DD3B008D53D5 /* GoogleService-Info.plist */,
 				783116E11F07D79D00397E4E /* ALC.xcdatamodeld */,
 			);
 			path = ALC;
+			sourceTree = "<group>";
+		};
+		85E045355481FA6EE55F7DF9 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				1C0D0A485ABEFE095BCF0FEE /* Pods-ALC.debug.xcconfig */,
+				5236153B6084B6BE2DCCA814 /* Pods-ALC.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		A44E2D62148DB3579C9BF51C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				095A71C0D2FC9C02CAAA5C0C /* Pods_ALC.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -74,9 +112,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 783116EC1F07D79D00397E4E /* Build configuration list for PBXNativeTarget "ALC" */;
 			buildPhases = (
+				9226EE14401F0CDB612F5A99 /* [CP] Check Pods Manifest.lock */,
 				783116D31F07D79D00397E4E /* Sources */,
 				783116D41F07D79D00397E4E /* Frameworks */,
 				783116D51F07D79D00397E4E /* Resources */,
+				D717EB759C0C191AB3826A0A /* [CP] Embed Pods Frameworks */,
+				AFA076DBD38AFF87F73F791C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -99,6 +140,7 @@
 				TargetAttributes = {
 					783116D61F07D79D00397E4E = {
 						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = 7G7FW66Y3M;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -127,6 +169,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				783116E81F07D79D00397E4E /* LaunchScreen.storyboard in Resources */,
+				4BF6739A1F07DD3B008D53D5 /* GoogleService-Info.plist in Resources */,
 				783116E51F07D79D00397E4E /* Assets.xcassets in Resources */,
 				783116E01F07D79D00397E4E /* Main.storyboard in Resources */,
 			);
@@ -134,11 +177,60 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		9226EE14401F0CDB612F5A99 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		AFA076DBD38AFF87F73F791C /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ALC/Pods-ALC-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D717EB759C0C191AB3826A0A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ALC/Pods-ALC-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		783116D31F07D79D00397E4E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B1260871F07DDE900A17CC3 /* DataHandler.swift in Sources */,
 				783116DD1F07D79D00397E4E /* ViewController.swift in Sources */,
 				783116DB1F07D79D00397E4E /* AppDelegate.swift in Sources */,
 				783116E31F07D79D00397E4E /* ALC.xcdatamodeld in Sources */,
@@ -264,12 +356,13 @@
 		};
 		783116ED1F07D79D00397E4E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1C0D0A485ABEFE095BCF0FEE /* Pods-ALC.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 7G7FW66Y3M;
 				INFOPLIST_FILE = ALC/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = anward.chibi.ALC;
+				PRODUCT_BUNDLE_IDENTIFIER = ninja.mooi.ALC;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -277,12 +370,13 @@
 		};
 		783116EE1F07D79D00397E4E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5236153B6084B6BE2DCCA814 /* Pods-ALC.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 7G7FW66Y3M;
 				INFOPLIST_FILE = ALC/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = anward.chibi.ALC;
+				PRODUCT_BUNDLE_IDENTIFIER = ninja.mooi.ALC;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
