@@ -290,8 +290,8 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
             
             dataHandler.registerUser(email: email, password: password, inviteCode: "") { user in
                 print( user.email! )
-                // TODO: Implelemnt inviteCode
-                // Open viewcontroller after succefully created new user.
+                // TODO: Patrik - Implelemnt inviteCode
+                // TODO: Chibi - Open viewcontroller after succefully created new user.
             }
             
         } else {
@@ -301,7 +301,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
             
             dataHandler.registerUser(email: email, password: password, inviteCode: "") { user in
                 print( user.email! )
-                // Open viewcontroller after succefully created new user.
+                // TODO: Chibi - Open viewcontroller after succefully created new user.
             }
 
            
