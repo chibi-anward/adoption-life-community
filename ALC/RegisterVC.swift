@@ -10,7 +10,14 @@ import UIKit
 
 class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate {
     
-    var scrollView: UIScrollView!
+    //var scrollView: UIScrollView!
+    
+    let scrollView: UIScrollView = {
+       let view = UIScrollView()
+        view.isScrollEnabled = false
+        return view
+    }()
+    
     var containerView = UIView()
 
     let loginRegisterBtn: UIButton = {
@@ -179,7 +186,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
         super.viewDidLoad()
         print("CC")
         
-        self.scrollView = UIScrollView()
+        view.addSubview(scrollView)
         self.scrollView.delegate = self
         self.scrollView.contentSize = CGSize(width: view.bounds.width, height: 1000)
         
@@ -262,14 +269,14 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
             self.registerParentBtn.isEnabled = false
             self.registerAdopteeBtn.alpha = 0
             self.registerAdopteeBtn.isEnabled = false
-            self.view.backgroundColor = UIColor.white
+            self.scrollView.isScrollEnabled = false
         } else {
             self.registerParentBtn.alpha = 1
             self.registerParentBtn.isEnabled = true
             self.registerAdopteeBtn.alpha = 1
             self.registerAdopteeBtn.isEnabled = true
             self.loginRegisterBtn.isEnabled = true
-            self.view.backgroundColor = UIColor.brown
+            self.scrollView.isScrollEnabled = true
         }
     }
     
