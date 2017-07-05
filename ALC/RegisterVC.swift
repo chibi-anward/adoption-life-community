@@ -102,7 +102,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
     
     let emailTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Firstname"
+        textField.placeholder = "Email"
         textField.backgroundColor = UIColor(white: 0, alpha: 0.03)
         textField.font = UIFont.systemFont(ofSize: 14)
         textField.borderStyle = .roundedRect
@@ -112,7 +112,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
     
     let usernameTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Lastname"
+        textField.placeholder = "Username"
         textField.backgroundColor = UIColor(white: 0, alpha: 0.03)
         textField.font = UIFont.systemFont(ofSize: 14)
         textField.borderStyle = .roundedRect
@@ -122,7 +122,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
     
     let passwordTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Email"
+        textField.placeholder = "Password"
         textField.backgroundColor = UIColor(white: 0, alpha: 0.03)
         textField.font = UIFont.systemFont(ofSize: 14)
         textField.borderStyle = .roundedRect
@@ -282,10 +282,29 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
     
     
     func checkLoginRegisterBtn() {
+        let dataHandler = DataHandler()
         if loginRegisterSegmentedControl.selectedSegmentIndex == 0 {
-            // handleLogin()
+            // ALC
+            guard let email = emailTextField.text, email.characters.count > 0 else { return }
+            guard let password = passwordTextField.text, password.characters.count > 0 else { return }
+            
+            dataHandler.registerUser(email: email, password: password, inviteCode: "") { user in
+                print( user.email! )
+                // TODO: Implelemnt inviteCode
+                // Open viewcontroller after succefully created new user.
+            }
+            
         } else {
-            //  handleRegisterAdmin()
+            // CC
+            guard let email = emailTextField.text, email.characters.count > 0 else { return }
+            guard let password = passwordTextField.text, password.characters.count > 0 else { return }
+            
+            dataHandler.registerUser(email: email, password: password, inviteCode: "") { user in
+                print( user.email! )
+                // Open viewcontroller after succefully created new user.
+            }
+
+           
         }
     }
     

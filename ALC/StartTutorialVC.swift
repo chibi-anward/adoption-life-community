@@ -70,10 +70,20 @@ class StartTutorialVC: UIViewController, UITextFieldDelegate, UIImagePickerContr
     
     func loginALC() {
         print("login ALC")
+        let dataHandler = DataHandler()
+        dataHandler.loginUser(email: Dummy.Email, password: Dummy.Password, inviteCode: "") { user in
+            print(user.email)
+        
+        }
     }
     
     func loginCC() {
         print("login CC")
+        let dataHandler = DataHandler()
+        dataHandler.loginUser(email: Dummy.Email, password: Dummy.Password, inviteCode: "") { user in
+            print(user.email)
+            
+        }
     }
     
     func register() {

@@ -13,8 +13,12 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        /*
+        
         let dataHandler = DataHandler()
+        dataHandler.fetchUser(uid: dataHandler.getLocalData(object: "uid") ){ profile in
+            
+        }
+        /*
         if ( !dataHandler.isLoggedIn() ) {
             dataHandler.registerUser(email: DummyB.Email, password: DummyB.Password, inviteCode: ""){ user in
                 print(user.email!)
