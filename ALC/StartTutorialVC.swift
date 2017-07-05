@@ -71,8 +71,11 @@ class StartTutorialVC: UIViewController, UITextFieldDelegate, UIImagePickerContr
     func loginALC() {
         print("login ALC")
         let dataHandler = DataHandler()
+        // TODO: Chibi - Add fields for replace dummy data
         dataHandler.loginUser(email: Dummy.Email, password: Dummy.Password, inviteCode: "") { user in
             print(user.email)
+            // TODO: Chibi - Open viewcontroller after succefully created new user.
+            
         
         }
     }
@@ -80,8 +83,10 @@ class StartTutorialVC: UIViewController, UITextFieldDelegate, UIImagePickerContr
     func loginCC() {
         print("login CC")
         let dataHandler = DataHandler()
+        // TODO: Chibi - Add fields for replace dummy data
         dataHandler.loginUser(email: Dummy.Email, password: Dummy.Password, inviteCode: "") { user in
             print(user.email)
+            // TODO: Chibi - Open viewcontroller after succefully created new user.
             
         }
     }
