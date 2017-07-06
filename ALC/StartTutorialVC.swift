@@ -65,7 +65,7 @@ class StartTutorialVC: UIViewController, UITextFieldDelegate, UIImagePickerContr
         
         view.addSubview(stackview)
         
-        stackview.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 40, paddingBottom: 20, paddingRight: -40, width: 0, height: 140)
+        stackview.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 40, paddingBottom: 20, paddingRight: 40, width: 0, height: 140)
     }
     
     func loginALC() {
@@ -75,6 +75,7 @@ class StartTutorialVC: UIViewController, UITextFieldDelegate, UIImagePickerContr
         dataHandler.loginUser(email: Dummy.Email, password: Dummy.Password, inviteCode: "") { user in
             print(user.email)
             // TODO: Chibi - Open viewcontroller after succefully created new user.
+            self.dismiss(animated: true, completion: nil)
             
         
         }

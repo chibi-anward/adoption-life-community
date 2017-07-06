@@ -11,7 +11,6 @@ import FirebaseCore
 import FirebaseAuth
 import FirebaseDatabase
 
-
 var databaseRef: DatabaseReference!
 
 struct Dummy {
@@ -107,7 +106,7 @@ class DataHandler {
             print( "Successfully created a user", user?.uid ?? "" )
             Variables.CurrentUser = user
             Variables.IsLoggedIn = true
-            self.storeLocalData(object: "uid", value: (user?.uid)!)
+            self.storeLocalData(object: "uid", value: (user?.uid) ?? "")
             self.storeLocalData(object: "email", value: (user?.email)!)
             self.storeLocalData(object: "password", value: password)
             self.storeLocalData(object: "invitecode", value: inviteCode)

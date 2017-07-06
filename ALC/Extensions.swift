@@ -50,7 +50,7 @@ extension UIView {
             self.bottomAnchor.constraint(equalTo: bottom, constant: -paddingBottom).isActive = true
         }
         if let right = right {
-            self.rightAnchor.constraint(equalTo: right, constant: paddingRight).isActive = true
+            self.rightAnchor.constraint(equalTo: right, constant: -paddingRight).isActive = true
         }
         if width != 0 {
             widthAnchor.constraint(equalToConstant: width).isActive = true
@@ -85,5 +85,36 @@ extension NSMutableAttributedString {
         let normalString = NSMutableAttributedString(string:"\(text)", attributes:normalAttributes)
         self.append(normalString)
         return self
+    }
+}
+
+// TODO: Patrik - Check if you want this one
+let imageCache = NSCache<AnyObject, AnyObject>()
+
+class CustomImageView: UIImageView {
+    func loadImageUsingCacheWithUrlString(urlString: String) {
+        
+        self.image = nil
+        
+        //Check cache for images first
+        if let cachedImage = imageCache.object(forKey: urlString as AnyObject) as? UIImage {
+            self.image = cachedImage
+            return
+        }
+        // Otherwise fire off a New download of images
+        let url = URL(string: urlString)
+        URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
+            if error != nil {
+                print(error)
+                return
+            }
+            DispatchQueue.main.async {
+                if let downloadedImage = UIImage(data: data!) {
+                    imageCache.setObject(downloadedImage, forKey: urlString as AnyObject)
+                    self.image = downloadedImage
+                }
+                print("\n* Dispatch ImageCache from extension*")
+            }
+        }) .resume()
     }
 }

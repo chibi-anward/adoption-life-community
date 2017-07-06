@@ -10,7 +10,13 @@ import UIKit
 
 class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate {
     
-    //var scrollView: UIScrollView!
+    let backNavButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("back", for: .normal)
+        button.setTitleColor(UIColor.rgb(red: 100, green: 100, blue: 100, alpha: 1), for: .normal)
+        button.addTarget(self, action: #selector(backAction), for: .touchDown)
+        return button
+    }()
     
     let scrollView: UIScrollView = {
        let view = UIScrollView()
@@ -211,11 +217,16 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
     
     //
     fileprivate func setupViews() {
+        
+        containerView.addSubview(backNavButton)
+        backNavButton.anchor(top: containerView.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 80, height: 40)
+        
         containerView.addSubview(registerTextView)
-        registerTextView.anchor(top: containerView.topAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, paddingTop: 100, paddingLeft: 40, paddingBottom: 0, paddingRight: -40, width: 0, height: 140)
-   
-        scrollView.addSubview(loginRegisterSegmentedControl)
-        loginRegisterSegmentedControl.anchor(top: registerTextView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 20, paddingLeft: 40, paddingBottom: 0, paddingRight: -40, width: 0, height: 40)
+        registerTextView.anchor(top: containerView.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 60, paddingLeft: 40, paddingBottom: 0, paddingRight: 40, width: 0, height: 140)
+        //registerTextView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
+ 
+        containerView.addSubview(loginRegisterSegmentedControl)
+        loginRegisterSegmentedControl.anchor(top: registerTextView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 20, paddingLeft: 40, paddingBottom: 0, paddingRight: 40, width: 0, height: 40)
         
         
         
@@ -228,7 +239,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
         
         view.addSubview(stackview)
         
-        stackview.anchor(top: loginRegisterSegmentedControl.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 10, paddingLeft: 40, paddingBottom: 0, paddingRight: -40, width: 0, height: 300)
+        stackview.anchor(top: loginRegisterSegmentedControl.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 10, paddingLeft: 40, paddingBottom: 0, paddingRight: 40, width: 0, height: 300)
     }
     
     func handleTextInputChange() {
@@ -294,7 +305,6 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
                 // TODO: Patrik - Implelemnt inviteCode
                 // TODO: Chibi - Open viewcontroller after succefully created new user.
             }
-            
         } else {
             // CC
             guard let email = emailTextField.text, email.characters.count > 0 else { return }
@@ -304,9 +314,11 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
                 print( user.email! )
                 // TODO: Chibi - Open viewcontroller after succefully created new user.
             }
-
-           
         }
+    }
+    
+    func backAction() {
+        self.dismiss(animated: true, completion: nil)
     }
     
     //MARK: ProfileImage
