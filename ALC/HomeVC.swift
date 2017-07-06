@@ -7,13 +7,14 @@
 //
 
 import UIKit
+import FirebaseDatabase
 
 class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     
     let cellID = "cellID"
     
-    var posts = ["1", "2", "3"] // Temp Post array
-    //var posts = [Post]() // Post array
+    //var posts = ["1", "2", "3"] // Temp Post array
+    var posts = [Post]() // Post array
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -36,6 +37,7 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         view.addSubview(collectionView)
         collectionView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
+        fetchPosts()
         setupNavigationButtons()
     }
     
@@ -46,6 +48,9 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! HomePostCell
+        
+        cell.post = posts[indexPath.item]
+        
         return cell
     }
     
@@ -59,6 +64,33 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     //Other Functions
+    func fetchPosts() {
+        //Can put this one in the user Model (User: user)
+        //guard let uid = FIRAuth.auth()?.currentUser?.uid else { return }
+        
+        let ref = Database.database().reference().child("agency").child("css").child("posts")
+        ref.queryOrdered(byChild: "timestamp").observe(.childAdded, with: { (snapshot) in
+            
+            guard let dictionaries = snapshot.value as? [String: Any] else { return }
+            dictionaries.forEach({ (key, value) in
+                
+                guard let dictionary = value as? [String: Any] else { return }
+                let post = Post(dictionary: dictionary)
+                
+                self.posts.append(post)
+            })
+            
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+                print("REALOAD DATA HomeFeedCV : 139")
+            }
+        }) { (err) in
+            print("Failed to fetch posts:", err)
+        }
+        
+    }
+
+    
     func setupNavigationButtons() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogOut))
     }
