@@ -8,7 +8,22 @@
 
 import UIKit
 
-class HomeVC: UIViewController {
+class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
+    
+    let cellID = "cellID"
+    
+    var posts = ["1", "2", "3"] // Temp Post array
+    //var posts = [Post]() // Post array
+    
+    lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.backgroundColor = UIColor.rgb(red: 246, green: 246, blue: 246, alpha: 1)
+        cv.delegate = self
+        cv.dataSource = self
+        return cv
+    }()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,9 +31,34 @@ class HomeVC: UIViewController {
         navigationItem.title = "Home"
         view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 1)
         
+        registerCell()
+        
+        view.addSubview(collectionView)
+        collectionView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
         setupNavigationButtons()
     }
     
+    //CollectionView
+    fileprivate func registerCell() {
+        collectionView.register(HomePostCell.self, forCellWithReuseIdentifier: cellID)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! HomePostCell
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return posts.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = UIScreen.main.bounds.width
+        return CGSize(width: width, height: width)
+    }
+    
+    //Other Functions
     func setupNavigationButtons() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogOut))
     }

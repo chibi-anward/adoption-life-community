@@ -13,7 +13,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
     let backNavButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("back", for: .normal)
-        button.setTitleColor(UIColor.rgb(red: 200, green: 200, blue: 200, alpha: 1), for: .normal)
+        button.setTitleColor(UIColor.rgb(red: 100, green: 100, blue: 100, alpha: 1), for: .normal)
         button.addTarget(self, action: #selector(backAction), for: .touchDown)
         return button
     }()
@@ -218,11 +218,11 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
     //
     fileprivate func setupViews() {
         
-        view.addSubview(backNavButton)
-        backNavButton.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 40, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 80, height: 40)
+        containerView.addSubview(backNavButton)
+        backNavButton.anchor(top: containerView.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 80, height: 40)
         
         containerView.addSubview(registerTextView)
-        registerTextView.anchor(top: backNavButton.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 60, paddingLeft: 40, paddingBottom: 0, paddingRight: 40, width: 0, height: 140)
+        registerTextView.anchor(top: containerView.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 60, paddingLeft: 40, paddingBottom: 0, paddingRight: 40, width: 0, height: 140)
         //registerTextView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
  
         containerView.addSubview(loginRegisterSegmentedControl)

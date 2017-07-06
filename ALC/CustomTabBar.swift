@@ -12,12 +12,14 @@ class CustomTabBar: UITabBarController, UITabBarControllerDelegate {
     let layout = UICollectionViewFlowLayout()
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-        _ = viewControllers?.index(of: viewController)
-        /*
-         if index == 2 {
-         //let layout = UICollectionViewFlowLayout()
-         return false
-         }*/
+        let index = viewControllers?.index(of: viewController)
+        if index == 2 {
+            let layout = UICollectionViewFlowLayout()
+            let photoSelectorController = PhotoSelectorVC(collectionViewLayout: layout)
+            let navController = UINavigationController(rootViewController: photoSelectorController)
+            present(navController, animated: true, completion: nil)
+            return false
+        }
         return true
     }
     
@@ -48,11 +50,17 @@ class CustomTabBar: UITabBarController, UITabBarControllerDelegate {
     
         let viewNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "home_tab_icon_unselected").withRenderingMode(.alwaysOriginal), selectedImage: #imageLiteral(resourceName: "home_tab_icon_selected").withRenderingMode(.alwaysOriginal), title: "Home", rootViewController: HomeVC())
         
-        let homeNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "home_tab_icon_unselected").withRenderingMode(.alwaysOriginal), selectedImage: #imageLiteral(resourceName: "home_tab_icon_selected").withRenderingMode(.alwaysOriginal), title: "Home", rootViewController: HomeVC())
+        let testNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "home_tab_icon_unselected").withRenderingMode(.alwaysOriginal), selectedImage: #imageLiteral(resourceName: "home_tab_icon_selected").withRenderingMode(.alwaysOriginal), title: "Home", rootViewController: HomeVC())
         
+        //CreatePost
+        let createPostNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "CreatePost_Tab").withRenderingMode(.alwaysOriginal), selectedImage: #imageLiteral(resourceName: "CreatePost_Tab").withRenderingMode(.alwaysOriginal), title: "", rootViewController: CreatePostVC())
+        
+        let testTwoNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "home_tab_icon_unselected").withRenderingMode(.alwaysOriginal), selectedImage: #imageLiteral(resourceName: "home_tab_icon_selected").withRenderingMode(.alwaysOriginal), title: "Home", rootViewController: HomeVC())
+        
+        let testThreeNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "home_tab_icon_unselected").withRenderingMode(.alwaysOriginal), selectedImage: #imageLiteral(resourceName: "home_tab_icon_selected").withRenderingMode(.alwaysOriginal), title: "Home", rootViewController: HomeVC())
         tabBar.tintColor = UIColor.rgb(red: 109, green: 93, blue: 190, alpha: 1)
         
-        viewControllers = [viewNavController, homeNavController]
+        viewControllers = [viewNavController, testNavController, createPostNavController, testTwoNavController, testThreeNavController]
         
         //tab item insets
         guard let items = tabBar.items else { return }

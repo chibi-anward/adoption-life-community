@@ -6,7 +6,7 @@ target 'ALC' do
   use_frameworks!
 
   # Pods for ALC
-
+platform :ios, '10.0'
 pod 'Firebase/Core'
 pod 'Firebase/Auth'
 pod 'Firebase/Database'

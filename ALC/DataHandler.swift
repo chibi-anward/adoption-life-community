@@ -11,7 +11,6 @@ import FirebaseCore
 import FirebaseAuth
 import FirebaseDatabase
 
-
 var databaseRef: DatabaseReference!
 
 struct Dummy {
