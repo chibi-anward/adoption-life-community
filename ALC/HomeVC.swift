@@ -11,6 +11,10 @@ import FirebaseDatabase
 
 class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        collectionView.collectionViewLayout.invalidateLayout()
+    }
+    
     let cellID = "cellID"
     
     //var posts = ["1", "2", "3"] // Temp Post array
@@ -31,6 +35,7 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        fetchPosts()
         navigationItem.title = "Home"
         view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 1)
         
@@ -39,7 +44,6 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         view.addSubview(collectionView)
         collectionView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        fetchPosts()
         setupNavigationButtons()
     }
     
