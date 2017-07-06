@@ -10,7 +10,7 @@ import UIKit
 
 //MARK:
 class HomePostCell: BaseCollectionCell {
-    /*
+    
     var post: Post? {
         didSet {
             
@@ -37,7 +37,7 @@ class HomePostCell: BaseCollectionCell {
             postImageView.loadImageUsingCacheWithUrlString(urlString: imageUrl)
         }
     }
-    */
+    
     let profileImageThumb: CustomImageView = {
         let imageThumb = CustomImageView()
         imageThumb.backgroundColor = UIColor.lightGray

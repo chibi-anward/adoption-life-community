@@ -34,6 +34,36 @@ struct Variables {
     static var CurrentUser: User? = nil
 }
 
+struct Post {
+    var caption: String
+    var imageUrl: String
+    var timestamp: NSNumber?
+    var likes: Int?
+    var comments: Int?
+    var imageWidth: String
+    var imageHeight: String
+    var postID: String
+    var postUID: String
+    var location: String
+    var userWhoLike: [String: Any]?
+    var IHaveLiked: Bool
+    
+    init(dictionary: [String: Any]) {
+        self.caption = dictionary["caption"] as? String ?? ""
+        self.imageUrl = dictionary["imageUrl"] as? String ?? ""
+        self.timestamp = dictionary["timestamp"] as? NSNumber
+        self.likes = dictionary["likes"] as? Int
+        self.comments = dictionary["comments"] as? Int
+        self.imageWidth = dictionary["imageWidth"] as? String ?? ""
+        self.imageHeight = dictionary["imageHeight"] as? String ?? ""
+        self.postID = dictionary["postID"] as? String ?? ""
+        self.postUID = dictionary["postUID"] as? String ?? ""
+        self.location = dictionary["location"] as? String ?? ""
+        self.userWhoLike = (dictionary["userWhoLike"] as? [String : Any]) ?? nil
+        self.IHaveLiked = dictionary["IHaveLiked"] as? Bool ?? false
+    }
+}
+
 struct Profile {
     var UID: String
     var InviteCode: String
