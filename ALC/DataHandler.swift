@@ -116,7 +116,7 @@ class DataHandler {
                                "invitecode": inviteCode]
             
             databaseRef = Database.database().reference()
-            databaseRef.child("users").child((user?.uid)!).updateChildValues(userDetails)
+            databaseRef.child("agencies").child("css").child("users").child((user?.uid)!).updateChildValues(userDetails)
             
             completionHandler(user!)
         }
@@ -147,9 +147,10 @@ class DataHandler {
         let userDetails = values
         
         databaseRef = Database.database().reference()
-        databaseRef.child("users").child(uid).updateChildValues(userDetails as! [AnyHashable : Any], withCompletionBlock: { (err , ref ) in
+        databaseRef.child("agencies").child("css").child("users").child(uid).updateChildValues(userDetails as! [AnyHashable : Any], withCompletionBlock: { (err , ref ) in
             if let err = err {
                 print( "Failed to store data in db", err )
+                completionHandler(false)
                 return
             }
             
@@ -172,7 +173,7 @@ class DataHandler {
     
     func fetchUser(uid: String, completionHandler:@escaping (Profile) -> ()) {
         databaseRef = Database.database().reference()
-        databaseRef.child("users").child(uid).observeSingleEvent(of: .value, with: {( snapshot ) in
+        databaseRef.child("agencies").child("css").child("users").child(uid).observeSingleEvent(of: .value, with: {( snapshot ) in
             print(snapshot.value ?? "")
             
             completionHandler(Profile.init(UID: "", InviteCode: "", FirstName: "", LastName: "", Email: "", Password: "", Country: "", City: "", Role: 1, ProfileImage: UIImage(), Agency: "", Birth: Date()))

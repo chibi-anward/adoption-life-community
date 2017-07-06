@@ -110,9 +110,9 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
         return textField
     }()
     
-    let usernameTextField: UITextField = {
+    let inviteCodeTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Username"
+        textField.placeholder = "Invite code"
         textField.backgroundColor = UIColor(white: 0, alpha: 0.03)
         textField.font = UIFont.systemFont(ofSize: 14)
         textField.borderStyle = .roundedRect
@@ -219,7 +219,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
         
         
         
-        let stackview = UIStackView(arrangedSubviews: [emailTextField, usernameTextField, passwordTextField, loginRegisterBtn, registerParentBtn, registerAdopteeBtn])
+        let stackview = UIStackView(arrangedSubviews: [emailTextField, inviteCodeTextField, passwordTextField, loginRegisterBtn, registerParentBtn, registerAdopteeBtn])
         
         stackview.translatesAutoresizingMaskIntoConstraints = false
         stackview.distribution = .fillEqually
@@ -233,7 +233,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
     
     func handleTextInputChange() {
         let isEmailValid = emailTextField.text?.characters.count ?? 0 > 0 &&
-            usernameTextField.text?.characters.count ?? 0 > 0 && passwordTextField.text?.characters.count ?? 0 > 0
+            inviteCodeTextField.text?.characters.count ?? 0 > 0 && passwordTextField.text?.characters.count ?? 0 > 0
         if isEmailValid {
             loginRegisterBtn.isEnabled = true
             loginRegisterBtn.backgroundColor = UIColor.rgb(red: 50, green: 145, blue: 255, alpha: 1)
@@ -287,8 +287,9 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
             // ALC
             guard let email = emailTextField.text, email.characters.count > 0 else { return }
             guard let password = passwordTextField.text, password.characters.count > 0 else { return }
+            guard let inviteCode = inviteCodeTextField.text, inviteCode.characters.count > 0 else { return }
             
-            dataHandler.registerUser(email: email, password: password, inviteCode: "") { user in
+            dataHandler.registerUser(email: email, password: password, inviteCode: inviteCode) { user in
                 print( user.email! )
                 // TODO: Patrik - Implelemnt inviteCode
                 // TODO: Chibi - Open viewcontroller after succefully created new user.
