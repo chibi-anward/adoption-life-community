@@ -139,7 +139,7 @@ class SharePhotoController: UIViewController, CLLocationManagerDelegate {
         let timestamp = NSNumber(value: Date().timeIntervalSince1970)
         guard let loaction = locationText.text else {return}
         
-        let userPostRef = Database.database().reference().child("agency").child("css").child("posts").child(uid)
+        let userPostRef = Database.database().reference().child("agencies").child(Variables.Agency).child("posts").child(uid)
         let userPostAutoId = userPostRef.childByAutoId()
         let key = userPostAutoId.key
         
@@ -152,7 +152,8 @@ class SharePhotoController: UIViewController, CLLocationManagerDelegate {
                       "postID": key,
                       "postUID": uid,
                       "location": loaction,
-                      "comments": 0
+                      "comments": 0,
+                      "postUserName": Variables.CurrentUserProfile?.UserName as! String
             ] as [String : Any]
         userPostAutoId.updateChildValues(values) { (error, reference) in
             if error != nil {

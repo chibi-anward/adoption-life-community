@@ -34,7 +34,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
         btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         btn.setTitleColor(.white, for: .normal)
         btn.addTarget(self, action: #selector(checkLoginRegisterBtn), for: .touchUpInside)
-        btn.isEnabled = false
+        btn.isEnabled = true
         return btn
     }()
     
@@ -116,9 +116,9 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
         return textField
     }()
     
-    let usernameTextField: UITextField = {
+    let inviteCodeTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Username"
+        textField.placeholder = "Invite code"
         textField.backgroundColor = UIColor(white: 0, alpha: 0.03)
         textField.font = UIFont.systemFont(ofSize: 14)
         textField.borderStyle = .roundedRect
@@ -230,7 +230,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
         
         
         
-        let stackview = UIStackView(arrangedSubviews: [emailTextField, usernameTextField, passwordTextField, loginRegisterBtn, registerParentBtn, registerAdopteeBtn])
+        let stackview = UIStackView(arrangedSubviews: [emailTextField, inviteCodeTextField, passwordTextField, loginRegisterBtn, registerParentBtn, registerAdopteeBtn])
         
         stackview.translatesAutoresizingMaskIntoConstraints = false
         stackview.distribution = .fillEqually
@@ -244,7 +244,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
     
     func handleTextInputChange() {
         let isEmailValid = emailTextField.text?.characters.count ?? 0 > 0 &&
-            usernameTextField.text?.characters.count ?? 0 > 0 && passwordTextField.text?.characters.count ?? 0 > 0
+            inviteCodeTextField.text?.characters.count ?? 0 > 0 && passwordTextField.text?.characters.count ?? 0 > 0
         if isEmailValid {
             loginRegisterBtn.isEnabled = true
             loginRegisterBtn.backgroundColor = UIColor.rgb(red: 50, green: 145, blue: 255, alpha: 1)
@@ -298,20 +298,27 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
             // ALC
             guard let email = emailTextField.text, email.characters.count > 0 else { return }
             guard let password = passwordTextField.text, password.characters.count > 0 else { return }
+            guard let inviteCode = inviteCodeTextField.text, inviteCode.characters.count > 0 else { return }
             
-            dataHandler.registerUser(email: email, password: password, inviteCode: "") { user in
-                print( user.email! )
-                // TODO: Patrik - Implelemnt inviteCode
-                // TODO: Chibi - Open viewcontroller after succefully created new user.
+            dataHandler.registerUser(email: email, password: password, inviteCode: inviteCode) { object in
+                if ( object == false ) {
+                    print( "Invalid invite code" )
+                    // TODO: Show error message to user
+                } else {
+                    // TODO: Chibi - Open viewcontroller after succefully created new user.
+                }
             }
         } else {
             // CC
             guard let email = emailTextField.text, email.characters.count > 0 else { return }
             guard let password = passwordTextField.text, password.characters.count > 0 else { return }
             
-            dataHandler.registerUser(email: email, password: password, inviteCode: "") { user in
-                print( user.email! )
-                // TODO: Chibi - Open viewcontroller after succefully created new user.
+            dataHandler.registerUser(email: email, password: password, inviteCode: "") { object in
+                if ( object == false ) {
+                    // TODO: Show error message to user
+                } else {
+                    // TODO: Chibi - Open viewcontroller after succefully created new user.
+                }
             }
         }
     }

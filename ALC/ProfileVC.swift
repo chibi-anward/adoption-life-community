@@ -110,7 +110,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if isGridView {
-       return posts.count
+            return posts.count
         } else {
             return stories.count
         }
@@ -156,7 +156,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     fileprivate func fetchOrderedPosts() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         posts.removeAll()
-        let ref = Database.database().reference().child("agency").child("css").child("posts").child(uid)
+        let ref = Database.database().reference().child("agencies").child(Variables.Agency).child("posts").child(uid)
         ref.queryOrdered(byChild: "timestamp").observe(.childAdded, with: { (snapshot) in
             guard let dictionary = snapshot.value as? [String: AnyObject] else {return}
             let post = Post(dictionary: dictionary)

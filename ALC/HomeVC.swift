@@ -18,7 +18,7 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     let cellID = "cellID"
     
     //var posts = ["1", "2", "3"] // Temp Post array
-    var posts = [Post]() // Post array
+    //var posts = [Post]() // Post array
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -29,7 +29,9 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         return cv
     }()
     
-    
+    override func viewDidAppear(_ animated: Bool) {
+        fetchPosts()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -53,13 +55,13 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! HomePostCell
         
-        cell.post = posts[indexPath.item]
+        cell.post = Variables.Posts[indexPath.item]
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return posts.count
+        return Variables.Posts.count
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -69,27 +71,29 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     
     //Other Functions
     func fetchPosts() {
-        //Can put this one in the user Model (User: user)
-        //guard let uid = FIRAuth.auth()?.currentUser?.uid else { return }
-        
-        let ref = Database.database().reference().child("agency").child("css").child("posts")
-        ref.queryOrdered(byChild: "timestamp").observe(.childAdded, with: { (snapshot) in
+        Variables.Posts.removeAll()
+        if ( Variables.Agency != "" ) {
             
-            guard let dictionaries = snapshot.value as? [String: Any] else { return }
-            dictionaries.forEach({ (key, value) in
+            let ref = Database.database().reference().child("agencies").child(Variables.Agency).child("posts")
+            ref.queryOrdered(byChild: "timestamp").observe(.childAdded, with: { (snapshot) in
                 
-                guard let dictionary = value as? [String: Any] else { return }
-                let post = Post(dictionary: dictionary)
+                guard let dictionaries = snapshot.value as? [String: Any] else { return }
+               
+                dictionaries.forEach({ (key, value) in
+                    
+                    guard let dictionary = value as? [String: Any] else { return }
+                    let post = Post(dictionary: dictionary)
+                    Variables.Posts.append(post)
+                })
                 
-                self.posts.append(post)
-            })
-            
-            DispatchQueue.main.async {
-                self.collectionView.reloadData()
-                print("REALOAD DATA HomeFeedCV : 139")
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                    print("REALOAD DATA HomeFeedCV : 139")
+                }
+            }) { (err) in
+                print("Failed to fetch posts:", err)
             }
-        }) { (err) in
-            print("Failed to fetch posts:", err)
+            
         }
         
     }
@@ -120,21 +124,4 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         self.present(alertController, animated: true, completion: nil)
     }
     
-    func testFunction() {
-        //
-        let datahandler = DataHandler()
-        datahandler.fetchUser(uid: (Variables.CurrentUser?.uid)!) { object in
-            print ("\(object.Email)")
-        }
-        
-        datahandler.fetchUser(uid: (Variables.CurrentUser?.uid)!) { (object) in
-            // if object != nil
-        }
-        
-        //
-        datahandler.logOutUser { (success) in
-            // if true or false
-        }
-        
-    }
-}
+   }
