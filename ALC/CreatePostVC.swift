@@ -7,7 +7,9 @@
 //
 
 import UIKit
-import Firebase
+import FirebaseStorage
+import FirebaseAuth
+import FirebaseDatabase
 
 class CreatePostVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -149,7 +151,7 @@ class CreatePostVC: UIViewController, UITextFieldDelegate, UIImagePickerControll
     }
     
     func handlePublish() {
-        let ref = Database.database().reference().child("agency").child("css").child("posts")
+        let ref = Database.database().reference().child("agencies").child(Variables.Agency).child("posts")
         let childRef = ref.childByAutoId()
         let key = childRef.key
         
@@ -171,13 +173,14 @@ class CreatePostVC: UIViewController, UITextFieldDelegate, UIImagePickerControll
             guard let postImageUrl = metadata?.downloadURL()?.absoluteString else { return }
             
             let feed = ["postImageUrl": postImageUrl,
-                        "likes": self.likeLabel.text,
+                        "likes": self.likeLabel.text ?? "",
                         "creator": creator,
                         "postID": key,
-                        "postGroup": self.postGroup.text,
+                        "postGroup": self.postGroup.text ?? "",
                         "postText": self.postTextView.text,
                         "timestamp": timestamp,
-                        "comments": self.commentLabel.text
+                        "comments": self.commentLabel.text ?? "",
+                        "postUserName": Variables.CurrentUserProfile?.UserName ?? ""
                 ] as [String : Any]
             
             let postFeed = ["\(key)" : feed]
@@ -190,7 +193,7 @@ class CreatePostVC: UIViewController, UITextFieldDelegate, UIImagePickerControll
                     print(error)
                     return
                 }
-                let userPostsRef = Database.database().reference().child("agency").child("css").child("user-posts").child(creator)
+                let userPostsRef = Database.database().reference().child("agencies").child(Variables.Agency).child("user-posts").child(creator)
                 
                 let postID = key
                 userPostsRef.updateChildValues([postID: 1]) // -> 2. observeUserPosts

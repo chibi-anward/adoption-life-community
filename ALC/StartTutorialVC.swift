@@ -72,11 +72,13 @@ class StartTutorialVC: UIViewController, UITextFieldDelegate, UIImagePickerContr
         print("login ALC")
         let dataHandler = DataHandler()
         // TODO: Chibi - Add fields for replace dummy data
-        dataHandler.loginUser(email: Dummy.Email, password: Dummy.Password, inviteCode: "") { user in
-            print(user.email)
-            // TODO: Chibi - Open viewcontroller after succefully created new user.
-            self.dismiss(animated: true, completion: nil)
-            
+        dataHandler.loginALCUser(email: Dummy.Email, password: Dummy.Password, inviteCode: Dummy.InviteCode) { object in
+            if ( object == true ) {
+                // TODO: Chibi - Open viewcontroller after succefully created new user.
+                self.dismiss(animated: true, completion: nil)
+            } else {
+                // TODO: Failed to login. Show info to user
+            }
         
         }
     }
@@ -85,9 +87,14 @@ class StartTutorialVC: UIViewController, UITextFieldDelegate, UIImagePickerContr
         print("login CC")
         let dataHandler = DataHandler()
         // TODO: Chibi - Add fields for replace dummy data
-        dataHandler.loginUser(email: Dummy.Email, password: Dummy.Password, inviteCode: "") { user in
-            print(user.email)
-            // TODO: Chibi - Open viewcontroller after succefully created new user.
+        Variables.Agency = "cc"
+        dataHandler.loginCCUser(email: Dummy.Email, password: Dummy.Password) { object in
+            if ( object == true ) {
+                // TODO: Chibi - Open viewcontroller after succefully created new user.
+                self.dismiss(animated: true, completion: nil)
+            } else {
+                // TODO: Failed to login. Show info to user
+            }
             
         }
     }

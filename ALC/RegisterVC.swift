@@ -34,7 +34,7 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
         btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         btn.setTitleColor(.white, for: .normal)
         btn.addTarget(self, action: #selector(checkLoginRegisterBtn), for: .touchUpInside)
-        btn.isEnabled = false
+        btn.isEnabled = true
         return btn
     }()
     
@@ -300,19 +300,25 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
             guard let password = passwordTextField.text, password.characters.count > 0 else { return }
             guard let inviteCode = inviteCodeTextField.text, inviteCode.characters.count > 0 else { return }
             
-            dataHandler.registerUser(email: email, password: password, inviteCode: inviteCode) { user in
-                print( user.email! )
-                // TODO: Patrik - Implelemnt inviteCode
-                // TODO: Chibi - Open viewcontroller after succefully created new user.
+            dataHandler.registerUser(email: email, password: password, inviteCode: inviteCode) { object in
+                if ( object == false ) {
+                    print( "Invalid invite code" )
+                    // TODO: Show error message to user
+                } else {
+                    // TODO: Chibi - Open viewcontroller after succefully created new user.
+                }
             }
         } else {
             // CC
             guard let email = emailTextField.text, email.characters.count > 0 else { return }
             guard let password = passwordTextField.text, password.characters.count > 0 else { return }
             
-            dataHandler.registerUser(email: email, password: password, inviteCode: "") { user in
-                print( user.email! )
-                // TODO: Chibi - Open viewcontroller after succefully created new user.
+            dataHandler.registerUser(email: email, password: password, inviteCode: "") { object in
+                if ( object == false ) {
+                    // TODO: Show error message to user
+                } else {
+                    // TODO: Chibi - Open viewcontroller after succefully created new user.
+                }
             }
         }
     }

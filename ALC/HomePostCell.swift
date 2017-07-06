@@ -23,6 +23,9 @@ class HomePostCell: BaseCollectionCell {
             guard let comments = post?.comments else {return}
             self.commentLabel.text = "\(comments)"
             
+            guard let username = post?.postUserName else {return}
+            self.usernameLabel.text = "\(username)"
+            
             guard let locationTag = post?.location else {return}
             self.locationLabel.text = locationTag
             
