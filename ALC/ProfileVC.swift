@@ -36,6 +36,8 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationItem.title = "Profile"
+        
         addCollectionView()
         registerCell()
         

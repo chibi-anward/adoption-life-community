@@ -56,7 +56,7 @@ class CustomTabBar: UITabBarController, UITabBarControllerDelegate {
     func setupViewControllers() {
       
         //Home
-        let viewNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "home_tab_icon_unselected").withRenderingMode(.alwaysOriginal), selectedImage: #imageLiteral(resourceName: "home_tab_icon_selected").withRenderingMode(.alwaysOriginal), title: "Home", rootViewController: HomeVC())
+        let viewNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "feedTabBar_default").withRenderingMode(.alwaysOriginal), selectedImage: #imageLiteral(resourceName: "feedTabBar_selected").withRenderingMode(.alwaysOriginal), title: "Home", rootViewController: HomeVC())
         
         //Profile
         let profileNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "profileTabIcon_default").withRenderingMode(.alwaysOriginal), selectedImage: #imageLiteral(resourceName: "profileTabIcon_selected").withRenderingMode(.alwaysOriginal), title: "Profile", rootViewController: ProfileVC())
@@ -64,12 +64,14 @@ class CustomTabBar: UITabBarController, UITabBarControllerDelegate {
         //CreatePost
         let createPostNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "CreatePost_Tab").withRenderingMode(.alwaysOriginal), selectedImage: #imageLiteral(resourceName: "CreatePost_Tab").withRenderingMode(.alwaysOriginal), title: "", rootViewController: CreatePostVC())
         
-        let testTwoNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "home_tab_icon_unselected").withRenderingMode(.alwaysOriginal), selectedImage: #imageLiteral(resourceName: "home_tab_icon_selected").withRenderingMode(.alwaysOriginal), title: "Home", rootViewController: HomeVC())
+        //Country
+        let countryNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "countryTabBar_default").withRenderingMode(.alwaysOriginal), selectedImage: #imageLiteral(resourceName: "countryTabBar_selected").withRenderingMode(.alwaysOriginal), title: "Country", rootViewController: CountryVC())
         
-        let testThreeNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "home_tab_icon_unselected").withRenderingMode(.alwaysOriginal), selectedImage: #imageLiteral(resourceName: "home_tab_icon_selected").withRenderingMode(.alwaysOriginal), title: "Home", rootViewController: HomeVC())
+        let agencyNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "agencyTabBar_default").withRenderingMode(.alwaysOriginal), selectedImage: #imageLiteral(resourceName: "agencyTabBar_selected").withRenderingMode(.alwaysOriginal), title: "Agency", rootViewController: AgencyVC())
+        
         tabBar.tintColor = UIColor.rgb(red: 109, green: 93, blue: 190, alpha: 1)
         
-        viewControllers = [viewNavController, testThreeNavController,  createPostNavController, testTwoNavController, profileNavController,]
+        viewControllers = [viewNavController, agencyNavController,  createPostNavController, countryNavController, profileNavController]
         
         //tab item insets
         guard let items = tabBar.items else { return }
