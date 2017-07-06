@@ -161,8 +161,8 @@ class CreatePostVC: UIViewController, UITextFieldDelegate, UIImagePickerControll
         guard let uploadData = UIImageJPEGRepresentation(image, 0.3) else { return }
         
         let filename = NSUUID().uuidString
-        /*
-        FIRStorage.storage().reference().child("post_images_public").child(filename).put(uploadData, metadata: nil, completion: { (metadata, err) in
+        
+        Storage.storage().reference().child("post_images_public").child(filename).putData(uploadData, metadata: nil, completion: { (metadata, err) in
             
             if let err = err {
                 print ("\n Failed to upload profile image", err)
@@ -190,7 +190,7 @@ class CreatePostVC: UIViewController, UITextFieldDelegate, UIImagePickerControll
                     print(error)
                     return
                 }
-                let userPostsRef = FIRDatabase.database().reference().child("agency").child("css").child("user-posts").child(creator)
+                let userPostsRef = Database.database().reference().child("agency").child("css").child("user-posts").child(creator)
                 
                 let postID = key
                 userPostsRef.updateChildValues([postID: 1]) // -> 2. observeUserPosts
@@ -198,7 +198,7 @@ class CreatePostVC: UIViewController, UITextFieldDelegate, UIImagePickerControll
             
             print("post successfully sent")
             
-        }) */
+        })
     }
     
     

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import  MapKit
+import MapKit
 import CoreLocation
 import Firebase
 
@@ -115,8 +115,8 @@ class SharePhotoController: UIViewController, CLLocationManagerDelegate {
         navigationItem.rightBarButtonItem?.isEnabled = false
         
         let filename = NSUUID().uuidString
-        /*
-        FIRStorage.storage().reference().child("posts-image").child(filename).put(uploadData, metadata: nil) { (metadata, err) in
+        
+        Storage.storage().reference().child("posts-image").child(filename).putData(uploadData, metadata: nil) { (metadata, err) in
             if err != nil {
                 self.navigationItem.rightBarButtonItem?.isEnabled = true
                 print("Failed to upload image")
@@ -126,7 +126,7 @@ class SharePhotoController: UIViewController, CLLocationManagerDelegate {
             
             self.saveToDataBaseImageUrl(imageUrl: imageUrl)
             
-        } */
+        }
     }
     
     fileprivate func saveToDataBaseImageUrl(imageUrl: String) {
