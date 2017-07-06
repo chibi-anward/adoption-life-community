@@ -58,7 +58,7 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/DataHandler.swift"
-                  timestampString = "521047289.98325"
+                  timestampString = "521048960.508675"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "221"
@@ -73,7 +73,7 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/DataHandler.swift"
-                  timestampString = "521047289.986346"
+                  timestampString = "521048960.511062"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "221"
@@ -154,7 +154,7 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/RegisterVC.swift"
-                  timestampString = "521047290.012732"
+                  timestampString = "521048960.544802"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "316"
@@ -169,7 +169,7 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/RegisterVC.swift"
-                  timestampString = "521047290.015801"
+                  timestampString = "521048960.54807"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "317"
@@ -250,7 +250,7 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/DataHandler.swift"
-                  timestampString = "521047290.040805"
+                  timestampString = "521048960.573841"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "349"
@@ -265,7 +265,7 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/DataHandler.swift"
-                  timestampString = "521047290.044102"
+                  timestampString = "521048960.577042"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "351"
@@ -378,7 +378,7 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/StartTutorialVC.swift"
-                  timestampString = "521047290.073265"
+                  timestampString = "521048960.607172"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "91"
@@ -393,7 +393,7 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/StartTutorialVC.swift"
-                  timestampString = "521047290.07519"
+                  timestampString = "521048960.609814"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "92"
@@ -442,7 +442,7 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/SharePhotoController.swift"
-                  timestampString = "521047290.085"
+                  timestampString = "521048960.618354"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "158"
@@ -457,7 +457,7 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/SharePhotoController.swift"
-                  timestampString = "521047290.087517"
+                  timestampString = "521048960.620725"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "159"
@@ -506,7 +506,7 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/DataHandler.swift"
-                  timestampString = "521047290.096824"
+                  timestampString = "521048960.63014"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "274"
@@ -521,7 +521,7 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/DataHandler.swift"
-                  timestampString = "521047290.099016"
+                  timestampString = "521048960.63306"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "275"
@@ -554,7 +554,7 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/DataHandler.swift"
-                  timestampString = "521047290.104384"
+                  timestampString = "521048960.638116"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "162"
@@ -569,7 +569,7 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/DataHandler.swift"
-                  timestampString = "521047290.10678"
+                  timestampString = "521048960.640129"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "165"
@@ -650,7 +650,7 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/DataHandler.swift"
-                  timestampString = "521047290.124962"
+                  timestampString = "521048960.662065"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "351"
@@ -665,7 +665,7 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/DataHandler.swift"
-                  timestampString = "521047290.126852"
+                  timestampString = "521048960.66482"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "351"
@@ -673,6 +673,54 @@
                   offsetFromSymbolStart = "574">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ALC/ProfileVC.swift"
+            timestampString = "521048830.288471"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "159"
+            endingLineNumber = "159"
+            landmarkName = "fetchOrderedPosts()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ALC/DataHandler.swift"
+            timestampString = "521048894.970162"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "135"
+            endingLineNumber = "135"
+            landmarkName = "isLoggedIn()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ALC/DataHandler.swift"
+            timestampString = "521048963.120823"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "154"
+            endingLineNumber = "154"
+            landmarkName = "isLoggedIn()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
