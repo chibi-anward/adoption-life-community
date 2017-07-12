@@ -81,6 +81,8 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: profileHeaderCellId, for: indexPath) as! ProfileHeaderCell
         
+            header.profile = Variables.CurrentUserProfile
+        
         header.delegate = self
         
         /*

@@ -44,12 +44,14 @@ class CustomTabBar: UITabBarController, UITabBarControllerDelegate {
     func checkIfUserIsLoggedIn() {
 
         let datahandler = DataHandler()
-        if ( !datahandler.isLoggedIn() == true) {
-            DispatchQueue.main.async {
-                let startController = StartTutorialVC()
-                self.present(startController, animated: true, completion: nil)
+        
+        datahandler.isLoggedIn { (object) in
+            if ( object == false ) {
+                DispatchQueue.main.async {
+                    let startController = StartTutorialVC()
+                    self.present(startController, animated: true, completion: nil)
+                }
             }
-            return
         }
     }
     

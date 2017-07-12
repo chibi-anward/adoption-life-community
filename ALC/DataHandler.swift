@@ -94,7 +94,7 @@ struct Profile {
         self.Country = dictionary["country"] as? String ?? ""
         self.City = dictionary["city"] as? String ?? ""
         self.Role = dictionary["role"] as? Int ?? 0
-        self.ProfileImageUrl = dictionary["profileimage"] as? String ?? ""
+        self.ProfileImageUrl = dictionary["ProfileImageUrl"] as? String ?? ""
         self.Agency = dictionary["agency"] as? String ?? ""
         self.Birth = dictionary["birth"] as? Date
         self.UserName = dictionary["username"] as? String ?? ""
@@ -130,9 +130,9 @@ class DataHandler {
         defaults.synchronize()
     }
     
-    func isLoggedIn() -> Bool {
+    func isLoggedIn(completionHandler:@escaping (Bool) -> ()) {
         
-        guard (Auth.auth().currentUser?.uid) != nil else {
+        if (Auth.auth().currentUser != nil)  {
             let uid = getLocalData(object: "uid")
             let email = getLocalData(object: "email")
             let password = getLocalData(object: "password")
@@ -142,19 +142,22 @@ class DataHandler {
             if( uid != "" ) {
                 if ( agency != "cc" ) {
                     loginALCUser(email: email, password: password, inviteCode: inviteCode, completionHandler: { (object) in
-                        
+                        completionHandler(true)
+                        return
                     })
                 } else {
                     loginCCUser(email: email, password: password, completionHandler: { (object) in
-                       
+                       completionHandler(true)
+                        return
                     })
                 }
-                return true
+                
+            } else {
+                completionHandler(false)
+                return
             }
-            return false
+           return
         }
-        
-        return (Auth.auth().currentUser != nil)
     }
     
     func handleInviteCode(inviteCode: String, completionHandler:@escaping (Bool) -> ()) {
