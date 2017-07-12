@@ -57,6 +57,23 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         
         cell.post = Variables.Posts[indexPath.item]
         
+        //Check for POST USER ID
+        let postUID = Variables.Posts[indexPath.item].postUID
+        Database.database().reference().child("agencies").child(Variables.Agency).child("users").child(postUID).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            guard let dictionary = snapshot.value as? [String: Any] else { return }
+            
+            guard let username = dictionary["username"] as? String else { return }
+            cell.usernameLabel.text = username
+            
+            if let profileImageUrl = dictionary["ProfileImageUrl"] as? String {
+                cell.profileImageThumb.loadImageUsingCacheWithUrlString(urlString: profileImageUrl)
+            }
+            
+        }) { (err) in
+            print("Can't fetch profile information", err)
+        }
+        
         return cell
     }
     
