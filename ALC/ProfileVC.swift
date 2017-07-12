@@ -147,7 +147,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 2
+        return 0
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -156,7 +156,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         return CGSize(width: width, height: width)
         } else {
             if indexPath.row == 0 {
-                return CGSize(width: UIScreen.main.bounds.width, height: 100)
+                return CGSize(width: UIScreen.main.bounds.width, height: 60)
             }
             return CGSize(width: UIScreen.main.bounds.width, height: 220)
         }

@@ -16,8 +16,15 @@ protocol ProfileHeaderCellDelegate {
 class ProfileHeaderCell: BaseCollectionCell {
     
     var delegate: ProfileHeaderCellDelegate?
-    
-    
+    var profile: Profile? {
+        didSet {
+            guard let username = profile?.UserName else {return}
+            usernameLabel.text = username
+            
+            guard let profileImageUrl = profile?.ProfileImageUrl else {return}
+            profileImageView.loadImageUsingCacheWithUrlString(urlString: profileImageUrl)
+        }
+    }
     /*
      var user: User? {
      didSet {
