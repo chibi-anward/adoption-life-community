@@ -100,7 +100,8 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
 
     
     func setupNavigationButtons() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogOut))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogOut))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Messages", style: .plain, target: self, action: #selector(gotoMessages))
     }
     
     func handleLogOut() {
@@ -122,6 +123,25 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         }))
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func gotoMessages() {
+        let messagesVC = MessageVC()
+        let navController = UINavigationController(rootViewController: messagesVC)
+        present(navController, animated: true, completion: nil)
+        
+    }
+    
+    
+    func pushToMessages() {
+        let messagesVC = MessageVC()
+        let transition = CATransition()
+        transition.duration = 0.0
+        transition.type = kCATransitionPush
+        transition.subtype = kCATransitionFromRight
+        view.window!.layer.add(transition, forKey: kCATransition)
+        let navController = UINavigationController(rootViewController: messagesVC)
+        self.navigationController?.present(navController, animated: false, completion: nil)
     }
     
    }

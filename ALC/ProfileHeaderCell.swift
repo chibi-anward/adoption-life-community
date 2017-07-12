@@ -11,12 +11,12 @@ import UIKit
 protocol ProfileHeaderCellDelegate {
     func didChangeToListView()
     func didChangeToGridView()
-    func goToYourStories()
 }
 
 class ProfileHeaderCell: BaseCollectionCell {
     
     var delegate: ProfileHeaderCellDelegate?
+    
     
     /*
      var user: User? {

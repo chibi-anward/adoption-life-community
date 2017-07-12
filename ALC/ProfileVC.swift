@@ -57,10 +57,10 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         collectionView.reloadData()
     }
     
-    func goToYourStories() {
+    func goToYourStory() {
         print("Go To Your Stories")
-        let yourStory = YourStoryVC()
-        self.present(yourStory, animated: true, completion: nil)
+        let storyTimeline = StoryTimelineVC()
+        self.present(storyTimeline, animated: true, completion: nil)
     }
     
     func addCollectionView() {
@@ -82,8 +82,6 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: profileHeaderCellId, for: indexPath) as! ProfileHeaderCell
         
         header.delegate = self
-        
-        //header.storyButton.addTarget(self, action: #selector(goToYourStories), for: .touchDown)
         
         /*
         let uid = Auth.auth().currentUser?.uid
@@ -130,6 +128,15 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: storyCellID, for: indexPath) as! StoryCell
             //cell.stories = stories[indexPath.item]
             return cell
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("\(indexPath.row)")
+        if indexPath.row == 0 {
+            print("Create new story")
+        } else {
+            goToYourStory()
         }
     }
     

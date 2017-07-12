@@ -13,15 +13,15 @@ import FirebaseDatabase
 
 var databaseRef: DatabaseReference!
 
-struct Dummy {
+struct DummyB {
     static var Email = "patriktest@test.se"
     static var Password = "password"
     static var InviteCode = "C1456" // css
 }
 
-struct DummyB {
+struct Dummy {
     static var Email = "chibi@mooi.ninja"
-    static var Password = "password"
+    static var Password = "000000"
     static var InviteCode = "C1456" // css
 }
 
