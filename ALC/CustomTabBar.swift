@@ -42,7 +42,7 @@ class CustomTabBar: UITabBarController, UITabBarControllerDelegate {
     }
     
     func checkIfUserIsLoggedIn() {
-
+        
         let datahandler = DataHandler()
         
         datahandler.isLoggedIn { (object) in
