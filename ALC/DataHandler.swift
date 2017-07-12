@@ -13,15 +13,15 @@ import FirebaseDatabase
 
 var databaseRef: DatabaseReference!
 
-struct DummyB {
+struct Dummy {
     static var Email = "patriktest@test.se"
     static var Password = "password"
     static var InviteCode = "C1456" // css
 }
 
-struct Dummy {
+struct DummyB {
     static var Email = "chibi@mooi.ninja"
-    static var Password = "000000"
+    static var Password = "password"
     static var InviteCode = "C1456" // css
 }
 
@@ -147,7 +147,7 @@ class DataHandler {
                     })
                 } else {
                     loginCCUser(email: email, password: password, completionHandler: { (object) in
-                       completionHandler(true)
+                        completionHandler(true)
                         return
                     })
                 }
@@ -156,7 +156,7 @@ class DataHandler {
                 completionHandler(false)
                 return
             }
-           return
+            return
         }
     }
     
@@ -316,48 +316,48 @@ class DataHandler {
             
         }
     }
-
-func updateUser(uid: String, values: Any, completionHandler:@escaping (Bool) -> ()) {
-    let userDetails = values
     
-    databaseRef = Database.database().reference()
-    databaseRef.child("agencies").child("css").child("users").child(uid).updateChildValues(userDetails as! [AnyHashable : Any], withCompletionBlock: { (err , ref ) in
-        if let err = err {
-            print( "Failed to store data in db", err )
-            completionHandler(false)
-            return
-        }
+    func updateUser(uid: String, values: Any, completionHandler:@escaping (Bool) -> ()) {
+        let userDetails = values
         
-        print( "Successfully stored data in db" )
-        completionHandler(true)
-    })
-}
-
-func logOutUser(completionHandler:@escaping (Bool) -> ()) {
-    do {
-        try Auth.auth().signOut()
-        Variables.Posts.removeAll()
-        clearLocalData()
-        completionHandler(true)
-        return
-    } catch let err {
-        print("Failed to sign out", err)
-    }
-    completionHandler(false)
-    
-}
-
-func fetchUser(uid: String, completionHandler:@escaping (Profile) -> ()) {
-    databaseRef = Database.database().reference()
-    databaseRef.child("agencies").child(Variables.Agency).child("users").child(uid).observeSingleEvent(of: .value, with: {( snapshot ) in
-        
-        if let dictionary = snapshot.value as? [String: Any] {
+        databaseRef = Database.database().reference()
+        databaseRef.child("agencies").child("css").child("users").child(uid).updateChildValues(userDetails as! [AnyHashable : Any], withCompletionBlock: { (err , ref ) in
+            if let err = err {
+                print( "Failed to store data in db", err )
+                completionHandler(false)
+                return
+            }
             
-            let profile = Profile(dictionary: dictionary)
-            completionHandler(profile)
+            print( "Successfully stored data in db" )
+            completionHandler(true)
+        })
+    }
+    
+    func logOutUser(completionHandler:@escaping (Bool) -> ()) {
+        do {
+            try Auth.auth().signOut()
+            Variables.Posts.removeAll()
+            clearLocalData()
+            completionHandler(true)
+            return
+        } catch let err {
+            print("Failed to sign out", err)
         }
-    }, withCancel: nil)
-}
+        completionHandler(false)
+        
+    }
+    
+    func fetchUser(uid: String, completionHandler:@escaping (Profile) -> ()) {
+        databaseRef = Database.database().reference()
+        databaseRef.child("agencies").child(Variables.Agency).child("users").child(uid).observeSingleEvent(of: .value, with: {( snapshot ) in
+            
+            if let dictionary = snapshot.value as? [String: Any] {
+                
+                let profile = Profile(dictionary: dictionary)
+                completionHandler(profile)
+            }
+        }, withCancel: nil)
+    }
 }
 
 

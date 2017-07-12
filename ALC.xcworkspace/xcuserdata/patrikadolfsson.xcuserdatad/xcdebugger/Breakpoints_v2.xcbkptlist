@@ -153,22 +153,6 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ALC/DataHandler.swift"
-            timestampString = "521052366.974564"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "357"
-            endingLineNumber = "357"
-            landmarkName = "fetchUser(uid:completionHandler:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "ALC/StartTutorialVC.swift"
             timestampString = "521043226.931353"
             startingColumnNumber = "9223372036854775807"
@@ -294,70 +278,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ALC/DataHandler.swift"
-            timestampString = "521052366.974564"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "165"
-            endingLineNumber = "165"
-            landmarkName = "handleInviteCode(inviteCode:completionHandler:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "ALC.DataHandler.handleInviteCode (inviteCode : Swift.String, completionHandler : (Swift.Bool) -&gt; ()) -&gt; ()"
-                  moduleName = "ALC"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/DataHandler.swift"
-                  timestampString = "521052390.850803"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "165"
-                  endingLineNumber = "165"
-                  offsetFromSymbolStart = "225">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "ALC.DataHandler.(handleInviteCode (inviteCode : Swift.String, completionHandler : (Swift.Bool) -&gt; ()) -&gt; ()).(closure #1)"
-                  moduleName = "ALC"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/DataHandler.swift"
-                  timestampString = "521052390.852309"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "168"
-                  endingLineNumber = "168"
-                  offsetFromSymbolStart = "27">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ALC/DataHandler.swift"
-            timestampString = "521052366.974564"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "172"
-            endingLineNumber = "172"
-            landmarkName = "handleInviteCode(inviteCode:completionHandler:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -367,7 +287,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "161"
             endingLineNumber = "161"
-            landmarkName = "fetchOrderedPosts()"
+            landmarkName = "collectionView(_:layout:sizeForItemAt:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -426,13 +346,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ALC/ProfileHeaderCell.swift"
-            timestampString = "521050754.083688"
+            timestampString = "521549634.420739"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "26"
-            endingLineNumber = "26"
-            landmarkName = "profile"
-            landmarkType = "24">
+            startingLineNumber = "34"
+            endingLineNumber = "34"
+            landmarkName = "ProfileHeaderCell"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -448,150 +368,6 @@
             startingLineNumber = "109"
             endingLineNumber = "109"
             landmarkName = "loadImageUsingCacheWithUrlString(urlString:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ALC/DataHandler.swift"
-            timestampString = "521052366.974564"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "287"
-            endingLineNumber = "287"
-            landmarkName = "loginALCUser(email:password:inviteCode:completionHandler:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ALC/DataHandler.swift"
-            timestampString = "521052387.942244"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "142"
-            endingLineNumber = "142"
-            landmarkName = "isLoggedIn(completionHandler:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ALC/CustomTabBar.swift"
-            timestampString = "521052411.087299"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "48"
-            endingLineNumber = "48"
-            landmarkName = "checkIfUserIsLoggedIn()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "ALC.CustomTabBar.checkIfUserIsLoggedIn () -&gt; ()"
-                  moduleName = "ALC"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/CustomTabBar.swift"
-                  timestampString = "521052548.593579"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "48"
-                  endingLineNumber = "48"
-                  offsetFromSymbolStart = "29">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "ALC.CustomTabBar.(checkIfUserIsLoggedIn () -&gt; ()).(closure #1)"
-                  moduleName = "ALC"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/CustomTabBar.swift"
-                  timestampString = "521052548.595498"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "49"
-                  endingLineNumber = "49"
-                  offsetFromSymbolStart = "23">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ALC/CustomTabBar.swift"
-            timestampString = "521052429.798724"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "50"
-            endingLineNumber = "50"
-            landmarkName = "checkIfUserIsLoggedIn()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "ALC.CustomTabBar.(checkIfUserIsLoggedIn () -&gt; ()).(closure #1)"
-                  moduleName = "ALC"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/CustomTabBar.swift"
-                  timestampString = "521052548.600055"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "50"
-                  endingLineNumber = "50"
-                  offsetFromSymbolStart = "41">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "ALC.CustomTabBar.(checkIfUserIsLoggedIn () -&gt; ()).(closure #1).(closure #1)"
-                  moduleName = "ALC"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/CustomTabBar.swift"
-                  timestampString = "521052548.602059"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "51"
-                  endingLineNumber = "51"
-                  offsetFromSymbolStart = "15">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ALC/DataHandler.swift"
-            timestampString = "521052442.235498"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "135"
-            endingLineNumber = "135"
-            landmarkName = "isLoggedIn(completionHandler:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
