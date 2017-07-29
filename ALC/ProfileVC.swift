@@ -81,7 +81,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: profileHeaderCellId, for: indexPath) as! ProfileHeaderCell
         
-            header.profile = Variables.CurrentUserProfile
+            header.user = Variables.CurrentUserProfile
         
         header.delegate = self
         
@@ -174,6 +174,8 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         let ref = Database.database().reference().child("agencies").child(Variables.Agency).child("posts").child(uid)
         ref.queryOrdered(byChild: "timestamp").observe(.childAdded, with: { (snapshot) in
             guard let dictionary = snapshot.value as? [String: AnyObject] else {return}
+            
+            
             let post = Post(dictionary: dictionary)
             self.posts.append(post)
             DispatchQueue.main.async {

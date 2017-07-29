@@ -53,7 +53,7 @@ struct Post {
     var userWhoLike: [String: Any]?
     var IHaveLiked: Bool
     var postUserName: String
-    
+
     init(dictionary: [String: Any]) {
         self.caption = dictionary["caption"] as? String ?? ""
         self.imageUrl = dictionary["imageUrl"] as? String ?? ""
