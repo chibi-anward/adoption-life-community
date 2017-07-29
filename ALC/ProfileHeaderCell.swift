@@ -25,15 +25,6 @@ class ProfileHeaderCell: BaseCollectionCell {
             profileImageView.loadImageUsingCacheWithUrlString(urlString: profileImageUrl)
         }
     }
-    /*
-     var user: User? {
-     didSet {
-     print(2)
-     guard let profileImageUrl = user?.profileImageUrl else {return}
-     profileImageView.loadImageUsingCacheWithUrlString(urlString: profileImageUrl)
-     }
-     }
-     */
     
     //Dummy
     let isCurrentUser = true

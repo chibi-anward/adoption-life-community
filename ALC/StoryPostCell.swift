@@ -53,4 +53,8 @@ class StoryPostCell: BaseCollectionCell {
         
     }
     
+    func viewStoryPostCell() {
+        
+    }
+    
 }
