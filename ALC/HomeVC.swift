@@ -92,9 +92,12 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         if ( Variables.Agency != "" ) {
             
             let ref = Database.database().reference().child("agencies").child(Variables.Agency).child("posts")
-            ref.queryOrdered(byChild: "timestamp").observe(.childAdded, with: { (snapshot) in
+            ref.observe(.childAdded, with: { (snapshot) in
+               //queryOrdered(byChild: "timestamp")
+            //    ref.queryOrdered(byChild: "timestamp").observe(.value, with: { (snapshot) in
                 
                 guard let dictionaries = snapshot.value as? [String: Any] else { return }
+                
                
                 dictionaries.forEach({ (key, value) in
                     
@@ -103,6 +106,8 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
                     Variables.Posts.append(post)
                 })
                 
+                
+                Variables.Posts.sort(by: { $0.timestamp?.compare($1.timestamp!) == .orderedDescending})
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
                     print("REALOAD DATA HomeFeedCV : 139")

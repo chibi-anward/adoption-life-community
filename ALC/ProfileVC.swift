@@ -172,6 +172,9 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
             
             let post = Post(dictionary: dictionary)
             self.posts.append(post)
+            
+            self.posts.sort(by: { $0.timestamp?.compare($1.timestamp!) == .orderedDescending})
+            
             DispatchQueue.main.async {
                 print("fetchOrderedPosts")
                 self.collectionView.reloadData()
