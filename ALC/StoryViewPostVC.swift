@@ -1,14 +1,15 @@
 //
-//  StoryCreateCell.swift
+//  StoryViewPostVC.swift
 //  ALC
 //
-//  Created by Chibi Anward on 2017-07-06.
+//  Created by Chibi Anward on 2017-07-29.
 //  Copyright © 2017 chibi.anward. All rights reserved.
 //
 
 import UIKit
 
-class StoryCreatePost: ViewController {
+class StoryViewPostVC: UIViewController {
+    
     
     let backNavButton: UIButton = {
         let button = UIButton(type: .system)
@@ -27,7 +28,7 @@ class StoryCreatePost: ViewController {
         
         
     }
-
+    
     fileprivate func setupViews() {
         
         view.addSubview(backNavButton)

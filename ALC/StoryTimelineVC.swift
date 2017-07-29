@@ -87,7 +87,7 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     
     let addNewStoryPostButton: UIButton = {
         let btn = UIButton(type: .system)
-        btn.setImage(#imageLiteral(resourceName: "addStoryPostButton").withRenderingMode(.alwaysOriginal), for: .normal)
+        btn.setImage(#imageLiteral(resourceName: "saveDraftStoryPostBtn").withRenderingMode(.alwaysOriginal), for: .normal)
         return btn
     }()
     
@@ -158,9 +158,14 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if indexPath.row == 0 {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! StoryPostCell
-        //cell.viewStoryPostCell()
+            cell.setupContentCreateNewPost()
+        return cell
+        }
         
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! StoryPostCell
+        cell.setupContents()
         return cell
     }
     
@@ -169,6 +174,9 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if indexPath.row == 0 {
+        return CGSize(width: collectionView.frame.width, height: 90)
+        }
         return CGSize(width: collectionView.frame.width, height: 110)
     }
     
@@ -182,8 +190,8 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("\(indexPath.row)")
-        let storyCreatePost = StoryCreatePost()
-        self.present(storyCreatePost, animated: true, completion: nil)
+        let viewStory = StoryViewPostVC()
+        self.present(viewStory, animated: true, completion: nil)
     }
     
 }
