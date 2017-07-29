@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 
 protocol HomePostCellDelegate {
-    func didLike()
+    func didLike(for cell: HomePostCell)
 }
 
 //MARK:
@@ -165,51 +165,8 @@ class HomePostCell: BaseCollectionCell {
     
     //MARK:
     func likePost() {
-        print( " in cell " )
-        delegate?.didLike()
-        
-//        let row = sender.tag
-//        
-//        let post = Variables.Posts[row]
-//
-//        let selectedPost = post.postID //
-//        let postUID = post.postUID //
-//
-//        let ref = Database.database().reference()
-//        
-//        let keyToPost = ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).childByAutoId().key
-//        
-//        //get values of the post
-//        ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).observeSingleEvent(of: .value, with: { (snapshot) in
-//   
-//            let updateLikes: [String : Any] = ["userWhoLike/\(keyToPost)": Variables.CurrentUser?.uid ?? ""]
-//            
-//            ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).updateChildValues(updateLikes, withCompletionBlock: { (error, reference) in
-//                if error == nil {
-//                    ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).observeSingleEvent(of: .value, with: { (snap) in
-//                        if let properties = snap.value as? [String: AnyObject] {
-//                            //check how many people who's in "userWhoLike"
-//                            if let likes = properties["userWhoLike"] as? [String: AnyObject] {
-//                                let count = likes.count
-//                                let update = ["likes": count,
-//                                              "IHaveLiked": true] as [String : Any]
-//                                ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).updateChildValues(update)
-//                                Variables.Posts[row].likes = count
-//                                Variables.Posts[row].IHaveLiked = true
-//                                Variables.Posts[row].userWhoLike?[keyToPost] = Variables.CurrentUser?.uid
-//                            }
-//                        }
-//                    }, withCancel: nil)
-//                }
-//            })
-//        }, withCancel: nil)
-//        
-//        ref.removeAllObservers()
+        delegate?.didLike(for: self)
     }
-    
-//    func didLike(for cell: HomePostCell) {
-//        print( "Likes from cell")
-//    }
     
 //    @objc func unlikePost(sender: UIButton!) {
 //        let row = sender.tag
