@@ -12,6 +12,8 @@ import FirebaseDatabase
 class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, HomePostCellDelegate {
     
     
+    var refresher = UIRefreshControl()
+    
     func didLike(for cell: HomePostCell) {
         
         guard let indexPath = collectionView.indexPath(for: cell) else {return}
@@ -140,11 +142,20 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         return cv
     }()
     
+    //MARK:
+    func refresh() {
+        fetchPosts()
+        refresher.endRefreshing()
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         //fetchPosts()
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        refresher.addTarget(self, action: #selector(refresh), for: UIControlEvents.valueChanged)
+        collectionView.addSubview(refresher)
         
         fetchPosts()
         navigationItem.title = "Home"
