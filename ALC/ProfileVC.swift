@@ -35,11 +35,11 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     
     let editIcon: UIButton = {
         let btn = UIButton()
-        let likeImage = UIImage (named: "like_icon_default")
+        let likeImage = UIImage (named: "CreatePost_Tab")
         btn.setImage(likeImage, for: .normal)
         btn.isUserInteractionEnabled = true
         btn.isEnabled = true
-        btn.addTarget(self, action: #selector(editCTA), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(handleProfileImage), for: .touchUpInside)
         return btn
     }()
     
@@ -115,6 +115,9 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
             print("Can't fetch profile information", err)
         }
         */
+        
+        header.profileImageView.loadImageUsingCacheWithUrlString(urlString: (Variables.CurrentUserProfile?.ProfileImageUrl)!)
+        
         return header
     }
     
@@ -209,8 +212,71 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         }, withCancel: nil)
     }
     
-    func editCTA() {
-        print("editCTA")
+    //MARK: ProfileImage
+    func handleProfileImage() {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.delegate = self
+        imagePickerController.allowsEditing = true
+        present(imagePickerController, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
+            //editIcon.setImage(editedImage.withRenderingMode(.alwaysOriginal), for: .normal)
+            
+            
+            //guard let image = editedImage else { return }
+            
+            guard let uploadData = UIImageJPEGRepresentation(editedImage, 0.1) else { return }
+            
+            let filename = NSUUID().uuidString
+            Storage.storage().reference().child("profile_images").child(filename).putData(uploadData, metadata: nil, completion: { (metadata, err) in
+                
+                if let err = err {
+                    print ("Failed to upload profile image", err)
+                    return
+                }
+                guard let profileImageUrl = metadata?.downloadURL()?.absoluteString else { return }
+                
+                print("Successfully uploaded profile image", profileImageUrl)
+                
+                //CREATE USER
+                guard let uid = Variables.CurrentUser?.uid else { return }
+                let dictionaryValues = ["ProfileImageUrl": profileImageUrl,
+                                        "uid": uid,
+                                        "agency": Variables.CurrentUserProfile?.Agency,
+                                        "invitecode": Variables.CurrentUserProfile?.InviteCode,
+                                        "username": Variables.CurrentUserProfile?.UserName]
+                let values = [uid: dictionaryValues]
+                
+                //Firebase call for ADOPTEE
+                Database.database().reference().child("agencies").child(Variables.Agency).child("users").updateChildValues(values, withCompletionBlock: { (err, ref) in
+                    if let err = err {
+                        print("Failed to save user into DB", err)
+                        return
+                    }
+                    print("Successfully saved user into DB!")
+                    
+                    //let homeViewController = CustomTabBar()
+                    //self.present(homeViewController, animated: true, completion: nil)
+                    Variables.CurrentUserProfile?.ProfileImageUrl = profileImageUrl
+                    
+                    DispatchQueue.main.async {
+                        self.collectionView.reloadData()
+                        
+                    }
+  
+                    
+                })
+            })
+        }
+//        else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
+//            //editIcon.setImage(originalImage.withRenderingMode(.alwaysOriginal), for: .normal)
+//            
+//        }
+        dismiss(animated: true, completion: nil)
+
+        
     }
 
 }
