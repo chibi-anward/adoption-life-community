@@ -282,11 +282,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ALC/HomeVC.swift"
-            timestampString = "523053963.23275"
+            timestampString = "523054297.328325"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "60"
-            endingLineNumber = "60"
+            startingLineNumber = "55"
+            endingLineNumber = "55"
             landmarkName = "didLike(for:)"
             landmarkType = "7">
          </BreakpointContent>

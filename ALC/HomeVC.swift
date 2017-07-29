@@ -13,9 +13,6 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     
     
     func didLike(for cell: HomePostCell) {
-        print( "in controller" )
-        
-        
         
         guard let indexPath = collectionView.indexPath(for: cell) else {return}
         let post = Variables.Posts[indexPath.item]
@@ -72,12 +69,7 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     
     
     func didUnLike(for cell: HomePostCell) {
-        print( "in controller" )
-        
-        
-        
         guard let indexPath = collectionView.indexPath(for: cell) else {return}
-        //if (Variables.Posts[indexPath.item].userWhoLike == nil) { return }
         
         guard let uid = Variables.CurrentUser?.uid else { return }
         let post = Variables.Posts[indexPath.item]
@@ -149,12 +141,12 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     }()
     
     override func viewDidAppear(_ animated: Bool) {
-        fetchPosts()
+        //fetchPosts()
     }
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //fetchPosts()
+        fetchPosts()
         navigationItem.title = "Home"
         view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 1)
         
