@@ -7,9 +7,17 @@
 //
 
 import UIKit
+import Firebase
+
+protocol HomePostCellDelegate {
+    func didLike()
+}
 
 //MARK:
 class HomePostCell: BaseCollectionCell {
+    
+    var delegate: HomePostCellDelegate?
+    
     
     var post: Post? {
         didSet {
@@ -106,11 +114,12 @@ class HomePostCell: BaseCollectionCell {
         return label
     }()
     
-    let likeIcon: UIButton = {
+    lazy var likeIcon: UIButton = {
         let btn = UIButton()
         let likeImage = UIImage (named: "like_icon_default")
         btn.setImage(likeImage, for: .normal)
         btn.isUserInteractionEnabled = true
+        btn.addTarget(self, action: #selector(likePost), for: .touchUpInside)
         btn.isEnabled = true
         return btn
     }()
@@ -153,6 +162,100 @@ class HomePostCell: BaseCollectionCell {
         setupPost()
         self.isUserInteractionEnabled = true
     }
+    
+    //MARK:
+    func likePost() {
+        print( " in cell " )
+        delegate?.didLike()
+        
+//        let row = sender.tag
+//        
+//        let post = Variables.Posts[row]
+//
+//        let selectedPost = post.postID //
+//        let postUID = post.postUID //
+//
+//        let ref = Database.database().reference()
+//        
+//        let keyToPost = ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).childByAutoId().key
+//        
+//        //get values of the post
+//        ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).observeSingleEvent(of: .value, with: { (snapshot) in
+//   
+//            let updateLikes: [String : Any] = ["userWhoLike/\(keyToPost)": Variables.CurrentUser?.uid ?? ""]
+//            
+//            ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).updateChildValues(updateLikes, withCompletionBlock: { (error, reference) in
+//                if error == nil {
+//                    ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).observeSingleEvent(of: .value, with: { (snap) in
+//                        if let properties = snap.value as? [String: AnyObject] {
+//                            //check how many people who's in "userWhoLike"
+//                            if let likes = properties["userWhoLike"] as? [String: AnyObject] {
+//                                let count = likes.count
+//                                let update = ["likes": count,
+//                                              "IHaveLiked": true] as [String : Any]
+//                                ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).updateChildValues(update)
+//                                Variables.Posts[row].likes = count
+//                                Variables.Posts[row].IHaveLiked = true
+//                                Variables.Posts[row].userWhoLike?[keyToPost] = Variables.CurrentUser?.uid
+//                            }
+//                        }
+//                    }, withCancel: nil)
+//                }
+//            })
+//        }, withCancel: nil)
+//        
+//        ref.removeAllObservers()
+    }
+    
+//    func didLike(for cell: HomePostCell) {
+//        print( "Likes from cell")
+//    }
+    
+//    @objc func unlikePost(sender: UIButton!) {
+//        let row = sender.tag
+//        //let post = posts[row]
+//        
+//        guard let uid = Variables.CurrentUser?.uid else { return }
+//        
+//        let selectedPost = Variables.Posts[row].postID //
+//        let postUID = Variables.Posts[row].postUID //
+//        
+//        let ref = Database.database().reference()
+//        
+//        var keyToPost: String?
+//        
+//        for people in Variables.Posts[row].userWhoLike! {
+//            if people.value as? String == uid {
+//                keyToPost = people.key
+//                Variables.Posts[row].userWhoLike?[keyToPost!] = nil
+//                ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).child("userWhoLike").child(keyToPost!).removeValue()
+//            }
+//        }
+//        
+//        //get values of the post
+//        ref.child("agency").child("css").child("posts").child(postUID).child(selectedPost).observeSingleEvent(of: .value, with: { (snapshot) in
+//            if let post = snapshot.value as? [String: AnyObject] {
+//                
+//                ref.child("agency").child("css").child("posts").child(postUID).child(selectedPost).observeSingleEvent(of: .value, with: { (snap) in
+//                    if let properties = snap.value as? [String: AnyObject] {
+//                        if let likes = properties["userWhoLike"] as? [String: AnyObject] {
+//                            let count = likes.count
+//                            let update = ["likes": count,
+//                                          "IHaveLiked": false] as [String : Any]
+//                            ref.child("agency").child("css").child("posts").child(postUID).child(selectedPost).updateChildValues(update)
+//                            self.posts[row].likes = count
+//                            self.posts[row].IHaveLiked = false
+//                            self.collectionView?.reloadData()
+//                        }
+//                    }
+//                    
+//                })
+//            }
+//        }, withCancel: nil)
+//        ref.removeAllObservers()
+//    }
+    
+    
     
     func setupPost() {
         let postHeaderContainerView = UIView()

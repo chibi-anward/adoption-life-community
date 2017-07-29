@@ -9,7 +9,14 @@
 import UIKit
 import FirebaseDatabase
 
-class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
+class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, HomePostCellDelegate {
+
+    func didLike() {
+        print( "in controller" )
+    }
+
+
+
     
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         collectionView.collectionViewLayout.invalidateLayout()
@@ -55,8 +62,11 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! HomePostCell
         
-        cell.post = Variables.Posts[indexPath.item]
+        cell.delegate = self
         
+        cell.post = Variables.Posts[indexPath.item]
+        cell.likeIcon.tag = indexPath.item
+
         //Check for POST USER ID
         let postUID = Variables.Posts[indexPath.item].postUID
         Database.database().reference().child("agencies").child(Variables.Agency).child("users").child(postUID).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -69,6 +79,7 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
             if let profileImageUrl = dictionary["ProfileImageUrl"] as? String {
                 cell.profileImageThumb.loadImageUsingCacheWithUrlString(urlString: profileImageUrl)
             }
+            
             
         }) { (err) in
             print("Can't fetch profile information", err)
