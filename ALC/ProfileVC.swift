@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, ProfileHeaderCellDelegate {
+class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, ProfileHeaderCellDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     let profilePostThumnailCellID = "profilePostThumnailCellID"
     let profileHeaderCellId = "profileHeaderCellId"
@@ -167,6 +167,8 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
             return CGSize(width: UIScreen.main.bounds.width, height: 200)
         }
     }
+    
+
     
     fileprivate func fetchOrderedPosts() {
         guard let uid = Auth.auth().currentUser?.uid else { return }

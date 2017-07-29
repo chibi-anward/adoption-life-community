@@ -106,7 +106,6 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
                     Variables.Posts.append(post)
                 })
                 
-                
                 Variables.Posts.sort(by: { $0.timestamp?.compare($1.timestamp!) == .orderedDescending})
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()

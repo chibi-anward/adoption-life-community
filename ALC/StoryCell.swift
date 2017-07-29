@@ -16,8 +16,6 @@ class StoryCell: BaseCollectionCell {
     // Cover image
     // Story title
     // Number of posts (inside the story) - eg. Story posts 6
-    // Likes
-    // Comments
     // ============================
     
     let storyTitle: UILabel = {

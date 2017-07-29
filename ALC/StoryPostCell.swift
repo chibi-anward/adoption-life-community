@@ -12,7 +12,8 @@ class StoryPostCell: BaseCollectionCell {
     
     // ============================
     // This is: Each story post (the look)
-    // 
+    // Likes
+    // Comments
     // ============================
     
     let timeLineImage: UIImageView = {
