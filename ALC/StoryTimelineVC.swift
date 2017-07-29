@@ -105,7 +105,7 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print("\nStoryTimeLineVC\n")
         view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 1)
         
         registerCell()
@@ -159,6 +159,8 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! StoryPostCell
+        //cell.viewStoryPostCell()
+        
         return cell
     }
     

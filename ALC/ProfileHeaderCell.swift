@@ -25,7 +25,6 @@ class ProfileHeaderCell: BaseCollectionCell {
             profileImageView.loadImageUsingCacheWithUrlString(urlString: profileImageUrl)
         }
     }
-
     
     //Dummy
     let isCurrentUser = true

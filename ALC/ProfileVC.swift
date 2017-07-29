@@ -35,7 +35,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print("\nProfileVC\n")
         navigationItem.title = "Profile"
         
         addCollectionView()
@@ -58,7 +58,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     }
     
     func goToYourStory() {
-        print("Go To Your Stories")
+        print("\nGoToYourStory\n")
         let storyTimeline = StoryTimelineVC()
         self.present(storyTimeline, animated: true, completion: nil)
     }
@@ -122,11 +122,12 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         cell.post = posts[indexPath.item]
         return cell
         } else {
+            // CREATE STORY BUTTON
             if indexPath.row == 0 {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: storyCreateCellID, for: indexPath) as! StoryCreateCell
                 return cell
             }
-            
+            //STORIES
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: storyCellID, for: indexPath) as! StoryCell
             //cell.stories = stories[indexPath.item]
             return cell
@@ -135,10 +136,15 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("\(indexPath.row)")
-        if indexPath.row == 0 {
-            print("Create new story")
+        if isGridView {
+            print("Grid")
         } else {
-            goToYourStory()
+            print("List")
+            if indexPath.row == 0 {
+                print("Create new story")
+            } else {
+                goToYourStory()
+            }
         }
     }
     
@@ -158,7 +164,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
             if indexPath.row == 0 {
                 return CGSize(width: UIScreen.main.bounds.width, height: 60)
             }
-            return CGSize(width: UIScreen.main.bounds.width, height: 220)
+            return CGSize(width: UIScreen.main.bounds.width, height: 200)
         }
     }
     
@@ -181,5 +187,5 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
             }
         }, withCancel: nil)
     }
-    
+
 }
