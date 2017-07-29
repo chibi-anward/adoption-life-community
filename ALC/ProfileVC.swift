@@ -33,6 +33,16 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         return cv
     }()
     
+    let editIcon: UIButton = {
+        let btn = UIButton()
+        let likeImage = UIImage (named: "like_icon_default")
+        btn.setImage(likeImage, for: .normal)
+        btn.isUserInteractionEnabled = true
+        btn.isEnabled = true
+        btn.addTarget(self, action: #selector(editCTA), for: .touchUpInside)
+        return btn
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("\nProfileVC\n")
@@ -85,6 +95,10 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         
         header.delegate = self
         
+        //
+        view.addSubview(editIcon)
+        editIcon.anchor(top: nil, left: nil, bottom: header.profileImageView.bottomAnchor, right: header.profileImageView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 8, paddingRight: 8, width: 25, height: 25)
+        
         /*
         let uid = Auth.auth().currentUser?.uid
         Database.database().reference().child("agency").child("css").child("members").child(uid!).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -127,8 +141,10 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: storyCreateCellID, for: indexPath) as! StoryCreateCell
                 return cell
             }
-            //STORIES
+            //STORIES (IF CURRENT USER, DONT SHOW PROFILE IMAGE & USERNAME)!
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: storyCellID, for: indexPath) as! StoryCell
+            cell.profileImageThumb.isHidden = true
+            cell.usernameLabel.isHidden = true
             //cell.stories = stories[indexPath.item]
             return cell
         }
@@ -158,13 +174,16 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if isGridView {
+            //Post Cell
         let width = (view.frame.width - 3) / 3
         return CGSize(width: width, height: width)
         } else {
+            //Create New Story
             if indexPath.row == 0 {
                 return CGSize(width: UIScreen.main.bounds.width, height: 60)
             }
-            return CGSize(width: UIScreen.main.bounds.width, height: 200)
+            // Story Cell
+            return CGSize(width: UIScreen.main.bounds.width, height: 280)
         }
     }
     
@@ -188,6 +207,10 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
                 self.collectionView.reloadData()
             }
         }, withCancel: nil)
+    }
+    
+    func editCTA() {
+        print("editCTA")
     }
 
 }
