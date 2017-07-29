@@ -133,6 +133,7 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
         
         profileImageThumb.anchor(top: titleText.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
         profileImageThumb.centerXAnchor.constraint(equalTo: titleText.centerXAnchor).isActive = true
+         profileImageThumb.loadImageUsingCacheWithUrlString(urlString: (Variables.CurrentUserProfile?.ProfileImageUrl)!)
         
         startStoryImageThumb.anchor(top: profileImageThumb.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 24, height: 24)
         
