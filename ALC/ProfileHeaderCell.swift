@@ -44,6 +44,8 @@ class ProfileHeaderCell: BaseCollectionCell {
         return imageView
     }()
     
+
+    
     var usernameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -122,6 +124,9 @@ class ProfileHeaderCell: BaseCollectionCell {
         }
     }
     */
+    
+
+
     
     func handleChangeToListView() {
         storyButton.tintColor = UIColor.rgb(red: 100, green: 100, blue: 100, alpha: 1)

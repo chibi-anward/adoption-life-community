@@ -72,7 +72,7 @@ class StartTutorialVC: UIViewController, UITextFieldDelegate, UIImagePickerContr
         print("login ALC")
         let dataHandler = DataHandler()
         // TODO: Chibi - Add fields for replace dummy data
-        dataHandler.loginALCUser(email: Dummy.Email, password: Dummy.Password, inviteCode: Dummy.InviteCode) { object in
+        dataHandler.loginALCUser(email: DummyB.Email, password: DummyB.Password, inviteCode: Dummy.InviteCode) { object in
             if ( object == true ) {
                 // TODO: Chibi - Open viewcontroller after succefully created new user.
                 self.dismiss(animated: true, completion: nil)
