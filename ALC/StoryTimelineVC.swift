@@ -12,7 +12,7 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     
     // ============================
     // Story title
-    // Story creator profile image
+    // Story Cover image
     // Filter by date
     // 
     // ============================
@@ -27,6 +27,7 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
         cv.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 1)
         cv.delegate = self
         cv.dataSource = self
+        cv.showsVerticalScrollIndicator = false
         return cv
     }()
     
@@ -47,11 +48,11 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
         return textView
     }()
     
-    let profileImageThumb: CustomImageView = {
+    let coverImageThumb: CustomImageView = {
         let imageThumb = CustomImageView()
         imageThumb.backgroundColor = UIColor.lightGray
-        imageThumb.layer.cornerRadius = 20
-        imageThumb.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        imageThumb.layer.cornerRadius = 16
+        imageThumb.frame = CGRect(x: 0, y: 0, width: 150, height: 50)
         imageThumb.layer.masksToBounds = false
         imageThumb.clipsToBounds = true
         imageThumb.contentMode = .scaleAspectFill
@@ -85,15 +86,15 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
         return imageThumb
     }()
     
-    let addNewStoryPostButton: UIButton = {
+    let saveDraftStoryButton: UIButton = {
         let btn = UIButton(type: .system)
-        btn.setImage(#imageLiteral(resourceName: "saveDraftStoryPostBtn").withRenderingMode(.alwaysOriginal), for: .normal)
+        btn.setImage(#imageLiteral(resourceName: "saveDraftStoryBtn").withRenderingMode(.alwaysOriginal), for: .normal)
         return btn
     }()
     
-    let saveNewStoryPostButton: UIButton = {
+    let publishStoryPostButton: UIButton = {
         let btn = UIButton(type: .system)
-        btn.setImage(#imageLiteral(resourceName: "saveStoryButton").withRenderingMode(.alwaysOriginal), for: .normal)
+        btn.setImage(#imageLiteral(resourceName: "publishStoryButton").withRenderingMode(.alwaysOriginal), for: .normal)
         return btn
     }()
     
@@ -171,27 +172,38 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     
     func setupContents() {
         view.addSubview(titleText)
-        view.addSubview(profileImageThumb)
+        view.addSubview(coverImageThumb)
         view.addSubview(startStoryImageThumb)
         view.addSubview(endStoryImageThumb)
-        view.addSubview(addNewStoryPostButton)
-        view.addSubview(saveNewStoryPostButton)
+        
+        
         view.addSubview(collectionView)
         view.addSubview(timeline)
         
+        view.addSubview(saveDraftStoryButton)
+        view.addSubview(publishStoryPostButton)
+        
         titleText.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 30, paddingLeft: 65, paddingBottom: 0, paddingRight: 30, width: 0, height: 30)
         
-        profileImageThumb.anchor(top: titleText.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
-        profileImageThumb.centerXAnchor.constraint(equalTo: titleText.centerXAnchor).isActive = true
-         profileImageThumb.loadImageUsingCacheWithUrlString(urlString: (Variables.CurrentUserProfile?.ProfileImageUrl)!)
+        coverImageThumb.anchor(top: titleText.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 150, height: 50)
+        coverImageThumb.centerXAnchor.constraint(equalTo: titleText.centerXAnchor).isActive = true
+        coverImageThumb.image = UIImage(named: "storyCoverImageDefault") //Story Cover image!
+         //coverImageThumb.loadImageUsingCacheWithUrlString(urlString: (Variables.CurrentUserProfile?.ProfileImageUrl)!)
         
-        startStoryImageThumb.anchor(top: profileImageThumb.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 24, height: 24)
+        startStoryImageThumb.anchor(top: coverImageThumb.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 24, height: 24)
         
-        saveNewStoryPostButton.anchor(top: nil, left: startStoryImageThumb.rightAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 18, paddingBottom: 20, paddingRight: 20, width: 0, height: 48)
+        let stackview = UIStackView(arrangedSubviews: [saveDraftStoryButton, publishStoryPostButton])
         
-        addNewStoryPostButton.anchor(top: nil, left: startStoryImageThumb.rightAnchor, bottom: saveNewStoryPostButton.topAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 18, paddingBottom: 10, paddingRight: 20, width: 0, height: 48)
+        stackview.translatesAutoresizingMaskIntoConstraints = false
+        stackview.distribution = .fillEqually
+        stackview.axis = .horizontal
+        stackview.spacing = 5
         
-        collectionView.anchor(top: startStoryImageThumb.bottomAnchor, left: view.leftAnchor, bottom: addNewStoryPostButton.topAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 16, paddingBottom: 20, paddingRight: 16, width: 0, height: 0)
+        view.addSubview(stackview)
+        
+        stackview.anchor(top: nil, left: startStoryImageThumb.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 22, paddingBottom: 20, paddingRight: 6, width: 0, height: 0)
+        
+        collectionView.anchor(top: startStoryImageThumb.bottomAnchor, left: view.leftAnchor, bottom: stackview.topAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 16, paddingBottom: 32, paddingRight: 6, width: 0, height: 0)
         
         endStoryImageThumb.anchor(top: collectionView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 24, height: 24)
         
@@ -211,12 +223,12 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.row == 0 {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! StoryPostCell
-            cell.setupContentCreateNewPost()
+            cell.setupContentCreateNewStoryPost()
         return cell
         }
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! StoryPostCell
-        cell.setupContents()
+        cell.setupStoryPostCell()
         return cell
     }
     
@@ -228,7 +240,7 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
         if indexPath.row == 0 {
         return CGSize(width: collectionView.frame.width, height: 48)
         } else {
-        return CGSize(width: collectionView.frame.width, height: 110)
+        return CGSize(width: collectionView.frame.width, height: 160)
         }
     }
     

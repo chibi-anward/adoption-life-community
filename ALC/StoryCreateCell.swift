@@ -17,6 +17,7 @@ class StoryCreateCell: BaseCollectionCell {
     let addNewStoryPostButton: UIButton = {
         let btn = UIButton(type: .system)
         btn.setImage(#imageLiteral(resourceName: "createNewStoryBtn").withRenderingMode(.alwaysOriginal), for: .normal)
+        btn.isEnabled = false
         return btn
     }()
     

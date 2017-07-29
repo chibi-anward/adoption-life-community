@@ -61,8 +61,14 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         
         fetchOrderedPosts()
         
+        
         blurEffect()
+        self.view.insertSubview(createStoryPopup.popupView, at: 17)
+        createStoryPopup.backNavButton.addTarget(self, action: #selector(close), for: .touchUpInside)
+        createStoryPopup.coverImageTextOverlay.addTarget(self, action: #selector(handleProfileImage), for: .touchUpInside) //SAVE COVER IMAGE TO STORY
+        
     }
+
 
     func didChangeToGridView() {
         print("didChangeToGridView")
@@ -86,6 +92,25 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         blurEffectView.frame = view.bounds
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.insertSubview(blurEffectView, at: 15)
+    }
+    
+    func createStoryPopupAction() {
+        UIView.animate(withDuration: 1.8, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
+            self.createStoryPopup.addMode()
+            self.blurEffectView.isHidden = false
+            self.createStoryPopup.popupView.isHidden = false
+            self.createStoryPopup.popupView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+        }) { (finished: Bool) in
+        }
+    }
+    
+    func close() {
+        UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 0.1, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
+            self.blurEffectView.isHidden = true
+            self.createStoryPopup.popupView.isHidden = true
+            self.createStoryPopup.popupView.transform = CGAffineTransform(scaleX: 1, y: 1)
+        }) { (finished: Bool) in
+        }
     }
     
     func addCollectionView() {
@@ -159,12 +184,26 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: storyCreateCellID, for: indexPath) as! StoryCreateCell
                 return cell
             }
+            //DRAFT VERSION
+            if indexPath.row == 1 {
             //STORIES (IF CURRENT USER, DONT SHOW PROFILE IMAGE & USERNAME)!
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: storyCellID, for: indexPath) as! StoryCell
             cell.profileImageThumb.isHidden = true
             cell.usernameLabel.isHidden = true
-            //cell.stories = stories[indexPath.item]
+                cell.descriptionLabel.text = "Title..."
+                cell.timeLabel.text = "Not published"
+            cell.postImageView.image = UIImage(named: "storyCoverImageDefault")?.withRenderingMode(.alwaysOriginal)
             return cell
+            }
+            else {
+                //PUBLISHED VERSION
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: storyCellID, for: indexPath) as! StoryCell
+                cell.profileImageThumb.isHidden = true
+                cell.usernameLabel.isHidden = true
+                //cell.stories = stories[indexPath.item]
+                return cell
+            }
+            
         }
     }
     
@@ -175,7 +214,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         } else {
             print("List")
             if indexPath.row == 0 {
-                print("Create new story")
+                createStoryPopupAction()
             } else {
                 goToYourStory()
             }
