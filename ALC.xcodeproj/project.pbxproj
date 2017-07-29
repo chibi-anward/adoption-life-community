@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		4B1260871F07DDE900A17CC3 /* DataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1260861F07DDE900A17CC3 /* DataHandler.swift */; };
-		4B1382171F2CBF0F00D9A8CC /* StoryViewPostVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1382161F2CBF0F00D9A8CC /* StoryViewPostVC.swift */; };
 		4BF6739A1F07DD3B008D53D5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4BF673991F07DD3B008D53D5 /* GoogleService-Info.plist */; };
 		783116DB1F07D79D00397E4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783116DA1F07D79D00397E4E /* AppDelegate.swift */; };
 		783116DD1F07D79D00397E4E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783116DC1F07D79D00397E4E /* ViewController.swift */; };
@@ -41,6 +40,7 @@
 		78E49AFF1F0DDCFF00E86B31 /* CreatePostVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E49AFE1F0DDCFF00E86B31 /* CreatePostVC.swift */; };
 		78ECA1111F0E39FC00A6932B /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78ECA1101F0E39FC00A6932B /* ProfileVC.swift */; };
 		78F733941F2CB7A200367C2B /* StoryViewPostVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F733931F2CB7A200367C2B /* StoryViewPostVC.swift */; };
+		78F733961F2CDE3C00367C2B /* StoryCreateStoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F733951F2CDE3C00367C2B /* StoryCreateStoryVC.swift */; };
 		BA7F2389F2C16FF95A6F69BF /* Pods_ALC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 095A71C0D2FC9C02CAAA5C0C /* Pods_ALC.framework */; };
 /* End PBXBuildFile section */
 
@@ -48,7 +48,6 @@
 		095A71C0D2FC9C02CAAA5C0C /* Pods_ALC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ALC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C0D0A485ABEFE095BCF0FEE /* Pods-ALC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ALC.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ALC/Pods-ALC.debug.xcconfig"; sourceTree = "<group>"; };
 		4B1260861F07DDE900A17CC3 /* DataHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataHandler.swift; sourceTree = "<group>"; };
-		4B1382161F2CBF0F00D9A8CC /* StoryViewPostVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryViewPostVC.swift; sourceTree = "<group>"; };
 		4BF673991F07DD3B008D53D5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5236153B6084B6BE2DCCA814 /* Pods-ALC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ALC.release.xcconfig"; path = "Pods/Target Support Files/Pods-ALC/Pods-ALC.release.xcconfig"; sourceTree = "<group>"; };
 		783116D71F07D79D00397E4E /* ALC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ALC.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -84,6 +83,7 @@
 		78E49AFE1F0DDCFF00E86B31 /* CreatePostVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePostVC.swift; sourceTree = "<group>"; };
 		78ECA1101F0E39FC00A6932B /* ProfileVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
 		78F733931F2CB7A200367C2B /* StoryViewPostVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryViewPostVC.swift; sourceTree = "<group>"; };
+		78F733951F2CDE3C00367C2B /* StoryCreateStoryVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryCreateStoryVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -184,10 +184,10 @@
 		7875EBC51F0F93890096720A /* Story */ = {
 			isa = PBXGroup;
 			children = (
-				4B1382161F2CBF0F00D9A8CC /* StoryViewPostVC.swift */,
 				7875EBC31F0F8BAA0096720A /* StoryTimelineVC.swift */,
-				78F733931F2CB7A200367C2B /* StoryViewPostVC.swift */,
+				78F733951F2CDE3C00367C2B /* StoryCreateStoryVC.swift */,
 				7875EBBB1F0E87E00096720A /* StoryCreatePost.swift */,
+				78F733931F2CB7A200367C2B /* StoryViewPostVC.swift */,
 			);
 			name = Story;
 			sourceTree = "<group>";
@@ -382,6 +382,7 @@
 				783116E31F07D79D00397E4E /* ALC.xcdatamodeld in Sources */,
 				7875EBAD1F0E3C480096720A /* ProfilePostThumbnailCell.swift in Sources */,
 				78E49AE71F0BC6C100E86B31 /* StartTutorialVC.swift in Sources */,
+				78F733961F2CDE3C00367C2B /* StoryCreateStoryVC.swift in Sources */,
 				78E49AF81F0DD6E900E86B31 /* HomePostCell.swift in Sources */,
 				78E49AEA1F0BC70800E86B31 /* BaseCollectionCell.swift in Sources */,
 				7875EBCB1F1570A80096720A /* MessageVC.swift in Sources */,

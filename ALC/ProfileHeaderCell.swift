@@ -43,9 +43,7 @@ class ProfileHeaderCell: BaseCollectionCell {
         imageView.layer.borderColor = UIColor.rgb(red: 220, green: 220, blue: 220, alpha: 1).cgColor
         return imageView
     }()
-    
 
-    
     var usernameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
