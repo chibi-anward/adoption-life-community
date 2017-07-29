@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4B1260871F07DDE900A17CC3 /* DataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1260861F07DDE900A17CC3 /* DataHandler.swift */; };
+		4B1382171F2CBF0F00D9A8CC /* StoryViewPostVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1382161F2CBF0F00D9A8CC /* StoryViewPostVC.swift */; };
 		4BF6739A1F07DD3B008D53D5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4BF673991F07DD3B008D53D5 /* GoogleService-Info.plist */; };
 		783116DB1F07D79D00397E4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783116DA1F07D79D00397E4E /* AppDelegate.swift */; };
 		783116DD1F07D79D00397E4E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783116DC1F07D79D00397E4E /* ViewController.swift */; };
@@ -46,6 +47,7 @@
 		095A71C0D2FC9C02CAAA5C0C /* Pods_ALC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ALC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C0D0A485ABEFE095BCF0FEE /* Pods-ALC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ALC.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ALC/Pods-ALC.debug.xcconfig"; sourceTree = "<group>"; };
 		4B1260861F07DDE900A17CC3 /* DataHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataHandler.swift; sourceTree = "<group>"; };
+		4B1382161F2CBF0F00D9A8CC /* StoryViewPostVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryViewPostVC.swift; sourceTree = "<group>"; };
 		4BF673991F07DD3B008D53D5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5236153B6084B6BE2DCCA814 /* Pods-ALC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ALC.release.xcconfig"; path = "Pods/Target Support Files/Pods-ALC/Pods-ALC.release.xcconfig"; sourceTree = "<group>"; };
 		783116D71F07D79D00397E4E /* ALC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ALC.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -180,6 +182,7 @@
 		7875EBC51F0F93890096720A /* Story */ = {
 			isa = PBXGroup;
 			children = (
+				4B1382161F2CBF0F00D9A8CC /* StoryViewPostVC.swift */,
 				7875EBC31F0F8BAA0096720A /* StoryTimelineVC.swift */,
 				7875EBBB1F0E87E00096720A /* StoryCreatePost.swift */,
 			);
@@ -361,6 +364,7 @@
 				7875EBBA1F0E85CF0096720A /* StoryCell.swift in Sources */,
 				7838C3271F0BC49400AAAA87 /* Extensions.swift in Sources */,
 				7875EBB11F0E3ED10096720A /* ProfileHeaderCell.swift in Sources */,
+				4B1382171F2CBF0F00D9A8CC /* StoryViewPostVC.swift in Sources */,
 				7875EBAF1F0E3C560096720A /* ProfilePostCell.swift in Sources */,
 				78E49AEC1F0BC74D00E86B31 /* BaseTableCell.swift in Sources */,
 				7875EBB31F0E4FE00096720A /* CreateTabVC.swift in Sources */,
