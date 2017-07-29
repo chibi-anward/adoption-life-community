@@ -35,7 +35,7 @@ class MessageVC: UIViewController, UITextFieldDelegate {
     
     let inputTxtField: UITextField = {
         let txtField = UITextField()
-        txtField.placeholder = "Enter comment here..."
+        txtField.placeholder = "Enter comment here... "
         txtField.layer.cornerRadius = 8
         txtField.font = UIFont.systemFont(ofSize: 13)
         txtField.textColor = UIColor(red: 143.0/255.0, green: 143.0/255.0, blue: 143.0/255.0, alpha: 1.0)
