@@ -16,6 +16,13 @@ class StoryPostCell: BaseCollectionCell {
     // Comments
     // ============================
     
+    //CREATE NEW POST
+    let addNewStoryPostButton: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.setImage(#imageLiteral(resourceName: "addStoryPostButton").withRenderingMode(.alwaysOriginal), for: .normal)
+        return btn
+    }()
+    
     let timeLineImage: UIImageView = {
         let image = UIImageView()
         image.image = UIImage(named: "timeLineImage")
@@ -38,20 +45,25 @@ class StoryPostCell: BaseCollectionCell {
         super.setupViews()
         backgroundColor = UIColor.clear
         
-        setupContents()
-    }
-    
-    func setupContents() {
         addSubview(timeline)
         addSubview(timeLineImage)
         addSubview(storyPostCardImage)
         
         timeLineImage.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 13, paddingBottom: 0, paddingRight: 0, width: 22, height: 22)
         timeLineImage.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        
+    }
+    
+    func setupContents() {
+
         storyPostCardImage.anchor(top: nil, left: timeLineImage.rightAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 7, paddingBottom: 0, paddingRight: 14, width: 0, height: 100)
         storyPostCardImage.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         
+    }
+    
+    func setupContentCreateNewPost() {
+        addSubview(addNewStoryPostButton)
+        addNewStoryPostButton.anchor(top: nil, left: timeLineImage.rightAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 7, paddingBottom: 0, paddingRight: 14, width: 0, height: 100)
+        storyPostCardImage.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
     }
     
     func viewStoryPostCell() {
