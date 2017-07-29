@@ -22,7 +22,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     
     var posts = [Post]()
     
-    var stories = ["create", "A", "B"]
+    var stories = ["create", "A", "B", "C"]
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -42,6 +42,14 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         btn.addTarget(self, action: #selector(handleProfileImage), for: .touchUpInside)
         return btn
     }()
+    let blurEffectView: UIVisualEffectView = {
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+        let view = UIVisualEffectView(effect: blurEffect)
+        view.isHidden = true
+        return view
+    }()
+    
+    var createStoryPopup = StoryCreateStoryVC()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,6 +61,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         
         fetchOrderedPosts()
         
+        blurEffect()
     }
 
     func didChangeToGridView() {
@@ -71,6 +80,12 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         print("\nGoToYourStory\n")
         let storyTimeline = StoryTimelineVC()
         self.present(storyTimeline, animated: true, completion: nil)
+    }
+    
+    func blurEffect() {
+        blurEffectView.frame = view.bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.insertSubview(blurEffectView, at: 15)
     }
     
     func addCollectionView() {
@@ -96,7 +111,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         header.delegate = self
         
         //
-        view.addSubview(editIcon)
+        header.addSubview(editIcon)
         editIcon.anchor(top: nil, left: nil, bottom: header.profileImageView.bottomAnchor, right: header.profileImageView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 8, paddingRight: 8, width: 25, height: 25)
         
         /*

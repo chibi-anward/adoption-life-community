@@ -17,7 +17,7 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     // 
     // ============================
     
-    let storyPosts = ["post 1", "post 2","post 3", "post 4"]
+    let storyPosts = ["Add Story Post","story post 1", "story post 2","story post 3", "story post 4"]
     
     let cellID = "cellID"
     
@@ -103,6 +103,15 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
         return line
     }()
     
+    let blurEffectView: UIVisualEffectView = {
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+        let view = UIVisualEffectView(effect: blurEffect)
+        view.isHidden = true
+        return view
+    }()
+    
+    var storyPostPopup = StoryViewPostVC()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("\nStoryTimeLineVC\n")
@@ -112,6 +121,47 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
         
         setupBackNavigation()
         setupContents()
+        
+        blurEffect()
+        self.view.insertSubview(storyPostPopup.popupView, at: 17)
+        storyPostPopup.backNavButton.addTarget(self, action: #selector(close), for: .touchUpInside)
+    }
+    
+    func blurEffect() {
+        blurEffectView.frame = view.bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.insertSubview(blurEffectView, at: 15)
+    }
+    
+    func createStoryPostPopupAction() {
+        UIView.animate(withDuration: 1.8, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
+            self.storyPostPopup.editMode()
+            self.blurEffectView.isHidden = false
+            self.storyPostPopup.popupView.isHidden = false
+            self.storyPostPopup.popupView.transform = CGAffineTransform(scaleX: 0.9, y: 0.89)
+        }) { (finished: Bool) in
+            
+        }
+    }
+    
+    func viewStoryPostPopupAction() {
+        UIView.animate(withDuration: 1.8, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
+            self.storyPostPopup.viewMode()
+            self.blurEffectView.isHidden = false
+            self.storyPostPopup.popupView.isHidden = false
+            self.storyPostPopup.popupView.transform = CGAffineTransform(scaleX: 0.9, y: 0.89)
+        }) { (finished: Bool) in
+            
+        }
+    }
+    
+    func close() {
+        UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 0.1, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
+            self.blurEffectView.isHidden = true
+            self.storyPostPopup.popupView.isHidden = true
+            self.storyPostPopup.popupView.transform = CGAffineTransform(scaleX: 1, y: 1)
+        }) { (finished: Bool) in
+        }
     }
     
     func setupBackNavigation() {
@@ -176,9 +226,10 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if indexPath.row == 0 {
-        return CGSize(width: collectionView.frame.width, height: 90)
-        }
+        return CGSize(width: collectionView.frame.width, height: 48)
+        } else {
         return CGSize(width: collectionView.frame.width, height: 110)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -191,8 +242,12 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("\(indexPath.row)")
-        let viewStory = StoryViewPostVC()
-        self.present(viewStory, animated: true, completion: nil)
+        if indexPath.row == 0 {
+           createStoryPostPopupAction()
+        }
+        else {
+            viewStoryPostPopupAction()
+        }
     }
     
 }

@@ -13,23 +13,23 @@ class StoryCreateCell: BaseCollectionCell {
     // ============================
     // This is: Create a new Story BUTTON (the look)
     // ============================
-    /*
-    let buttonImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "createNewStory")
-        return imageView
-    }()
-    */
+
     let addNewStoryPostButton: UIButton = {
         let btn = UIButton(type: .system)
         btn.setImage(#imageLiteral(resourceName: "createNewStoryBtn").withRenderingMode(.alwaysOriginal), for: .normal)
         return btn
     }()
     
+    let addNewStoryPost: UIImageView = {
+        let image = UIImageView()
+        image.image = UIImage(named: "createNewStoryBtn")
+        return image
+    }()
+    
     override func setupViews() {
         super.setupViews()
         
-        backgroundColor = UIColor.rgb(red: 54, green: 206, blue: 239, alpha: 1)
+        //backgroundColor = UIColor.rgb(red: 54, green: 206, blue: 239, alpha: 1)
         
         setupContents()
         
@@ -38,13 +38,8 @@ class StoryCreateCell: BaseCollectionCell {
     func setupContents() {
         
         addSubview(addNewStoryPostButton)
-        addNewStoryPostButton.anchor(top: nil, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 48)
-        addNewStoryPostButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        addNewStoryPostButton.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
  
-        /*
-        addSubview(buttonImageView)
-        buttonImageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 60)
- */
     }
     
 }
