@@ -49,6 +49,22 @@ class HomePostCell: BaseCollectionCell {
         }
     }
     
+    let postContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.white
+        view.layer.cornerRadius = 8
+        return view
+    }()
+    
+    let postBottomContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.white
+        view.layer.cornerRadius = 8
+        return view
+    }()
+    
+   
+    
     let profileImageThumb: CustomImageView = {
         let imageThumb = CustomImageView()
         imageThumb.backgroundColor = UIColor.lightGray
@@ -99,7 +115,7 @@ class HomePostCell: BaseCollectionCell {
     
     let commentIcon: UIButton = {
         let btn = UIButton()
-        let commentImage = UIImage (named: "comment_icon_default")
+        let commentImage = UIImage (named: "comment_unselected")
         btn.setImage(commentImage, for: .normal)
         btn.isUserInteractionEnabled = true
         btn.isEnabled = true
@@ -116,7 +132,7 @@ class HomePostCell: BaseCollectionCell {
     
     lazy var likeIcon: UIButton = {
         let btn = UIButton()
-        let likeImage = UIImage (named: "like_icon_default")
+        let likeImage = UIImage (named: "like_unselected")
         btn.setImage(likeImage, for: .normal)
         btn.isUserInteractionEnabled = true
         btn.addTarget(self, action: #selector(likePost), for: .touchUpInside)
@@ -135,9 +151,9 @@ class HomePostCell: BaseCollectionCell {
     let timeLabel: UILabel = {
         let label = UILabel()
         label.text = "HH:MM:SS"
-        label.font = UIFont.systemFont(ofSize: 11)
-        label.textAlignment = .left
-        label.textColor = UIColor.lightGray
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textAlignment = .right
+        label.textColor = UIColor.rgb(red: 237, green: 237, blue: 237, alpha: 1)
         return label
     }()
     
@@ -147,9 +163,16 @@ class HomePostCell: BaseCollectionCell {
         return view
     }()
     
+    let descriptionContainerView: UIView = {
+        let containerView = UIView()
+        containerView.backgroundColor = UIColor.rgb(red: 39, green: 47, blue: 62, alpha: 0.8)
+        return containerView
+    }()
+    
+    
     let descriptionLabel: UILabel = {
         let label = UILabel()
-        label.text = "descriptionLabel ..."
+        label.text = "Maecenas et nibh tristique sem eleifend laoreet. Sed finibus lorem vitae metus convallis, eu faucibus quam tristique."
         label.font = UIFont.systemFont(ofSize: 12)
         label.textAlignment = .left
         label.textColor = UIColor.white
@@ -158,8 +181,9 @@ class HomePostCell: BaseCollectionCell {
     
     override func setupViews() {
         super.setupViews()
-        backgroundColor = UIColor.rgb(red: 200, green: 200, blue: 200, alpha: 1)
-        setupPost()
+        backgroundColor = UIColor.clear
+        //setupPost()
+        setupPostView()
         self.isUserInteractionEnabled = true
     }
     
@@ -168,94 +192,63 @@ class HomePostCell: BaseCollectionCell {
         delegate?.didLike(for: self)
     }
     
-//    @objc func unlikePost(sender: UIButton!) {
-//        let row = sender.tag
-//        //let post = posts[row]
-//        
-//        guard let uid = Variables.CurrentUser?.uid else { return }
-//        
-//        let selectedPost = Variables.Posts[row].postID //
-//        let postUID = Variables.Posts[row].postUID //
-//        
-//        let ref = Database.database().reference()
-//        
-//        var keyToPost: String?
-//        
-//        for people in Variables.Posts[row].userWhoLike! {
-//            if people.value as? String == uid {
-//                keyToPost = people.key
-//                Variables.Posts[row].userWhoLike?[keyToPost!] = nil
-//                ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).child("userWhoLike").child(keyToPost!).removeValue()
-//            }
-//        }
-//        
-//        //get values of the post
-//        ref.child("agency").child("css").child("posts").child(postUID).child(selectedPost).observeSingleEvent(of: .value, with: { (snapshot) in
-//            if let post = snapshot.value as? [String: AnyObject] {
-//                
-//                ref.child("agency").child("css").child("posts").child(postUID).child(selectedPost).observeSingleEvent(of: .value, with: { (snap) in
-//                    if let properties = snap.value as? [String: AnyObject] {
-//                        if let likes = properties["userWhoLike"] as? [String: AnyObject] {
-//                            let count = likes.count
-//                            let update = ["likes": count,
-//                                          "IHaveLiked": false] as [String : Any]
-//                            ref.child("agency").child("css").child("posts").child(postUID).child(selectedPost).updateChildValues(update)
-//                            self.posts[row].likes = count
-//                            self.posts[row].IHaveLiked = false
-//                            self.collectionView?.reloadData()
-//                        }
-//                    }
-//                    
-//                })
-//            }
-//        }, withCancel: nil)
-//        ref.removeAllObservers()
-//    }
-    
+    func setupPostView() {
+        
+        //postContainerView.roundCorners(corners: [.topLeft, .topRight], radius: 8)
+        //postBottomContainerView.roundCorners(corners: [.bottomLeft, .bottomRight], radius: 8)
+        
+        insertSubview(postContainerView, at: 1)
+        insertSubview(profileImageThumb, at: 7)
+        addSubview(usernameLabel)
+        addSubview(locationPinImageView)
+        addSubview(locationLabel)
+        insertSubview(postImageView, at: 2)
+        insertSubview(descriptionContainerView, at: 4)
+        addSubview(descriptionLabel)
+        addSubview(timeLabel)
+        addSubview(likeIcon)
+        addSubview(commentIcon)
+        
+        
+        postContainerView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        profileImageThumb.anchor(top: postContainerView.topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 6, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 60, height: 60)
+        
+        postImageView.anchor(top: profileImageThumb.centerYAnchor, left: leftAnchor, bottom: postContainerView.bottomAnchor, right: rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 50, paddingRight: 0, width: 0, height: 0)
+        
+        usernameLabel.anchor(top: nil, left: profileImageThumb.rightAnchor, bottom: postImageView.topAnchor, right: nil, paddingTop: 2, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 180, height: 30)
+        
+        locationPinImageView.anchor(top: nil, left: nil, bottom: nil, right: postContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 10, height: 13)
+        locationPinImageView.centerYAnchor.constraint(equalTo: usernameLabel.centerYAnchor).isActive = true
+        
+        locationLabel.anchor(top: nil, left: nil, bottom: usernameLabel.bottomAnchor, right: locationPinImageView.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 180, height: 35)
+        
+        descriptionContainerView.anchor(top: nil, left: leftAnchor, bottom: postImageView.bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 4, paddingRight: 0, width: 0, height: 40)
+        
+        descriptionLabel.anchor(top: nil, left: descriptionContainerView.leftAnchor, bottom: nil, right: descriptionContainerView.rightAnchor, paddingTop: 0, paddingLeft: 16, paddingBottom: 0, paddingRight: 100, width: 0, height: 20)
+        descriptionLabel.centerYAnchor.constraint(equalTo: descriptionContainerView.centerYAnchor).isActive = true
+        
+        timeLabel.anchor(top: nil, left: descriptionLabel.rightAnchor, bottom: nil, right: descriptionContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 0, height: 20)
+        timeLabel.centerYAnchor.constraint(equalTo: descriptionContainerView.centerYAnchor).isActive = true
+        
+        likeIcon.anchor(top: postImageView.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 34, height: 34)
+        
+         commentIcon.anchor(top: postImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 34, height: 34)
+        
+    }
     
     
     func setupPost() {
-        let postHeaderContainerView = UIView()
-        addSubview(postHeaderContainerView)
-        postHeaderContainerView.backgroundColor = UIColor.white
-        
-        postHeaderContainerView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 40)
-        
-        insertSubview(profileImageThumb, at: 6)
-        
-        profileImageThumb.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 4, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 60, height: 60)
-        
-        postHeaderContainerView.addSubview(usernameLabel)
-        usernameLabel.anchor(top: nil, left: postHeaderContainerView.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 82, paddingBottom: 0, paddingRight: 0, width: 180, height: postHeaderContainerView.frame.height)
-        usernameLabel.centerYAnchor.constraint(equalTo: postHeaderContainerView.centerYAnchor).isActive = true
-        
-        postHeaderContainerView.addSubview(locationPinImageView)
-        locationPinImageView.anchor(top: nil, left: nil, bottom: nil, right: postHeaderContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 10, height: 13)
-        locationPinImageView.centerYAnchor.constraint(equalTo: postHeaderContainerView.centerYAnchor).isActive = true
-        
-        postHeaderContainerView.addSubview(locationLabel)
-        locationLabel.anchor(top: nil, left: nil, bottom: nil, right: locationPinImageView.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 180, height: 50)
-        locationLabel.centerYAnchor.constraint(equalTo: postHeaderContainerView.centerYAnchor).isActive = true
-        
-        let postBottomContainerView = UIView()
+        addSubview(postContainerView)
         addSubview(postBottomContainerView)
-        postBottomContainerView.backgroundColor = UIColor.white
         
-        postBottomContainerView.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 68)
         
-        insertSubview(postImageView, at: 1)
-        postImageView.anchor(top: postHeaderContainerView.bottomAnchor, left: leftAnchor, bottom: postBottomContainerView.topAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        
-        postBottomContainerView.addSubview(timeLabel)
-        timeLabel.anchor(top: nil, left: postBottomContainerView.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 80, height: 15)
-        timeLabel.centerYAnchor.constraint(equalTo: postBottomContainerView.centerYAnchor).isActive = true
-        
-        postBottomContainerView.addSubview(likeLabel)
+                postBottomContainerView.addSubview(likeLabel)
         likeLabel.anchor(top: nil, left: nil, bottom: nil, right: postBottomContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 6, width: 40, height: 15)
         likeLabel.centerYAnchor.constraint(equalTo: postBottomContainerView.centerYAnchor).isActive = true
         
         insertSubview(likeIcon, at: 11)
-        likeIcon.anchor(top: nil, left: nil, bottom: nil, right: likeLabel.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 4, width: 16, height: 15)
+        likeIcon.anchor(top: nil, left: nil, bottom: nil, right: likeLabel.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 4, width: 38, height: 38)
         likeIcon.centerYAnchor.constraint(equalTo: postBottomContainerView.centerYAnchor).isActive = true
         
         postBottomContainerView.addSubview(commentLabel)
@@ -264,20 +257,9 @@ class HomePostCell: BaseCollectionCell {
         
         
         insertSubview(commentIcon, at: 10)
-        commentIcon.anchor(top: nil, left: nil, bottom: nil, right: commentLabel.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 4, width: 18, height: 15)
+        commentIcon.anchor(top: nil, left: nil, bottom: nil, right: commentLabel.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 4, width: 38, height: 38)
         commentIcon.centerYAnchor.constraint(equalTo: postBottomContainerView.centerYAnchor).isActive = true
-        
-        addSubview(dividerLine)
-        dividerLine.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 1)
-        
-        let descriptionContainerView = UIView()
-        addSubview(descriptionContainerView)
-        descriptionContainerView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
-        descriptionContainerView.anchor(top: nil, left: leftAnchor, bottom: postBottomContainerView.topAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 40)
-        
-        descriptionContainerView.addSubview(descriptionLabel)
-        descriptionLabel.anchor(top: nil, left: descriptionContainerView.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 0, height: 20)
-        descriptionLabel.centerYAnchor.constraint(equalTo: descriptionContainerView.centerYAnchor).isActive = true
-        descriptionLabel.centerXAnchor.constraint(equalTo: descriptionContainerView.centerXAnchor).isActive = true
     }
+    
+    
 }

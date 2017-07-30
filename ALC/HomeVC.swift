@@ -14,129 +14,26 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     
     var refresher = UIRefreshControl()
     
-    func didLike(for cell: HomePostCell) {
-        
-        guard let indexPath = collectionView.indexPath(for: cell) else {return}
-        let post = Variables.Posts[indexPath.item]
-        let selectedPost = post.postID //
-        let postUID = post.postUID //
-        
-        if (Variables.Posts[indexPath.item].IHaveLiked == true) {
-            didUnLike(for: cell)
-            return
-        }
-        
-        let ref = Database.database().reference()
-        
-        let keyToPost = ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).childByAutoId().key
-        
-        //get values of the post
-        ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            let updateLikes: [String : Any] = ["userWhoLike/\(keyToPost)": Variables.CurrentUser?.uid ?? ""]
-            
-            
-            ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).updateChildValues(updateLikes, withCompletionBlock: { (error, reference) in
-                if error == nil {
-                    ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).observeSingleEvent(of: .value, with: { (snap) in
-                        if let properties = snap.value as? [String: AnyObject] {
-                            //check how many people who's in "userWhoLike"
-                            if let likes = properties["userWhoLike"] as? [String: AnyObject] {
-                                let count = likes.count
-                                let update = ["likes": count] as [String : Any]
-                                ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).updateChildValues(update, withCompletionBlock: { (error, reference) in
-
-                               
-                                ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).observeSingleEvent(of: .value, with: { (snapshot) in
-                                    var dictionary = snapshot.value as! [String: Any]
-                                    
-                                    var post = Post(dictionary: dictionary)
-                                    post.IHaveLiked = true
-                                    Variables.Posts[indexPath.item] = post
-                                    
-                                    self.collectionView.reloadItems(at: [indexPath])
-                                
-                                })
-                                })
-                            }
-                        }
-                    }, withCancel: nil)
-                }
-            })
-        }, withCancel: nil)
-        
-        ref.removeAllObservers()
-        
-    }
-    
-    
-    func didUnLike(for cell: HomePostCell) {
-        guard let indexPath = collectionView.indexPath(for: cell) else {return}
-        
-        guard let uid = Variables.CurrentUser?.uid else { return }
-        let post = Variables.Posts[indexPath.item]
-        let selectedPost = post.postID //
-        let postUID = post.postUID //
-        
-        let ref = Database.database().reference()
-        
-        var keyToPost: String?
-        
-        for people in Variables.Posts[indexPath.item].userWhoLike! {
-            if people.value as? String == uid {
-                keyToPost = people.key
-                Variables.Posts[indexPath.item].userWhoLike?.removeValue(forKey: keyToPost!) // ?[keyToPost!] = nil
-                if ( Variables.Posts[indexPath.item].userWhoLike?.count == 0 ) {
-                    Variables.Posts[indexPath.item].userWhoLike = nil
-                }
-                ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).child("userWhoLike").child(keyToPost!).removeValue()
-            }
-        }
-        
-       
-        //get values of the post
-        ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).observeSingleEvent(of: .value, with: { (snap) in
-                if let properties = snap.value as? [String: AnyObject] {
-                    //check how many people who's in "userWhoLike"
-                    
-                    if let likes = properties["userWhoLike"] as? [String: AnyObject] {
-                        let count = likes.count
-                        let update = ["likes": count] as [String : Any]
-                        ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).updateChildValues(update)
-                        Variables.Posts[indexPath.item].likes = count
-                        Variables.Posts[indexPath.item].IHaveLiked = false
-                        self.collectionView.reloadItems(at: [indexPath])
-                    } else {
-                        let count = 0
-                        let update = ["likes": count] as [String : Any]
-                        ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).updateChildValues(update)
-                        Variables.Posts[indexPath.item].likes = count
-                        Variables.Posts[indexPath.item].IHaveLiked = false
-                        self.collectionView.reloadItems(at: [indexPath])
-                    }
-                }
-            }, withCancel: nil)
-        })
-        ref.removeAllObservers()
-    }
-    
-    
-    
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         collectionView.collectionViewLayout.invalidateLayout()
     }
     
     let cellID = "cellID"
     
-    //var posts = ["1", "2", "3"] // Temp Post array
-    //var posts = [Post]() // Post array
+    
+    let bgImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "bg_gradient")?.withRenderingMode(.alwaysOriginal)
+        imageView.contentMode = .scaleAspectFill
+        return imageView
+    }()
+    
+    
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.backgroundColor = UIColor.rgb(red: 246, green: 246, blue: 246, alpha: 1)
+        cv.backgroundColor = UIColor.clear
         cv.delegate = self
         cv.dataSource = self
         return cv
@@ -154,6 +51,9 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.addSubview(bgImage)
+        bgImage.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
         refresher.addTarget(self, action: #selector(refresh), for: UIControlEvents.valueChanged)
         collectionView.addSubview(refresher)
         
@@ -167,6 +67,8 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         collectionView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         setupNavigationButtons()
+        
+        
     }
     
     //CollectionView
@@ -176,6 +78,13 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! HomePostCell
+        /*
+        cell.contentView.layer.cornerRadius = 8
+        cell.contentView.layer.masksToBounds = true
+        */
+        
+        //cell.postContainerView.roundCorners(corners: [.topLeft, .topRight], radius: 8)
+        //cell.postBottomContainerView.roundCorners(corners: [.bottomLeft, .bottomRight], radius: 8)
         
         cell.delegate = self
         
@@ -183,11 +92,11 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         cell.likeIcon.tag = indexPath.item
         
         if Variables.Posts[indexPath.item].IHaveLiked == true {
-            cell.likeIcon.setImage(UIImage(named: "like_icon_active"), for: .normal)
+            cell.likeIcon.setImage(UIImage(named: "like_selected"), for: .normal)
             cell.likeIcon.removeTarget(self, action: nil, for: .allEvents)
             //cell.likeIcon.addTarget(self, action: #selector(unlikePost), for: .touchUpInside)
         } else {
-            cell.likeIcon.setImage(UIImage(named: "like_icon_default"), for: .normal)
+            cell.likeIcon.setImage(UIImage(named: "like_unselected"), for: .normal)
             cell.likeIcon.removeTarget(self, action: nil, for: .allEvents)
             //cell.likeIcon.addTarget(self, action: #selector(likePost), for: .touchUpInside)
         }
@@ -218,7 +127,7 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = UIScreen.main.bounds.width
+        let width = UIScreen.main.bounds.width - 6
         return CGSize(width: width, height: width)
     }
     
@@ -265,6 +174,113 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         
     }
     
+    func didLike(for cell: HomePostCell) {
+        
+        guard let indexPath = collectionView.indexPath(for: cell) else {return}
+        let post = Variables.Posts[indexPath.item]
+        let selectedPost = post.postID //
+        let postUID = post.postUID //
+        
+        if (Variables.Posts[indexPath.item].IHaveLiked == true) {
+            didUnLike(for: cell)
+            return
+        }
+        
+        let ref = Database.database().reference()
+        
+        let keyToPost = ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).childByAutoId().key
+        
+        //get values of the post
+        ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            let updateLikes: [String : Any] = ["userWhoLike/\(keyToPost)": Variables.CurrentUser?.uid ?? ""]
+            
+            
+            ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).updateChildValues(updateLikes, withCompletionBlock: { (error, reference) in
+                if error == nil {
+                    ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).observeSingleEvent(of: .value, with: { (snap) in
+                        if let properties = snap.value as? [String: AnyObject] {
+                            //check how many people who's in "userWhoLike"
+                            if let likes = properties["userWhoLike"] as? [String: AnyObject] {
+                                let count = likes.count
+                                let update = ["likes": count] as [String : Any]
+                                ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).updateChildValues(update, withCompletionBlock: { (error, reference) in
+                                    
+                                    
+                                    ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).observeSingleEvent(of: .value, with: { (snapshot) in
+                                        var dictionary = snapshot.value as! [String: Any]
+                                        
+                                        var post = Post(dictionary: dictionary)
+                                        post.IHaveLiked = true
+                                        Variables.Posts[indexPath.item] = post
+                                        
+                                        self.collectionView.reloadItems(at: [indexPath])
+                                        
+                                    })
+                                })
+                            }
+                        }
+                    }, withCancel: nil)
+                }
+            })
+        }, withCancel: nil)
+        
+        ref.removeAllObservers()
+        
+    }
+    
+    
+    func didUnLike(for cell: HomePostCell) {
+        guard let indexPath = collectionView.indexPath(for: cell) else {return}
+        
+        guard let uid = Variables.CurrentUser?.uid else { return }
+        let post = Variables.Posts[indexPath.item]
+        let selectedPost = post.postID //
+        let postUID = post.postUID //
+        
+        let ref = Database.database().reference()
+        
+        var keyToPost: String?
+        
+        for people in Variables.Posts[indexPath.item].userWhoLike! {
+            if people.value as? String == uid {
+                keyToPost = people.key
+                Variables.Posts[indexPath.item].userWhoLike?.removeValue(forKey: keyToPost!) // ?[keyToPost!] = nil
+                if ( Variables.Posts[indexPath.item].userWhoLike?.count == 0 ) {
+                    Variables.Posts[indexPath.item].userWhoLike = nil
+                }
+                ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).child("userWhoLike").child(keyToPost!).removeValue()
+            }
+        }
+        
+        
+        //get values of the post
+        ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).observeSingleEvent(of: .value, with: { (snap) in
+                if let properties = snap.value as? [String: AnyObject] {
+                    //check how many people who's in "userWhoLike"
+                    
+                    if let likes = properties["userWhoLike"] as? [String: AnyObject] {
+                        let count = likes.count
+                        let update = ["likes": count] as [String : Any]
+                        ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).updateChildValues(update)
+                        Variables.Posts[indexPath.item].likes = count
+                        Variables.Posts[indexPath.item].IHaveLiked = false
+                        self.collectionView.reloadItems(at: [indexPath])
+                    } else {
+                        let count = 0
+                        let update = ["likes": count] as [String : Any]
+                        ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).updateChildValues(update)
+                        Variables.Posts[indexPath.item].likes = count
+                        Variables.Posts[indexPath.item].IHaveLiked = false
+                        self.collectionView.reloadItems(at: [indexPath])
+                    }
+                }
+            }, withCancel: nil)
+        })
+        ref.removeAllObservers()
+    }
     
     func setupNavigationButtons() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogOut))
