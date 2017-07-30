@@ -62,6 +62,16 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
         return imageThumb
     }()
     
+    let editIcon: UIButton = {
+        let btn = UIButton()
+        let likeImage = UIImage (named: "CreatePost_Tab")
+        btn.setImage(likeImage, for: .normal)
+        btn.isUserInteractionEnabled = true
+        btn.isEnabled = true
+        //btn.addTarget(self, action: #selector(handleProfileImage), for: .touchUpInside) // Change Cover Image
+        return btn
+    }()
+    
     let startStoryImageThumb: CustomImageView = {
         let imageThumb = CustomImageView()
         imageThumb.backgroundColor = UIColor.lightGray
@@ -175,6 +185,7 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
         view.addSubview(coverImageThumb)
         view.addSubview(startStoryImageThumb)
         view.addSubview(endStoryImageThumb)
+        view.addSubview(editIcon)
         
         
         view.addSubview(collectionView)
@@ -190,7 +201,11 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
         coverImageThumb.image = UIImage(named: "storyCoverImageDefault") //Story Cover image!
          //coverImageThumb.loadImageUsingCacheWithUrlString(urlString: (Variables.CurrentUserProfile?.ProfileImageUrl)!)
         
+        editIcon.anchor(top: nil, left: nil, bottom: coverImageThumb.bottomAnchor, right: coverImageThumb.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 8, paddingRight: 8, width: 25, height: 25)
+        
         startStoryImageThumb.anchor(top: coverImageThumb.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 24, height: 24)
+        
+        
         
         let stackview = UIStackView(arrangedSubviews: [saveDraftStoryButton, publishStoryPostButton])
         

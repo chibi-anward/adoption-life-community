@@ -45,6 +45,8 @@ class StoryCreateStoryVC: UIViewController, UIImagePickerControllerDelegate, UIN
     let storyTitle: UITextField = {
         let textField = UITextField()
         textField.backgroundColor = UIColor.rgb(red: 100, green: 100, blue: 100, alpha: 0.1)
+        textField.autocorrectionType = .no
+        textField.spellCheckingType = .no
         textField.layer.cornerRadius = 8
         textField.text = "Story title"
         textField.textAlignment = .center
