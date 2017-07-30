@@ -68,7 +68,7 @@ class StoryCell: BaseCollectionCell {
     
     let commentIcon: UIButton = {
         let btn = UIButton()
-        let commentImage = UIImage (named: "comment_icon_default")
+        let commentImage = UIImage (named: "comment_unselected")
         btn.setImage(commentImage, for: .normal)
         btn.isUserInteractionEnabled = true
         btn.isEnabled = true
@@ -86,7 +86,7 @@ class StoryCell: BaseCollectionCell {
     
     let likeIcon: UIButton = {
         let btn = UIButton()
-        let likeImage = UIImage (named: "like_icon_default")
+        let likeImage = UIImage (named: "like_unselected")
         btn.setImage(likeImage, for: .normal)
         btn.isUserInteractionEnabled = true
         btn.isEnabled = true
@@ -174,7 +174,7 @@ class StoryCell: BaseCollectionCell {
         likeLabel.centerYAnchor.constraint(equalTo: postBottomContainerView.centerYAnchor).isActive = true
         
         insertSubview(likeIcon, at: 11)
-        likeIcon.anchor(top: nil, left: nil, bottom: nil, right: likeLabel.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 4, width: 16, height: 15)
+        likeIcon.anchor(top: nil, left: nil, bottom: nil, right: likeLabel.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 4, width: 38, height: 38)
         likeIcon.centerYAnchor.constraint(equalTo: postBottomContainerView.centerYAnchor).isActive = true
         
         postBottomContainerView.addSubview(commentLabel)
@@ -183,7 +183,7 @@ class StoryCell: BaseCollectionCell {
         
         
         insertSubview(commentIcon, at: 10)
-        commentIcon.anchor(top: nil, left: nil, bottom: nil, right: commentLabel.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 4, width: 18, height: 15)
+        commentIcon.anchor(top: nil, left: nil, bottom: nil, right: commentLabel.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 4, width: 38, height: 38)
         commentIcon.centerYAnchor.constraint(equalTo: postBottomContainerView.centerYAnchor).isActive = true
         
         addSubview(dividerLine)
@@ -242,7 +242,7 @@ class StoryCell: BaseCollectionCell {
         likeLabel.centerYAnchor.constraint(equalTo: postBottomContainerView.centerYAnchor).isActive = true
         
         insertSubview(likeIcon, at: 11)
-        likeIcon.anchor(top: nil, left: nil, bottom: nil, right: likeLabel.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 4, width: 16, height: 15)
+        likeIcon.anchor(top: nil, left: nil, bottom: nil, right: likeLabel.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 4, width: 38, height: 38)
         likeIcon.centerYAnchor.constraint(equalTo: postBottomContainerView.centerYAnchor).isActive = true
         
         postBottomContainerView.addSubview(commentLabel)
@@ -251,7 +251,7 @@ class StoryCell: BaseCollectionCell {
         
         
         insertSubview(commentIcon, at: 10)
-        commentIcon.anchor(top: nil, left: nil, bottom: nil, right: commentLabel.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 4, width: 18, height: 15)
+        commentIcon.anchor(top: nil, left: nil, bottom: nil, right: commentLabel.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 4, width: 38, height: 38)
         commentIcon.centerYAnchor.constraint(equalTo: postBottomContainerView.centerYAnchor).isActive = true
         
         addSubview(dividerLine)
