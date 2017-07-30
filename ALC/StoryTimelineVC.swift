@@ -413,13 +413,7 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("\(indexPath.row)")
-        if indexPath.row == 0 {
-           createStoryPostPopupAction()
-        }
-        else {
-            viewStoryPostPopupAction()
-        }
+        viewStoryPostPopupAction()
     }
     
 }
