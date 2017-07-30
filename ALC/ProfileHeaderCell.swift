@@ -83,19 +83,19 @@ class ProfileHeaderCell: BaseCollectionCell {
     
     let dividerLine: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.rgb(red: 220, green: 220, blue: 220, alpha: 1)
+        view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 0.1)
         return view
     }()
     
     let toolTopDividerLine: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.rgb(red: 220, green: 220, blue: 220, alpha: 1)
+        view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 0.1)
         return view
     }()
     
     let toolDividerLine: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.rgb(red: 220, green: 220, blue: 220, alpha: 1)
+        view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 0.1)
         return view
     }()
     
@@ -109,6 +109,8 @@ class ProfileHeaderCell: BaseCollectionCell {
     
     override func setupViews() {
         super.setupViews()
+        
+        backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 0, alpha: 0.4)
         
         addSubview(profileImageView)
         addSubview(dividerLine)

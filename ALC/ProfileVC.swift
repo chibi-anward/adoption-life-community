@@ -22,10 +22,17 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     var posts = [Post]()
     var stories = [Story]()
     
+    let bgImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "bg_gradient")?.withRenderingMode(.alwaysOriginal)
+        imageView.contentMode = .scaleAspectFill
+        return imageView
+    }()
+    
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.backgroundColor = UIColor.rgb(red: 246, green: 246, blue: 246, alpha: 1)
+        cv.backgroundColor = UIColor.clear
         cv.delegate = self
         cv.dataSource = self
         return cv
@@ -61,8 +68,12 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("\nProfileVC\n")
+        
         navigationItem.title = "Profile"
+        
+        view.addSubview(bgImage)
+        bgImage.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
         addCollectionView()
         registerCell()
                
@@ -195,7 +206,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     
     func addCollectionView() {
         view.addSubview(collectionView)
-        collectionView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        collectionView.anchor(top: topLayoutGuide.bottomAnchor, left: view.leftAnchor, bottom: bottomLayoutGuide.topAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
     }
     
     func registerCell() {
@@ -283,7 +294,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
+        return 4
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -293,7 +304,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         return CGSize(width: width, height: width)
         } else {
             //Create New Story
-            return CGSize(width: UIScreen.main.bounds.width, height: 280)
+            return CGSize(width: UIScreen.main.bounds.width, height: 260)
         }
     }
     

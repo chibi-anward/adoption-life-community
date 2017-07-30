@@ -31,6 +31,7 @@ class CustomTabBar: UITabBarController, UITabBarControllerDelegate {
         return true
     }
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.delegate = self
@@ -38,6 +39,8 @@ class CustomTabBar: UITabBarController, UITabBarControllerDelegate {
         checkIfUserIsLoggedIn()
         setupViewControllers()
         
+        tabBar.barTintColor = UIColor.rgb(red: 39, green: 47, blue: 62, alpha: 0.8)
+        tabBar.isTranslucent = false
         
     }
     

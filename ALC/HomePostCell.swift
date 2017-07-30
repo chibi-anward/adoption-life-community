@@ -55,15 +55,7 @@ class HomePostCell: BaseCollectionCell {
         view.layer.cornerRadius = 8
         return view
     }()
-    
-    let postBottomContainerView: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor.white
-        view.layer.cornerRadius = 8
-        return view
-    }()
-    
-   
+
     
     let profileImageThumb: CustomImageView = {
         let imageThumb = CustomImageView()
@@ -237,29 +229,5 @@ class HomePostCell: BaseCollectionCell {
         
     }
     
-    
-    func setupPost() {
-        addSubview(postContainerView)
-        addSubview(postBottomContainerView)
-        
-        
-                postBottomContainerView.addSubview(likeLabel)
-        likeLabel.anchor(top: nil, left: nil, bottom: nil, right: postBottomContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 6, width: 40, height: 15)
-        likeLabel.centerYAnchor.constraint(equalTo: postBottomContainerView.centerYAnchor).isActive = true
-        
-        insertSubview(likeIcon, at: 11)
-        likeIcon.anchor(top: nil, left: nil, bottom: nil, right: likeLabel.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 4, width: 38, height: 38)
-        likeIcon.centerYAnchor.constraint(equalTo: postBottomContainerView.centerYAnchor).isActive = true
-        
-        postBottomContainerView.addSubview(commentLabel)
-        commentLabel.anchor(top: nil, left: nil, bottom: nil, right: likeIcon.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 6, width: 40, height: 15)
-        commentLabel.centerYAnchor.constraint(equalTo: postBottomContainerView.centerYAnchor).isActive = true
-        
-        
-        insertSubview(commentIcon, at: 10)
-        commentIcon.anchor(top: nil, left: nil, bottom: nil, right: commentLabel.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 4, width: 38, height: 38)
-        commentIcon.centerYAnchor.constraint(equalTo: postBottomContainerView.centerYAnchor).isActive = true
-    }
-    
-    
+       
 }
