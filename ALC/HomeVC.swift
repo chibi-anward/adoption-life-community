@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import FirebaseDatabase
+import Firebase
 
 class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, HomePostCellDelegate {
     
@@ -21,15 +21,12 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     
     let cellID = "cellID"
     
-    
     let bgImage: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "bg_gradient")?.withRenderingMode(.alwaysOriginal)
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
-    
-    
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -43,6 +40,7 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     //MARK:
     func refresh() {
         fetchPosts()
+        fetchStories()
         refresher.endRefreshing()
     }
     
@@ -59,6 +57,7 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         collectionView.addSubview(refresher)
         
         fetchPosts()
+        fetchStories()
         navigationItem.title = "Home"
         view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 1)
         
@@ -69,7 +68,9 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         
         setupNavigationButtons()
         
+ 
         
+        //Variables.Posts.append(Variables.Stories)
     }
     
     //CollectionView
@@ -134,11 +135,11 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     
     //Other Functions
     func fetchPosts() {
-        Variables.Posts.removeAll()
         if ( Variables.Agency != "" ) {
+        Variables.Posts.removeAll()
+        
             
-            let ref = Database.database().reference().child("agencies").child(Variables.Agency).child("posts")
-            ref.observe(.childAdded, with: { (snapshot) in
+            let ref = Database.database().reference().child("agencies").child(Variables.Agency).child("posts").observe(.childAdded, with: { (snapshot) in
                 //queryOrdered(byChild: "timestamp")
                 //    ref.queryOrdered(byChild: "timestamp").observe(.value, with: { (snapshot) in
                 
@@ -163,6 +164,46 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
                 })
                 
                 Variables.Posts.sort(by: { $0.timestamp?.compare($1.timestamp!) == .orderedDescending})
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                    print("REALOAD DATA HomeFeedCV : 139")
+                }
+            }) { (err) in
+                print("Failed to fetch posts:", err)
+            }
+            
+        }
+        
+    }
+    func fetchStories() {
+        if ( Variables.Agency != "" ) {
+            Variables.Stories.removeAll()
+            
+            
+            let ref = Database.database().reference().child("agencies").child(Variables.Agency).child("stories").observe(.childAdded, with: { (snapshot) in
+                
+                guard let dictionaries = snapshot.value as? [String: Any] else { return }
+                
+                
+                dictionaries.forEach({ (key, value) in
+                    
+                    guard let dictionary = value as? [String: Any] else { return }
+                    var story = Story(dictionary: dictionary)
+                    
+                    if (dictionary["posts"]) != nil {
+                        let posts = dictionary["posts"] as! NSDictionary
+                        for post in posts {
+                            let p = Post(dictionary: post.value as! [String : Any])
+                            story.posts?.append(p)
+                        }
+                    }
+
+                    
+ 
+                    Variables.Stories.append(story)
+                })
+                
+                Variables.Stories.sort(by: { $0.timestamp?.compare($1.timestamp!) == .orderedDescending})
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
                     print("REALOAD DATA HomeFeedCV : 139")

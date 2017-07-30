@@ -74,7 +74,7 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/RegisterVC.swift"
-                  timestampString = "523141800.051484"
+                  timestampString = "523146697.132378"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "316"
@@ -89,7 +89,7 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/RegisterVC.swift"
-                  timestampString = "523141800.053902"
+                  timestampString = "523146697.133928"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "317"
@@ -170,7 +170,7 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/SharePhotoController.swift"
-                  timestampString = "523141800.066615"
+                  timestampString = "523146697.148786"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "158"
@@ -185,7 +185,7 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/SharePhotoController.swift"
-                  timestampString = "523141800.068119"
+                  timestampString = "523146697.150259"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "159"
@@ -209,22 +209,6 @@
             endingLineNumber = "146"
             landmarkName = "saveToDataBaseImageUrl(imageUrl:)"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ALC/HomeVC.swift"
-            timestampString = "523054297.328325"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "55"
-            endingLineNumber = "55"
-            landmarkName = "HomeVC"
-            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -266,7 +250,7 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/StoryTimelineVC.swift"
-                  timestampString = "523141800.080519"
+                  timestampString = "523146697.159482"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "255"
@@ -281,7 +265,7 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/StoryTimelineVC.swift"
-                  timestampString = "523141800.081978"
+                  timestampString = "523146697.160948"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "255"
@@ -304,6 +288,22 @@
             startingLineNumber = "242"
             endingLineNumber = "242"
             landmarkName = "imagePickerController(_:didFinishPickingMediaWithInfo:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ALC/ProfileVC.swift"
+            timestampString = "523145588.011098"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "331"
+            endingLineNumber = "331"
+            landmarkName = "fetchOrderedStories()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
