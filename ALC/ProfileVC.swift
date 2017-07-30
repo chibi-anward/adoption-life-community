@@ -44,6 +44,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         btn.addTarget(self, action: #selector(handleProfileImage), for: .touchUpInside)
         return btn
     }()
+    
     let blurEffectView: UIVisualEffectView = {
         let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
         let view = UIVisualEffectView(effect: blurEffect)
