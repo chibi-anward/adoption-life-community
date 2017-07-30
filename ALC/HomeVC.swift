@@ -357,7 +357,7 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
                 keyToPost = people.key
                 Variables.Posts[indexPath.item].userWhoLike.removeValue(forKey: keyToPost!) // ?[keyToPost!] = nil
                 if ( Variables.Posts[indexPath.item].userWhoLike.count == 0 ) {
-                    Variables.Posts[indexPath.item].userWhoLike = [:]
+                    Variables.Posts[indexPath.item].userWhoLike = [:] 
                 }
                 ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).child("userWhoLike").child(keyToPost!).removeValue()
             }
