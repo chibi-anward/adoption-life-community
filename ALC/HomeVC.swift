@@ -7,129 +7,18 @@
 //
 
 import UIKit
-import FirebaseDatabase
+import Firebase
 
 class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, HomePostCellDelegate {
     
     
     var refresher = UIRefreshControl()
-    
-//    func didLike(for cell: HomePostCell) {
-//        
-//        guard let indexPath = collectionView.indexPath(for: cell) else {return}
-//        let post = Variables.Posts[indexPath.item]
-//        let selectedPost = post.postID //
-//        let postUID = post.postUID //
-//        
-//        if (Variables.Posts[indexPath.item].IHaveLiked == true) {
-//            didUnLike(for: cell)
-//            return
-//        }
-//        
-//        let ref = Database.database().reference()
-//        
-//        let keyToPost = ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).childByAutoId().key
-//        
-//        //get values of the post
-//        ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).observeSingleEvent(of: .value, with: { (snapshot) in
-//            
-//            let updateLikes: [String : Any] = ["userWhoLike/\(keyToPost)": Variables.CurrentUser?.uid ?? ""]
-//            
-//            
-//            ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).updateChildValues(updateLikes, withCompletionBlock: { (error, reference) in
-//                if error == nil {
-//                    ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).observeSingleEvent(of: .value, with: { (snap) in
-//                        if let properties = snap.value as? [String: AnyObject] {
-//                            //check how many people who's in "userWhoLike"
-//                            if let likes = properties["userWhoLike"] as? [String: AnyObject] {
-//                                let count = likes.count
-//                                let update = ["likes": count] as [String : Any]
-//                                ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).updateChildValues(update, withCompletionBlock: { (error, reference) in
-//
-//                               
-//                                ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).observeSingleEvent(of: .value, with: { (snapshot) in
-//                                    var dictionary = snapshot.value as! [String: Any]
-//                                    
-//                                    var post = Post(dictionary: dictionary)
-//                                    post.IHaveLiked = true
-//                                    Variables.Posts[indexPath.item] = post
-//                                    
-//                                    self.collectionView.reloadItems(at: [indexPath])
-//                                
-//                                })
-//                                })
-//                            }
-//                        }
-//                    }, withCancel: nil)
-//                }
-//            })
-//        }, withCancel: nil)
-//        
-//        ref.removeAllObservers()
-//        
-//    }
-//    
-//    
-//    func didUnLike(for cell: HomePostCell) {
-//        guard let indexPath = collectionView.indexPath(for: cell) else {return}
-//        
-//        guard let uid = Variables.CurrentUser?.uid else { return }
-//        let post = Variables.Posts[indexPath.item]
-//        let selectedPost = post.postID //
-//        let postUID = post.postUID //
-//        
-//        let ref = Database.database().reference()
-//        
-//        var keyToPost: String?
-//        
-//        for people in Variables.Posts[indexPath.item].userWhoLike {
-//            if people.value as? String == uid {
-//                keyToPost = people.key
-//                Variables.Posts[indexPath.item].userWhoLike.removeValue(forKey: keyToPost!) // ?[keyToPost!] = nil
-//                if ( Variables.Posts[indexPath.item].userWhoLike.count == 0 ) {
-//                    Variables.Posts[indexPath.item].userWhoLike = [:]
-//                }
-//                ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).child("userWhoLike").child(keyToPost!).removeValue()
-//            }
-//        }
-//        
-//       
-//        //get values of the post
-//        ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).observeSingleEvent(of: .value, with: { (snapshot) in
-//            
-//            ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).observeSingleEvent(of: .value, with: { (snap) in
-//                if let properties = snap.value as? [String: AnyObject] {
-//                    //check how many people who's in "userWhoLike"
-//                    
-//                    if let likes = properties["userWhoLike"] as? [String: AnyObject] {
-//                        let count = likes.count
-//                        let update = ["likes": count] as [String : Any]
-//                        ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).updateChildValues(update)
-//                        Variables.Posts[indexPath.item].likes = count
-//                        Variables.Posts[indexPath.item].IHaveLiked = false
-//                        self.collectionView.reloadItems(at: [indexPath])
-//                    } else {
-//                        let count = 0
-//                        let update = ["likes": count] as [String : Any]
-//                        ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).updateChildValues(update)
-//                        Variables.Posts[indexPath.item].likes = count
-//                        Variables.Posts[indexPath.item].IHaveLiked = false
-//                        self.collectionView.reloadItems(at: [indexPath])
-//                    }
-//                }
-//            }, withCancel: nil)
-//        })
-//        ref.removeAllObservers()
-//    }
-//    
-//    
-    
+
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         collectionView.collectionViewLayout.invalidateLayout()
     }
     
     let cellID = "cellID"
-    
     
     let bgImage: UIImageView = {
         let imageView = UIImageView()
@@ -137,8 +26,6 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
-    
-    
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -152,6 +39,7 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     //MARK:
     func refresh() {
         fetchPosts()
+        fetchStories()
         refresher.endRefreshing()
     }
     
@@ -168,6 +56,7 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         collectionView.addSubview(refresher)
         
         fetchPosts()
+        fetchStories()
         navigationItem.title = "Home"
         view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 1)
         
@@ -178,7 +67,9 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         
         setupNavigationButtons()
         
+ 
         
+        //Variables.Posts.append(Variables.Stories)
     }
     
     //CollectionView
@@ -243,11 +134,11 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     
     //Other Functions
     func fetchPosts() {
-        Variables.Posts.removeAll()
         if ( Variables.Agency != "" ) {
+        Variables.Posts.removeAll()
+        
             
-            let ref = Database.database().reference().child("agencies").child(Variables.Agency).child("posts")
-            ref.observe(.childAdded, with: { (snapshot) in
+            let ref = Database.database().reference().child("agencies").child(Variables.Agency).child("posts").observe(.childAdded, with: { (snapshot) in
                 //queryOrdered(byChild: "timestamp")
                 //    ref.queryOrdered(byChild: "timestamp").observe(.value, with: { (snapshot) in
                 
@@ -272,6 +163,46 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
                 })
                 
                 Variables.Posts.sort(by: { $0.timestamp?.compare($1.timestamp!) == .orderedDescending})
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                    print("REALOAD DATA HomeFeedCV : 139")
+                }
+            }) { (err) in
+                print("Failed to fetch posts:", err)
+            }
+            
+        }
+        
+    }
+    func fetchStories() {
+        if ( Variables.Agency != "" ) {
+            Variables.Stories.removeAll()
+            
+            
+            let ref = Database.database().reference().child("agencies").child(Variables.Agency).child("stories").observe(.childAdded, with: { (snapshot) in
+                
+                guard let dictionaries = snapshot.value as? [String: Any] else { return }
+                
+                
+                dictionaries.forEach({ (key, value) in
+                    
+                    guard let dictionary = value as? [String: Any] else { return }
+                    var story = Story(dictionary: dictionary)
+                    
+                    if (dictionary["posts"]) != nil {
+                        let posts = dictionary["posts"] as! NSDictionary
+                        for post in posts {
+                            let p = Post(dictionary: post.value as! [String : Any])
+                            story.posts?.append(p)
+                        }
+                    }
+
+                    
+ 
+                    Variables.Stories.append(story)
+                })
+                
+                Variables.Stories.sort(by: { $0.timestamp?.compare($1.timestamp!) == .orderedDescending})
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
                     print("REALOAD DATA HomeFeedCV : 139")
