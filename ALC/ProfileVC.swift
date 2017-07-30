@@ -19,10 +19,12 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     let storyCreateCellID = "storyCreateCellID"
     
     var isGridView = true
+    var pickerType = ""
     
     var posts = [Post]()
+    var stories = [Story]()
     
-    var stories = ["create", "A", "B", "C"]
+    //var stories = ["create", "A", "B", "C"]
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -61,16 +63,42 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         registerCell()
         
         fetchOrderedPosts()
+        fetchOrderedStories()
         
-        
+               
         blurEffect()
         self.view.insertSubview(createStoryPopup.popupView, at: 17)
         createStoryPopup.backNavButton.addTarget(self, action: #selector(close), for: .touchUpInside)
-        createStoryPopup.coverImageTextOverlay.addTarget(self, action: #selector(handleProfileImage), for: .touchUpInside) //SAVE COVER IMAGE TO STORY
+        createStoryPopup.saveNavButton.addTarget(self, action: #selector(save), for: .touchUpInside)
+        createStoryPopup.coverImageTextOverlay.addTarget(self, action: #selector(handleStoryCoverImage), for: .touchUpInside) //SAVE COVER IMAGE TO STORY
+        
+        createStoryPopup.storyTitle.delegate = self
         
     }
 
-
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        print(" return ")
+        textField.resignFirstResponder()
+        dismissKeyboard()
+        return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        print(" end editing ")
+        Variables.StoryTitle = textField.text!
+        textField.resignFirstResponder()
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.becomeFirstResponder()
+        
+        if (textField.textColor == UIColor.darkGray) {
+            textField.text = ""
+            textField.textColor = UIColor.black
+        }
+        print(" begin editing ")
+    }
+    
     func didChangeToGridView() {
         print("didChangeToGridView")
         isGridView = true
@@ -105,11 +133,56 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         }
     }
     
+   
+    
     func close() {
         UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 0.1, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
             self.blurEffectView.isHidden = true
             self.createStoryPopup.popupView.isHidden = true
             self.createStoryPopup.popupView.transform = CGAffineTransform(scaleX: 1, y: 1)
+        }) { (finished: Bool) in
+        }
+    }
+
+    func save() {
+        UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 0.1, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
+            self.blurEffectView.isHidden = true
+            self.createStoryPopup.popupView.isHidden = true
+            self.createStoryPopup.popupView.transform = CGAffineTransform(scaleX: 1, y: 1)
+            
+            // FIREBASE STORE STORY
+           
+                
+                AppDelegate.instance().showActivityIndicator()
+                
+                let storyCoverImageUrl = Variables.StoryCoverImageUrl
+                let storyTitle = Variables.StoryTitle
+                guard let uid = Auth.auth().currentUser?.uid else {return}
+                let timestamp = NSNumber(value: Date().timeIntervalSince1970)
+            
+                
+                let userPostRef = Database.database().reference().child("agencies").child(Variables.Agency).child("stories").child(uid)
+                let userPostAutoId = userPostRef.childByAutoId()
+                let key = userPostAutoId.key
+                // state: public or draft
+                let values = ["coverImageUrl": storyCoverImageUrl,
+                              "title": storyTitle,
+                              "timestamp": timestamp,
+                              "state": "public",
+                              "uid": uid] as [String : Any]
+                userPostAutoId.updateChildValues(values) { (error, reference) in
+                    if error != nil {
+                        AppDelegate.instance().dismissActivityIndicator()
+                        //self.navigationItem.rightBarButtonItem?.isEnabled = true
+                        print("Failed to save post")
+                        return
+                    }
+                    print("success")
+                    AppDelegate.instance().dismissActivityIndicator()
+                    //self.backFunction()
+                }
+            
+            
         }) { (finished: Bool) in
         }
     }
@@ -176,9 +249,9 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if isGridView {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: profilePostThumnailCellID, for: indexPath) as! ProfilePostThumbnailCell
-        cell.post = posts[indexPath.item]
-        return cell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: profilePostThumnailCellID, for: indexPath) as! ProfilePostThumbnailCell
+            cell.post = posts[indexPath.item]
+            return cell
         } else {
             // CREATE STORY BUTTON
             if indexPath.row == 0 {
@@ -186,24 +259,31 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
                 return cell
             }
             //DRAFT VERSION
-            if indexPath.row == 1 {
+            //if indexPath.row == 1 {
             //STORIES (IF CURRENT USER, DONT SHOW PROFILE IMAGE & USERNAME)!
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: storyCellID, for: indexPath) as! StoryCell
             cell.profileImageThumb.isHidden = true
             cell.usernameLabel.isHidden = true
-                cell.descriptionLabel.text = "Title..."
-                cell.timeLabel.text = "Not published"
-            cell.postImageView.image = UIImage(named: "storyCoverImageDefault")?.withRenderingMode(.alwaysOriginal)
+                cell.descriptionLabel.text = stories[indexPath.item].title
+            if let seconds = stories[indexPath.item].timestamp?.doubleValue {
+                let timestampDate = NSDate(timeIntervalSince1970: seconds)
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "hh:mm:ss a"
+                cell.timeLabel.text = dateFormatter.string(from: timestampDate as Date)
+            }
+            cell.postImageView.loadImageUsingCacheWithUrlString(urlString: stories[indexPath.item].coverImageUrl)
+            cell.typeLabel.text = "POSTS \( stories[indexPath.item].posts.count )"
+                
             return cell
-            }
-            else {
-                //PUBLISHED VERSION
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: storyCellID, for: indexPath) as! StoryCell
-                cell.profileImageThumb.isHidden = true
-                cell.usernameLabel.isHidden = true
-                //cell.stories = stories[indexPath.item]
-                return cell
-            }
+            //}
+//            else {
+//                //PUBLISHED VERSION
+//                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: storyCellID, for: indexPath) as! StoryCell
+//                cell.profileImageThumb.isHidden = true
+//                cell.usernameLabel.isHidden = true
+//                //cell.stories = stories[indexPath.item]
+//                return cell
+//            }
             
         }
     }
@@ -267,8 +347,38 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         }, withCancel: nil)
     }
     
+    fileprivate func fetchOrderedStories() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        stories.removeAll()
+        let ref = Database.database().reference().child("agencies").child(Variables.Agency).child("stories").child(uid)
+        ref.queryOrdered(byChild: "timestamp").observe(.childAdded, with: { (snapshot) in
+            guard let dictionary = snapshot.value as? [String: AnyObject] else {return}
+            
+            
+            let story = Story(dictionary: dictionary)
+            self.stories.append(story)
+            
+            self.stories.sort(by: { $0.timestamp?.compare($1.timestamp!) == .orderedDescending})
+            
+            DispatchQueue.main.async {
+                print("fetchOrderedStories")
+                self.collectionView.reloadData()
+            }
+        }, withCancel: nil)
+    }
+
+    
+    //MARK: StoryCoverImage
+    func handleStoryCoverImage() {
+        pickerType = "cover"
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.delegate = self
+        imagePickerController.allowsEditing = true
+        present(imagePickerController, animated: true, completion: nil)
+    }
     //MARK: ProfileImage
     func handleProfileImage() {
+        pickerType = "profile"
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
         imagePickerController.allowsEditing = true
@@ -276,11 +386,10 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        if (pickerType == "profile") {
+            print("profile")
+        
         if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
-            //editIcon.setImage(editedImage.withRenderingMode(.alwaysOriginal), for: .normal)
-            
-            
-            //guard let image = editedImage else { return }
             
             guard let uploadData = UIImageJPEGRepresentation(editedImage, 0.1) else { return }
             
@@ -312,8 +421,6 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
                     }
                     print("Successfully saved user into DB!")
                     
-                    //let homeViewController = CustomTabBar()
-                    //self.present(homeViewController, animated: true, completion: nil)
                     Variables.CurrentUserProfile?.ProfileImageUrl = profileImageUrl
                     
                     DispatchQueue.main.async {
@@ -325,13 +432,33 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
                 })
             })
         }
-//        else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
-//            //editIcon.setImage(originalImage.withRenderingMode(.alwaysOriginal), for: .normal)
-//            
-//        }
+        } else {
+        // Story Cover Image
+            print(" cover ")
+            if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
+                
+                guard let uploadData = UIImageJPEGRepresentation(editedImage, 0.1) else { return }
+                
+                let filename = NSUUID().uuidString
+                Storage.storage().reference().child("cover_images").child(filename).putData(uploadData, metadata: nil, completion: { (metadata, err) in
+                    
+                    if let err = err {
+                        print ("Failed to upload profile image", err)
+                        return
+                    }
+                    guard let coverImageUrl = metadata?.downloadURL()?.absoluteString else { return }
+                    
+                    Variables.StoryCoverImageUrl = coverImageUrl
+                    
+                    print("Successfully uploaded cover image", coverImageUrl)
+                    
+                    self.createStoryPopup.coverImageView.loadImageUsingCacheWithUrlString(urlString: coverImageUrl)
+                    self.createStoryPopup.coverImageTextOverlay.setTitle("", for: .normal)
+                    
+                })
+            }
+        }
         dismiss(animated: true, completion: nil)
-
-        
     }
 
 }

@@ -37,6 +37,27 @@ struct Variables {
     static var CurrentUserProfile: Profile? = nil
     static var Agency: String = ""
     static var Posts = [Post]()
+    static var Stories = [Story]()
+    static var StoryTitle : String = ""
+    static var StoryCoverImageUrl : String = ""
+}
+
+struct Story {
+    var title: String
+    var coverImageUrl: String
+    var uid: String
+    var timestamp: NSNumber?
+    var state: String
+    var posts: [Post]
+    
+    init(dictionary: [String: Any]) {
+        self.title = dictionary["title"] as? String ?? ""
+        self.coverImageUrl = dictionary["coverImageUrl"] as? String ?? ""
+        self.uid = dictionary["uid"] as? String ?? ""
+        self.state = dictionary["state"] as? String ?? ""
+        self.timestamp = dictionary["timestamp"] as? NSNumber
+        self.posts = dictionary["posts"] as? [Post] ?? []
+    }
 }
 
 struct Post {
