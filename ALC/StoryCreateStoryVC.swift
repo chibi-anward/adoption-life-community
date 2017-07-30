@@ -45,9 +45,12 @@ class StoryCreateStoryVC: UIViewController, UIImagePickerControllerDelegate, UIN
     let storyTitle: UITextField = {
         let textField = UITextField()
         textField.backgroundColor = UIColor.rgb(red: 100, green: 100, blue: 100, alpha: 0.1)
+        textField.textColor = UIColor.darkGray
         textField.layer.cornerRadius = 8
         textField.text = "Story title"
         textField.textAlignment = .center
+        textField.autocorrectionType = .no
+        textField.spellCheckingType = .no
         return textField
     }()
     
@@ -84,6 +87,7 @@ class StoryCreateStoryVC: UIViewController, UIImagePickerControllerDelegate, UIN
         super.viewDidLoad()
         print("\nSTORY CREATE STORY")
         view.backgroundColor = UIColor.rgb(red: 200, green: 255, blue: 255, alpha: 1)
+
     }
     
     func addMode() {
