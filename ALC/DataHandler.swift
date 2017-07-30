@@ -43,14 +43,16 @@ struct Variables {
 }
 
 struct Story {
+    var id : String
     var title: String
     var coverImageUrl: String
     var uid: String
     var timestamp: NSNumber?
     var state: String
-    var posts: [Post]
+    var posts: [Post]?
     
     init(dictionary: [String: Any]) {
+        self.id = dictionary["id"] as? String ?? ""
         self.title = dictionary["title"] as? String ?? ""
         self.coverImageUrl = dictionary["coverImageUrl"] as? String ?? ""
         self.uid = dictionary["uid"] as? String ?? ""
@@ -71,24 +73,43 @@ struct Post {
     var postID: String
     var postUID: String
     var location: String
-    var userWhoLike: [String: Any]?
+    var userWhoLike: [String: Any]
     var IHaveLiked: Bool
     var postUserName: String
 
     init(dictionary: [String: Any]) {
         self.caption = dictionary["caption"] as? String ?? ""
         self.imageUrl = dictionary["imageUrl"] as? String ?? ""
-        self.timestamp = dictionary["timestamp"] as? NSNumber
-        self.likes = dictionary["likes"] as? Int
-        self.comments = dictionary["comments"] as? Int
+        self.timestamp = (dictionary["timestamp"] as? NSNumber) ?? 0.0
+        self.likes = (dictionary["likes"] as? Int) ?? 0
+        self.comments = (dictionary["comments"] as? Int) ?? 0
         self.imageWidth = dictionary["imageWidth"] as? String ?? ""
         self.imageHeight = dictionary["imageHeight"] as? String ?? ""
         self.postID = dictionary["postID"] as? String ?? ""
         self.postUID = dictionary["postUID"] as? String ?? ""
         self.location = dictionary["location"] as? String ?? ""
-        self.userWhoLike = (dictionary["userWhoLike"] as? [String : Any]) ?? nil
+        self.userWhoLike = ((dictionary["userWhoLike"] as? [String : Any]) ?? [:])!
         self.IHaveLiked = dictionary["IHaveLiked"] as? Bool ?? false
         self.postUserName = dictionary["postUserName"] as? String ?? ""
+    }
+    
+    
+    var dictionaryRepresentation: [String: Any] {
+        return [
+            "caption" : caption,
+            "imageUrl" : imageUrl,
+            "timestamp" : timestamp,
+            "likes" : likes,
+            "comments" : comments,
+            "imageWidth" : imageWidth,
+            "imageHeight" : imageHeight,
+            "postID" : postID,
+            "postUID" : postUID,
+            "location" : location,
+            "userWhoLike" : userWhoLike,
+            "IHaveLiked" : IHaveLiked,
+            "postUserName" : postUserName
+        ]
     }
 }
 

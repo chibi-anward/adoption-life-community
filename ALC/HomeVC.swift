@@ -82,12 +82,12 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         
         var keyToPost: String?
         
-        for people in Variables.Posts[indexPath.item].userWhoLike! {
+        for people in Variables.Posts[indexPath.item].userWhoLike {
             if people.value as? String == uid {
                 keyToPost = people.key
-                Variables.Posts[indexPath.item].userWhoLike?.removeValue(forKey: keyToPost!) // ?[keyToPost!] = nil
-                if ( Variables.Posts[indexPath.item].userWhoLike?.count == 0 ) {
-                    Variables.Posts[indexPath.item].userWhoLike = nil
+                Variables.Posts[indexPath.item].userWhoLike.removeValue(forKey: keyToPost!) // ?[keyToPost!] = nil
+                if ( Variables.Posts[indexPath.item].userWhoLike.count == 0 ) {
+                    Variables.Posts[indexPath.item].userWhoLike = [:]
                 }
                 ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).child("userWhoLike").child(keyToPost!).removeValue()
             }
@@ -243,7 +243,7 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
                     let dataHandler = DataHandler()
                     // Check if current user has liked post
                     if (post.userWhoLike != nil) {
-                    for people in post.userWhoLike! {
+                    for people in post.userWhoLike {
                         if people.value as? String == dataHandler.getLocalData(object: "uid")  {
                            post.IHaveLiked = true
                         }

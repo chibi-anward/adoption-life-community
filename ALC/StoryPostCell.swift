@@ -43,8 +43,8 @@ class StoryPostCell: BaseCollectionCell {
         return image
     }()
     
-    let storyPostCardImage: UIImageView = {
-        let cardImage = UIImageView()
+    let storyPostCardImage: CustomImageView = {
+        let cardImage = CustomImageView()
         cardImage.image = UIImage(named: "storyPostCard_default")
         return cardImage
     }()

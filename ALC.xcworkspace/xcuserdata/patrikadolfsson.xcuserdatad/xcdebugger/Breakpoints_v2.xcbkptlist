@@ -74,12 +74,12 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/RegisterVC.swift"
-                  timestampString = "523115333.61884"
+                  timestampString = "523137008.941965"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "316"
                   endingLineNumber = "316"
-                  offsetFromSymbolStart = "3383">
+                  offsetFromSymbolStart = "2468">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -89,7 +89,7 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/RegisterVC.swift"
-                  timestampString = "523115333.620792"
+                  timestampString = "523137008.943443"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "317"
@@ -170,12 +170,12 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/SharePhotoController.swift"
-                  timestampString = "523115333.642991"
+                  timestampString = "523137008.958043"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "158"
                   endingLineNumber = "158"
-                  offsetFromSymbolStart = "3715">
+                  offsetFromSymbolStart = "2888">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -185,12 +185,12 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/SharePhotoController.swift"
-                  timestampString = "523115333.645792"
+                  timestampString = "523137008.959614"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "159"
                   endingLineNumber = "159"
-                  offsetFromSymbolStart = "23">
+                  offsetFromSymbolStart = "28">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -233,13 +233,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ALC/HomeVC.swift"
-            timestampString = "523115171.952018"
+            filePath = "ALC/StoryTimelineVC.swift"
+            timestampString = "523120841.323066"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "227"
-            endingLineNumber = "227"
-            landmarkName = "fetchPosts()"
+            startingLineNumber = "148"
+            endingLineNumber = "148"
+            landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -249,13 +249,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ALC/HomeVC.swift"
-            timestampString = "523115205.966818"
+            filePath = "ALC/ProfileVC.swift"
+            timestampString = "523135023.04024"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "230"
-            endingLineNumber = "230"
-            landmarkName = "fetchPosts()"
+            startingLineNumber = "318"
+            endingLineNumber = "318"
+            landmarkName = "collectionView(_:didSelectItemAt:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -265,13 +265,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ALC/HomeVC.swift"
-            timestampString = "523115210.705405"
+            filePath = "ALC/ProfileVC.swift"
+            timestampString = "523135192.381021"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "235"
-            endingLineNumber = "235"
-            landmarkName = "fetchPosts()"
+            startingLineNumber = "384"
+            endingLineNumber = "384"
+            landmarkName = "fetchOrderedStories()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ALC/ProfileVC.swift"
+            timestampString = "523135192.381021"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "380"
+            endingLineNumber = "380"
+            landmarkName = "fetchOrderedStories()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -281,44 +297,60 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ALC/HomeVC.swift"
-            timestampString = "523115252.97579"
+            filePath = "ALC/StoryTimelineVC.swift"
+            timestampString = "523137008.747373"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "256"
-            endingLineNumber = "256"
-            landmarkName = "fetchPosts()"
+            startingLineNumber = "301"
+            endingLineNumber = "301"
+            landmarkName = "save()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ALC/StoryTimelineVC.swift"
+            timestampString = "523137008.747373"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "239"
+            endingLineNumber = "239"
+            landmarkName = "imagePickerController(_:didFinishPickingMediaWithInfo:)"
             landmarkType = "7">
             <Locations>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "ALC.HomeVC.(fetchPosts () -&gt; ()).(closure #1)"
+                  symbolName = "ALC.StoryTimelineVC.imagePickerController (__ObjC.UIImagePickerController, didFinishPickingMediaWithInfo : Swift.Dictionary&lt;Swift.String, Any&gt;) -&gt; ()"
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/HomeVC.swift"
-                  timestampString = "523115333.679656"
+                  urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/StoryTimelineVC.swift"
+                  timestampString = "523137008.9806"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "256"
-                  endingLineNumber = "256"
-                  offsetFromSymbolStart = "869">
+                  startingLineNumber = "239"
+                  endingLineNumber = "239"
+                  offsetFromSymbolStart = "1012">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "ALC.HomeVC.(fetchPosts () -&gt; ()).(closure #1).(closure #3)"
+                  symbolName = "ALC.StoryTimelineVC.(imagePickerController (__ObjC.UIImagePickerController, didFinishPickingMediaWithInfo : Swift.Dictionary&lt;Swift.String, Any&gt;) -&gt; ()).(closure #1)"
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/HomeVC.swift"
-                  timestampString = "523115333.682441"
+                  urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/StoryTimelineVC.swift"
+                  timestampString = "523137008.982066"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "257"
-                  endingLineNumber = "257"
-                  offsetFromSymbolStart = "19">
+                  startingLineNumber = "239"
+                  endingLineNumber = "239"
+                  offsetFromSymbolStart = "2404">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -329,13 +361,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ALC/HomeVC.swift"
-            timestampString = "523115284.744861"
+            filePath = "ALC/StoryTimelineVC.swift"
+            timestampString = "523137008.747373"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "257"
-            endingLineNumber = "257"
-            landmarkName = "fetchPosts()"
+            startingLineNumber = "204"
+            endingLineNumber = "204"
+            landmarkName = "imagePickerController(_:didFinishPickingMediaWithInfo:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

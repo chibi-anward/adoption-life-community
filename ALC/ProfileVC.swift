@@ -11,7 +11,7 @@ import Firebase
 
 class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, ProfileHeaderCellDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    let profilePostThumnailCellID = "profilePostThumnailCellID"
+    let profilePostThumnailCellID = "pvarilePostThumnailCellID"
     let profileHeaderCellId = "profileHeaderCellId"
     //let homePostCellID = "homePostCellID"
     
@@ -53,6 +53,13 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     }()
     
     var createStoryPopup = StoryCreateStoryVC()
+    override func viewDidAppear(_ animated: Bool) {
+        fetchOrderedPosts()
+        fetchOrderedStories()
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,8 +69,8 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         addCollectionView()
         registerCell()
         
-        fetchOrderedPosts()
-        fetchOrderedStories()
+//        fetchOrderedPosts()
+//        fetchOrderedStories()
         
                
         blurEffect()
@@ -111,9 +118,13 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         collectionView.reloadData()
     }
     
-    func goToYourStory() {
+    func goToYourStory(indexPath: IndexPath) {
         print("\nGoToYourStory\n")
         let storyTimeline = StoryTimelineVC()
+        storyTimeline.titleText.text = stories[indexPath.item].title
+        storyTimeline.coverImageThumb.loadImageUsingCacheWithUrlString(urlString: stories[indexPath.item].coverImageUrl)
+        storyTimeline.storyPosts = stories[indexPath.item].posts!
+        storyTimeline.story = stories[indexPath.item]
         self.present(storyTimeline, animated: true, completion: nil)
     }
     
@@ -169,6 +180,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
                               "title": storyTitle,
                               "timestamp": timestamp,
                               "state": "public",
+                              "id" : key,
                               "uid": uid] as [String : Any]
                 userPostAutoId.updateChildValues(values) { (error, reference) in
                     if error != nil {
@@ -180,6 +192,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
                     print("success")
                     AppDelegate.instance().dismissActivityIndicator()
                     //self.backFunction()
+                    self.fetchOrderedStories()
                 }
             
             
@@ -272,7 +285,12 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
                 cell.timeLabel.text = dateFormatter.string(from: timestampDate as Date)
             }
             cell.postImageView.loadImageUsingCacheWithUrlString(urlString: stories[indexPath.item].coverImageUrl)
-            cell.typeLabel.text = "POSTS \( stories[indexPath.item].posts.count )"
+            //let postCount = String(describing: stories[indexPath.item].posts?.count)
+            
+            if let postCount = stories[indexPath.item].posts?.count {
+                cell.typeLabel.text = "POSTS \(postCount)"
+            }
+            
                 
             return cell
             //}
@@ -297,7 +315,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
             if indexPath.row == 0 {
                 createStoryPopupAction()
             } else {
-                goToYourStory()
+                goToYourStory(indexPath: indexPath)
             }
         }
     }
@@ -354,8 +372,16 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         ref.queryOrdered(byChild: "timestamp").observe(.childAdded, with: { (snapshot) in
             guard let dictionary = snapshot.value as? [String: AnyObject] else {return}
             
+            var story = Story(dictionary: dictionary)
             
-            let story = Story(dictionary: dictionary)
+            if (dictionary["posts"]) != nil {
+                let posts = dictionary["posts"] as! NSDictionary
+                for post in posts {
+                    let p = Post(dictionary: post.value as! [String : Any])
+                    story.posts?.append(p)
+                }
+            }
+            print( story )
             self.stories.append(story)
             
             self.stories.sort(by: { $0.timestamp?.compare($1.timestamp!) == .orderedDescending})
@@ -365,6 +391,8 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
                 self.collectionView.reloadData()
             }
         }, withCancel: nil)
+        
+       
     }
 
     

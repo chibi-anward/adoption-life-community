@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import Firebase
 
-class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     // ============================
     // Story title
@@ -17,7 +18,10 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     // 
     // ============================
     
-    let storyPosts = ["Add Story Post","story post 1", "story post 2","story post 3", "story post 4"]
+    //var storyPosts = ["Add Story Post","story post 1", "story post 2","story post 3", "story post 4"]
+    var storyPosts = [Post]()
+    var story = Story(dictionary: [:])
+    var post = Post(dictionary: [:])
     
     let cellID = "cellID"
     
@@ -68,7 +72,7 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
         btn.setImage(likeImage, for: .normal)
         btn.isUserInteractionEnabled = true
         btn.isEnabled = true
-        //btn.addTarget(self, action: #selector(handleProfileImage), for: .touchUpInside) // Change Cover Image
+        btn.addTarget(self, action: #selector(handleStoryCoverImage), for: .touchUpInside) // Change Cover Image
         return btn
     }()
     
@@ -99,6 +103,7 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     let saveDraftStoryButton: UIButton = {
         let btn = UIButton(type: .system)
         btn.setImage(#imageLiteral(resourceName: "saveDraftStoryBtn").withRenderingMode(.alwaysOriginal), for: .normal)
+        btn.addTarget(self, action: #selector(createStoryPostPopupAction), for: .touchUpInside)
         return btn
     }()
     
@@ -136,6 +141,105 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
         blurEffect()
         self.view.insertSubview(storyPostPopup.popupView, at: 17)
         storyPostPopup.backNavButton.addTarget(self, action: #selector(close), for: .touchUpInside)
+        storyPostPopup.saveNavButton.addTarget(self, action: #selector(save), for: .touchUpInside)
+        //let dictionary =
+        //let dummyPost = Post.init(dictionary: <#T##[String : Any]#>) (dictionary: <#T##[String : Any]#>)
+        
+        post = Post.init(dictionary: [
+            "caption" : "dummy",
+            "imageUrl" : "https://firebasestorage.googleapis.com/v0/b/adoption-life-community.appspot.com/o/posts-image%2F6C4A0F48-9A10-4EA9-9CE4-C4B7797F53A8?alt=media&token=452f3b96-b176-49b1-abe6-850836f61edd",
+            "timestamp" : 1501325124.306627,
+            "likes" : 1,
+            "comments" : 0,
+            "imageWidth" : 100,
+            "imageHeight" : 100,
+            "postID" : "123123",
+            "postUID" : "123123",
+            "location" : "Stockholm",
+            "userWhoLike" : [:],
+            "IHaveLiked" : false,
+            "postUserName" : "namn"
+            ])
+    }
+    
+    func handleStoryCoverImage() {
+        //pickerType = "cover"
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.delegate = self
+        imagePickerController.allowsEditing = true
+        present(imagePickerController, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+            // Story Cover Image
+     
+            if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
+                
+                guard let uploadData = UIImageJPEGRepresentation(editedImage, 0.1) else { return }
+                
+                let filename = NSUUID().uuidString
+                Storage.storage().reference().child("cover_images").child(filename).putData(uploadData, metadata: nil, completion: { (metadata, err) in
+                    
+                    if let err = err {
+                        print ("Failed to upload profile image", err)
+                        return
+                    }
+                    guard let coverImageUrl = metadata?.downloadURL()?.absoluteString else { return }
+                    
+                    Variables.StoryCoverImageUrl = coverImageUrl
+                    
+                    print("Successfully uploaded cover image", coverImageUrl)
+                    self.coverImageThumb.loadImageUsingCacheWithUrlString(urlString: coverImageUrl)
+                    
+                    let storyCoverImageUrl = Variables.StoryCoverImageUrl
+                    
+                    guard let uid = Auth.auth().currentUser?.uid else {return}
+                    
+                    
+                    
+                    let userPostRef = Database.database().reference().child("agencies").child(Variables.Agency).child("stories").child(uid).child(self.story.id).observeSingleEvent(of: .value, with: {( snapshot ) in
+                        
+                        let values =  snapshot.value as! NSMutableDictionary
+                        values.setValue(storyCoverImageUrl, forKey: "coverImageUrl")
+                        
+                        Database.database().reference().child("agencies").child(Variables.Agency).child("stories").child(uid).child(self.story.id).updateChildValues(values as! [AnyHashable : Any]) { (error, reference) in
+                                                    if error != nil {
+                                                        AppDelegate.instance().dismissActivityIndicator()
+                                                        //self.navigationItem.rightBarButtonItem?.isEnabled = true
+                                                        print("Failed to save post")
+                                                        return
+                                                    }
+                                                    print("success")
+                                                
+                                                }
+
+                        
+                    
+                    })
+                    
+                   // let key = userPostAutoId.key
+                    // state: public or draft
+//                    let values = ["coverImageUrl": storyCoverImageUrl,
+//                                  "title": storyTitle,
+//                                  "timestamp": timestamp,
+//                                  "state": "public",
+//                                  "id" : self.story.id,
+//                                  "uid": uid] as [String : Any]
+//                    userPostRef.updateChildValues(values) { (error, reference) in
+//                        if error != nil {
+//                            AppDelegate.instance().dismissActivityIndicator()
+//                            //self.navigationItem.rightBarButtonItem?.isEnabled = true
+//                            print("Failed to save post")
+//                            return
+//                        }
+//                        print("success")
+//                    
+//                    }
+                })
+            }
+        
+        dismiss(animated: true, completion: nil)
     }
     
     func blurEffect() {
@@ -163,6 +267,47 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
             self.storyPostPopup.popupView.transform = CGAffineTransform(scaleX: 0.9, y: 0.89)
         }) { (finished: Bool) in
             
+        }
+    }
+    
+    func save() {
+        UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 0.1, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
+            print("save story post")
+            
+            
+                AppDelegate.instance().showActivityIndicator()
+                
+                let userPostRef = Database.database().reference().child("agencies").child(Variables.Agency).child("stories").child((Variables.CurrentUser?.uid)!).child(self.story.id).child("posts")
+                let userPostAutoId = userPostRef.childByAutoId()
+                let key = userPostAutoId.key
+            
+                let values = self.post.dictionaryRepresentation
+            
+            
+                userPostAutoId.updateChildValues(values) { (error, reference) in
+                    if error != nil {
+                        AppDelegate.instance().dismissActivityIndicator()
+                        self.navigationItem.rightBarButtonItem?.isEnabled = true
+                        print("Failed to save post")
+                        return
+                    }
+                    print("success")
+                    AppDelegate.instance().dismissActivityIndicator()
+                    //self.backFunction()
+                    
+                    self.storyPosts.append(self.post)
+                    
+                    DispatchQueue.main.async {
+                        self.collectionView.reloadData()
+                    }
+                }
+            
+
+            
+            self.blurEffectView.isHidden = true
+            self.storyPostPopup.popupView.isHidden = true
+            self.storyPostPopup.popupView.transform = CGAffineTransform(scaleX: 1, y: 1)
+        }) { (finished: Bool) in
         }
     }
     
@@ -198,7 +343,7 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
         
         coverImageThumb.anchor(top: titleText.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 150, height: 50)
         coverImageThumb.centerXAnchor.constraint(equalTo: titleText.centerXAnchor).isActive = true
-        coverImageThumb.image = UIImage(named: "storyCoverImageDefault") //Story Cover image!
+        //coverImageThumb.image = UIImage(named: "storyCoverImageDefault") //Story Cover image!
          //coverImageThumb.loadImageUsingCacheWithUrlString(urlString: (Variables.CurrentUserProfile?.ProfileImageUrl)!)
         
         editIcon.anchor(top: nil, left: nil, bottom: coverImageThumb.bottomAnchor, right: coverImageThumb.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 8, paddingRight: 8, width: 25, height: 25)
@@ -236,13 +381,15 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if indexPath.row == 0 {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! StoryPostCell
-            cell.setupContentCreateNewStoryPost()
-        return cell
-        }
+//        if indexPath.row == 0 {
+//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! StoryPostCell
+//            cell.setupContentCreateNewStoryPost()
+//        return cell
+//        }
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! StoryPostCell
+        cell.storyPostTitle.text = storyPosts[indexPath.item].caption
+        cell.storyPostCardImage.loadImageUsingCacheWithUrlString(urlString: storyPosts[indexPath.item].imageUrl)
         cell.setupStoryPostCell()
         return cell
     }
@@ -252,11 +399,9 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if indexPath.row == 0 {
-        return CGSize(width: collectionView.frame.width, height: 48)
-        } else {
+
         return CGSize(width: collectionView.frame.width, height: 160)
-        }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
