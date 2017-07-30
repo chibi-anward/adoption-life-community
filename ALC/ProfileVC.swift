@@ -13,18 +13,14 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     
     let profilePostThumnailCellID = "pvarilePostThumnailCellID"
     let profileHeaderCellId = "profileHeaderCellId"
-    //let homePostCellID = "homePostCellID"
     
     let storyCellID = "storyCellID"
-    let storyCreateCellID = "storyCreateCellID"
     
     var isGridView = true
     var pickerType = ""
     
     var posts = [Post]()
     var stories = [Story]()
-    
-    //var stories = ["create", "A", "B", "C"]
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -52,7 +48,9 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         return view
     }()
     
+    
     var createStoryPopup = StoryCreateStoryVC()
+    
     override func viewDidAppear(_ animated: Bool) {
         fetchOrderedPosts()
         fetchOrderedStories()
@@ -65,13 +63,8 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         super.viewDidLoad()
         print("\nProfileVC\n")
         navigationItem.title = "Profile"
-        
         addCollectionView()
         registerCell()
-        
-//        fetchOrderedPosts()
-//        fetchOrderedStories()
-        
                
         blurEffect()
         self.view.insertSubview(createStoryPopup.popupView, at: 17)
@@ -209,8 +202,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         collectionView.register(ProfileHeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: profileHeaderCellId)
         collectionView.register(ProfilePostThumbnailCell.self, forCellWithReuseIdentifier: profilePostThumnailCellID)
         //collectionView.register(HomePostCell.self, forCellWithReuseIdentifier: homePostCellID)
-        
-        collectionView.register(StoryCreateCell.self, forCellWithReuseIdentifier: storyCreateCellID)
+        //collectionView.register(StoryCreateCell.self, forCellWithReuseIdentifier: storyCreateCellID)
         collectionView.register(StoryCell.self, forCellWithReuseIdentifier: storyCellID)
     }
     
@@ -226,22 +218,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         header.addSubview(editIcon)
         editIcon.anchor(top: nil, left: nil, bottom: header.profileImageView.bottomAnchor, right: header.profileImageView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 8, paddingRight: 8, width: 25, height: 25)
         
-        /*
-        let uid = Auth.auth().currentUser?.uid
-        Database.database().reference().child("agency").child("css").child("members").child(uid!).observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            guard let dictionary = snapshot.value as? [String: Any] else { return }
-            
-            guard let username = dictionary["username"] as? String else { return }
-            header.usernameLabel.text = username
-            
-            if let profileImageUrl = dictionary["profileImageUrl"] as? String {
-                header.profileImageView.loadImageUsingCacheWithUrlString(urlString: profileImageUrl)
-            }
-        }) { (err) in
-            print("Can't fetch profile information", err)
-        }
-        */
+        header.addNewStoryPostButton.addTarget(self, action: #selector(createStoryPopupAction), for: .touchUpInside)
         
         header.profileImageView.loadImageUsingCacheWithUrlString(urlString: (Variables.CurrentUserProfile?.ProfileImageUrl)!)
         
@@ -266,11 +243,6 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
             cell.post = posts[indexPath.item]
             return cell
         } else {
-            // CREATE STORY BUTTON
-            if indexPath.row == 0 {
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: storyCreateCellID, for: indexPath) as! StoryCreateCell
-                return cell
-            }
             //DRAFT VERSION
             //if indexPath.row == 1 {
             //STORIES (IF CURRENT USER, DONT SHOW PROFILE IMAGE & USERNAME)!
@@ -291,17 +263,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
                 cell.typeLabel.text = "POSTS \(postCount)"
             }
             
-                
             return cell
-            //}
-//            else {
-//                //PUBLISHED VERSION
-//                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: storyCellID, for: indexPath) as! StoryCell
-//                cell.profileImageThumb.isHidden = true
-//                cell.usernameLabel.isHidden = true
-//                //cell.stories = stories[indexPath.item]
-//                return cell
-//            }
             
         }
     }
@@ -312,11 +274,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
             print("Grid")
         } else {
             print("List")
-            if indexPath.row == 0 {
-                createStoryPopupAction()
-            } else {
                 goToYourStory(indexPath: indexPath)
-            }
         }
     }
     
@@ -335,10 +293,6 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         return CGSize(width: width, height: width)
         } else {
             //Create New Story
-            if indexPath.row == 0 {
-                return CGSize(width: UIScreen.main.bounds.width, height: 60)
-            }
-            // Story Cell
             return CGSize(width: UIScreen.main.bounds.width, height: 280)
         }
     }

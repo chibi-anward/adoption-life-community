@@ -99,42 +99,37 @@ class ProfileHeaderCell: BaseCollectionCell {
         return view
     }()
     
+    let addNewStoryPostButton: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.setImage(#imageLiteral(resourceName: "createNewStoryBtn").withRenderingMode(.alwaysOriginal), for: .normal)
+        btn.isEnabled = false
+        btn.isHidden = true
+        return btn
+    }()
+    
     override func setupViews() {
         super.setupViews()
-        //backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 0, alpha: 0.6)
         
         addSubview(profileImageView)
         addSubview(dividerLine)
-        
+        addSubview(addNewStoryPostButton)
         setupHeaderObjects()
         setupToolBar()
     }
-    /*
-    func storyButtonAction() {
-        if isCurrentUser == true {
-            print("Is Current User")
-            handleChangeToListView()
-            //let profileVC = ProfileVC()
-            //profileVC.goToYourStories()
-        } else {
-            print("NOT Current User")
-            handleChangeToListView()
-        }
-    }
-    */
-    
-
-
     
     func handleChangeToListView() {
         storyButton.tintColor = UIColor.rgb(red: 100, green: 100, blue: 100, alpha: 1)
         postButton.tintColor = UIColor.rgb(red: 220, green: 220, blue: 220, alpha: 1)
+        addNewStoryPostButton.isHidden = false
+        addNewStoryPostButton.isEnabled = true
         delegate?.didChangeToListView()
     }
     
     func handleChangeToGridView() {
         postButton.tintColor = UIColor.rgb(red: 100, green: 100, blue: 100, alpha: 1)
         storyButton.tintColor = UIColor.rgb(red: 220, green: 220, blue: 220, alpha: 1)
+        addNewStoryPostButton.isHidden = true
+        addNewStoryPostButton.isEnabled = false
         delegate?.didChangeToGridView()
     }
     
@@ -164,6 +159,9 @@ class ProfileHeaderCell: BaseCollectionCell {
         addSubview(usernameLabel)
         usernameLabel.anchor(top: profileImageView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 6, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: profileImageView.frame.width, height: 18)
         usernameLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        
+        addNewStoryPostButton.anchor(top: usernameLabel.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 6, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 36)
+        addNewStoryPostButton.centerXAnchor.constraint(equalTo: usernameLabel.centerXAnchor).isActive = true
         
         dividerLine.anchor(top: nil, left: nil, bottom: bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: frame.width, height: 1)
     }
