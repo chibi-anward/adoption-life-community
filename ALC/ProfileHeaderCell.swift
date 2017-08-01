@@ -29,18 +29,30 @@ class ProfileHeaderCell: BaseCollectionCell {
     //Dummy
     let isCurrentUser = true
     
+    lazy var profileImageFrame: UIView = {
+        let imageView = UIView()
+        imageView.frame = CGRect(x: 0, y: 0, width: 108, height: 108)
+        imageView.layer.masksToBounds = false
+        imageView.layer.cornerRadius = imageView.frame.height / 2
+        imageView.clipsToBounds = false
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.backgroundColor = UIColor.clear
+        imageView.layer.borderWidth = 10
+        imageView.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 0.3).cgColor
+        return imageView
+    }()
     lazy var profileImageView: CustomImageView = {
         let imageView = CustomImageView()
         imageView.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
         imageView.backgroundColor = UIColor.white
-        imageView.layer.masksToBounds = false
+        imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = imageView.frame.height / 2
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.isUserInteractionEnabled = true
-        imageView.layer.borderWidth = 4
-        imageView.layer.borderColor = UIColor.rgb(red: 220, green: 220, blue: 220, alpha: 1).cgColor
+        //imageView.layer.borderWidth = 6
+        //imageView.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 0.3).cgColor
         return imageView
     }()
 
@@ -63,27 +75,26 @@ class ProfileHeaderCell: BaseCollectionCell {
     }()
     
     lazy var postButton: UIButton = {
-        let btn = UIButton(type: .system)
-        btn.setImage(#imageLiteral(resourceName: "toolBarIcon_default"), for: .normal)
-        btn.setTitle("Posts", for: .normal)
+        let btn = UIButton()
+        let btnImage = UIImage (named: "postBtn_profile_selected")
+        btn.setImage(btnImage, for: .normal)
         btn.titleEdgeInsets = UIEdgeInsets(top: 0,left: 30,bottom: 0,right: 10)
         btn.addTarget(self, action: #selector(handleChangeToGridView), for: .touchDown)
         return btn
     }()
     
     lazy var storyButton: UIButton = {
-        let btn = UIButton(type: .system)
-        btn.setImage(#imageLiteral(resourceName: "toolBarIcon_default"), for: .normal)
-        btn.tintColor = UIColor.rgb(red: 0, green: 0, blue: 0, alpha: 0.2)
-        btn.setTitle("Stories", for: .normal)
+        let btn = UIButton()
+        let btnImage = UIImage (named: "storyBtn_profile_unselected")
+        btn.setImage(btnImage, for: .normal)
         btn.titleEdgeInsets = UIEdgeInsets(top: 0,left: 30,bottom: 0,right: 10)
         btn.addTarget(self, action: #selector(handleChangeToListView), for: .touchDown)
         return btn
     }()
     
-    let dividerLine: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 0.1)
+    let line: UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(named: "lineImage")?.withRenderingMode(.alwaysOriginal)
         return view
     }()
     
@@ -107,29 +118,31 @@ class ProfileHeaderCell: BaseCollectionCell {
         return btn
     }()
     
+    let profileFrame: UIImageView = {
+        let imageV = UIImageView()
+        imageV.image = UIImage(named: "profileFrame")?.withRenderingMode(.alwaysOriginal)
+        return imageV
+    }()
     override func setupViews() {
         super.setupViews()
         
-        backgroundColor = UIColor.rgb(red: 0, green: 0, blue: 0, alpha: 0.4)
-        
+        backgroundColor = UIColor.clear
+        insertSubview(profileFrame, belowSubview: profileImageView)
         addSubview(profileImageView)
-        addSubview(dividerLine)
+        addSubview(line)
         addSubview(addNewStoryPostButton)
         setupHeaderObjects()
         setupToolBar()
     }
     
     func handleChangeToListView() {
-        storyButton.tintColor = UIColor.rgb(red: 100, green: 100, blue: 100, alpha: 1)
-        postButton.tintColor = UIColor.rgb(red: 220, green: 220, blue: 220, alpha: 1)
+        
         addNewStoryPostButton.isHidden = false
         addNewStoryPostButton.isEnabled = true
         delegate?.didChangeToListView()
     }
     
     func handleChangeToGridView() {
-        postButton.tintColor = UIColor.rgb(red: 100, green: 100, blue: 100, alpha: 1)
-        storyButton.tintColor = UIColor.rgb(red: 220, green: 220, blue: 220, alpha: 1)
         addNewStoryPostButton.isHidden = true
         addNewStoryPostButton.isEnabled = false
         delegate?.didChangeToGridView()
@@ -138,7 +151,7 @@ class ProfileHeaderCell: BaseCollectionCell {
     fileprivate func setupToolBar() {
         let stackView = UIStackView(arrangedSubviews: [postButton, storyButton])
         
-        stackView.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 1)
+        //stackView.backgroundColor = UIColor.rgb(red: 100, green: 255, blue: 255, alpha: 1)
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
         
@@ -146,7 +159,7 @@ class ProfileHeaderCell: BaseCollectionCell {
         addSubview(toolDividerLine)
         addSubview(toolDividerLine)
         
-        stackView.anchor(top: nil, left: leftAnchor, bottom: self.bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 50)
+        stackView.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 22, paddingRight: 0, width: 0, height: 36)
         
         
         toolDividerLine.anchor(top: stackView.topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
@@ -155,8 +168,16 @@ class ProfileHeaderCell: BaseCollectionCell {
     }
     
     fileprivate func setupHeaderObjects() {
+        
         profileImageView.anchor(top: topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 100)
         profileImageView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        
+        profileFrame.anchor(top: profileImageView.topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        insertSubview(profileImageFrame, belowSubview: profileImageView)
+        profileImageFrame.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 108, height: 108)
+        profileImageFrame.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive = true
+        profileImageFrame.centerXAnchor.constraint(equalTo: profileImageView.centerXAnchor).isActive = true
         
         addSubview(usernameLabel)
         usernameLabel.anchor(top: profileImageView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 6, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: profileImageView.frame.width, height: 18)
@@ -165,7 +186,7 @@ class ProfileHeaderCell: BaseCollectionCell {
         addNewStoryPostButton.anchor(top: usernameLabel.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 6, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 36)
         addNewStoryPostButton.centerXAnchor.constraint(equalTo: usernameLabel.centerXAnchor).isActive = true
         
-        dividerLine.anchor(top: nil, left: nil, bottom: bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: frame.width, height: 1)
+        line.anchor(top: nil, left: nil, bottom: bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 75, paddingRight: 0, width: frame.width, height: 1)
     }
     
 }

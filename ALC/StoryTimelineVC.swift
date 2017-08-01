@@ -15,10 +15,8 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     // Story title
     // Story Cover image
     // Filter by date
-    //
     // ============================
     
-    //var storyPosts = ["Add Story Post","story post 1", "story post 2","story post 3", "story post 4"]
     var storyPosts = [Post]()
     var story = Story(dictionary: [:])
     var post = Post(dictionary: [:])
@@ -29,11 +27,18 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 1)
+        cv.backgroundColor = UIColor.clear
         cv.delegate = self
         cv.dataSource = self
         cv.showsVerticalScrollIndicator = false
         return cv
+    }()
+    
+    let bgImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "bg_gradient")?.withRenderingMode(.alwaysOriginal)
+        imageView.contentMode = .scaleAspectFill
+        return imageView
     }()
     
     let backNavButton: UIButton = {
@@ -57,21 +62,16 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     
     let coverImageThumb: CustomImageView = {
         let imageThumb = CustomImageView()
-        imageThumb.backgroundColor = UIColor.lightGray
-        imageThumb.layer.cornerRadius = 16
-        imageThumb.frame = CGRect(x: 0, y: 0, width: 150, height: 50)
-        imageThumb.layer.masksToBounds = false
-        imageThumb.clipsToBounds = true
+        //imageThumb.layer.masksToBounds = false
+        //imageThumb.clipsToBounds = true
         imageThumb.contentMode = .scaleAspectFill
-        imageThumb.layer.borderWidth = 3
-        imageThumb.layer.borderColor = UIColor.white.cgColor
         imageThumb.image = UIImage(named: "")
         return imageThumb
     }()
     
     let editIcon: UIButton = {
         let btn = UIButton()
-        let likeImage = UIImage (named: "CreatePost_Tab")
+        let likeImage = UIImage (named: "createPost_tab")
         btn.setImage(likeImage, for: .normal)
         btn.isUserInteractionEnabled = true
         btn.isEnabled = true
@@ -133,8 +133,13 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("\nStoryTimeLineVC\n")
-        view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 1)
+        
+        view.insertSubview(coverImageThumb, at: 1)
+        view.insertSubview(bgImage, at: 2)
+        
+        coverImageThumb.anchor(top: topLayoutGuide.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 210)
+        
+        bgImage.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         registerCell()
         

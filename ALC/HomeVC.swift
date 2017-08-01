@@ -37,6 +37,17 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         return cv
     }()
     
+    let vcTitle: UILabel = {
+        let label = UILabel()
+        label.text = "Home"
+        label.textAlignment = .center
+        label.textColor = UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 1)
+        label.font = UIFont.systemFont(ofSize: 18, weight: 15)
+        return label
+    }()
+    
+    
+    
     //MARK:
     func refresh() {
         fetchPosts()
@@ -63,13 +74,13 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         
         registerCell()
         
+        view.addSubview(vcTitle)
+        vcTitle.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 35, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 35)
+        
         view.addSubview(collectionView)
-        collectionView.anchor(top: topLayoutGuide.bottomAnchor, left: view.leftAnchor, bottom: bottomLayoutGuide.topAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        collectionView.anchor(top: topLayoutGuide.topAnchor, left: view.leftAnchor, bottom: bottomLayoutGuide.topAnchor, right: view.rightAnchor, paddingTop: 75, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        setupNavigationButtons()
-        
- 
-        
+        //setupNavigationButtons()
         //Variables.Posts.append(Variables.Stories)
     }
     

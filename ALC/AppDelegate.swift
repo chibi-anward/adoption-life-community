@@ -56,12 +56,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = CustomTabBar()
         
         UINavigationBar.appearance().barTintColor = UIColor.rgb(red: 39, green: 47, blue: 62, alpha: 0.8)
-        UINavigationBar.appearance().isTranslucent = false
+        UINavigationBar.appearance().isTranslucent = true
         
         // these next lines aren't needed if you like the default
         
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]  // shouldn't be needed, but if you want something
         UINavigationBar.appearance().tintColor = UIColor.lightGray
+        
+        UINavigationBar.appearance().isHidden = true
         
         return true
     }

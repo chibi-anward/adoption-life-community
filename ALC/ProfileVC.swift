@@ -29,6 +29,15 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         return imageView
     }()
     
+    let vcTitle: UILabel = {
+        let label = UILabel()
+        label.text = "Profile"
+        label.textAlignment = .center
+        label.textColor = UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 1)
+        label.font = UIFont.systemFont(ofSize: 18, weight: 15)
+        return label
+    }()
+    
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -40,7 +49,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     
     let editIcon: UIButton = {
         let btn = UIButton()
-        let likeImage = UIImage (named: "CreatePost_Tab")
+        let likeImage = UIImage (named: "createPost_tab")
         btn.setImage(likeImage, for: .normal)
         btn.isUserInteractionEnabled = true
         btn.isEnabled = true
@@ -74,6 +83,9 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         view.addSubview(bgImage)
         bgImage.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
+        view.addSubview(vcTitle)
+        vcTitle.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 35, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 35)
+        
         addCollectionView()
         registerCell()
                
@@ -84,6 +96,8 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         createStoryPopup.coverImageTextOverlay.addTarget(self, action: #selector(handleStoryCoverImage), for: .touchUpInside) //SAVE COVER IMAGE TO STORY
         
         createStoryPopup.storyTitle.delegate = self
+        
+        
         
     }
 
@@ -206,7 +220,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     
     func addCollectionView() {
         view.addSubview(collectionView)
-        collectionView.anchor(top: topLayoutGuide.bottomAnchor, left: view.leftAnchor, bottom: bottomLayoutGuide.topAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        collectionView.anchor(top: topLayoutGuide.topAnchor, left: view.leftAnchor, bottom: bottomLayoutGuide.topAnchor, right: view.rightAnchor, paddingTop: 75, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
     }
     
     func registerCell() {
@@ -233,6 +247,13 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         
         header.profileImageView.loadImageUsingCacheWithUrlString(urlString: (Variables.CurrentUserProfile?.ProfileImageUrl)!)
         
+        if isGridView {
+            header.postButton.setImage(#imageLiteral(resourceName: "postBtn_profile_selected"), for: .normal)
+            header.storyButton.setImage(#imageLiteral(resourceName: "storyBtn_profile_unselected"), for: .normal)
+        } else {
+            header.postButton.setImage(#imageLiteral(resourceName: "postBtn_profile_unselected"), for: .normal)
+            header.storyButton.setImage(#imageLiteral(resourceName: "storyBtn_profile_selected"), for: .normal)
+        }
         return header
     }
     

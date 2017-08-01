@@ -30,8 +30,6 @@ class StoryCreateCell: BaseCollectionCell {
     override func setupViews() {
         super.setupViews()
         
-        //backgroundColor = UIColor.rgb(red: 54, green: 206, blue: 239, alpha: 1)
-        
         setupContents()
         
     }
