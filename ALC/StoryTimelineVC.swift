@@ -130,7 +130,7 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
         return view
     }()
     
-    var storyPostPopup = StoryViewPostVC()
+    var viewPostPopup = ViewPostVC()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -154,9 +154,9 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
         setupContents()
         
         blurEffect()
-        self.view.insertSubview(storyPostPopup.popupView, at: 17)
-        storyPostPopup.backNavButton.addTarget(self, action: #selector(close), for: .touchUpInside)
-        storyPostPopup.saveNavButton.addTarget(self, action: #selector(save), for: .touchUpInside)
+        self.view.insertSubview(viewPostPopup.popupView, at: 17)
+        viewPostPopup.backNavButton.addTarget(self, action: #selector(close), for: .touchUpInside)
+        viewPostPopup.saveNavButton.addTarget(self, action: #selector(save), for: .touchUpInside)
         //let dictionary =
         //let dummyPost = Post.init(dictionary: <#T##[String : Any]#>) (dictionary: <#T##[String : Any]#>)
         
@@ -274,10 +274,10 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     
     func createStoryPostPopupAction() {
         UIView.animate(withDuration: 1.8, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
-            self.storyPostPopup.editMode()
+            self.viewPostPopup.editMode()
             self.blurEffectView.isHidden = false
-            self.storyPostPopup.popupView.isHidden = false
-            self.storyPostPopup.popupView.transform = CGAffineTransform(scaleX: 0.9, y: 0.89)
+            self.viewPostPopup.popupView.isHidden = false
+            self.viewPostPopup.popupView.transform = CGAffineTransform(scaleX: 0.9, y: 0.89)
         }) { (finished: Bool) in
             
         }
@@ -285,10 +285,10 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     
     func viewStoryPostPopupAction() {
         UIView.animate(withDuration: 1.8, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
-            self.storyPostPopup.viewMode()
+            self.viewPostPopup.viewMode()
             self.blurEffectView.isHidden = false
-            self.storyPostPopup.popupView.isHidden = false
-            self.storyPostPopup.popupView.transform = CGAffineTransform(scaleX: 0.9, y: 0.89)
+            self.viewPostPopup.popupView.isHidden = false
+            self.viewPostPopup.popupView.transform = CGAffineTransform(scaleX: 0.9, y: 0.89)
         }) { (finished: Bool) in
             
         }
@@ -329,8 +329,8 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
             
             
             self.blurEffectView.isHidden = true
-            self.storyPostPopup.popupView.isHidden = true
-            self.storyPostPopup.popupView.transform = CGAffineTransform(scaleX: 1, y: 1)
+            self.viewPostPopup.popupView.isHidden = true
+            self.viewPostPopup.popupView.transform = CGAffineTransform(scaleX: 1, y: 1)
         }) { (finished: Bool) in
         }
     }
@@ -338,8 +338,8 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     func close() {
         UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 0.1, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
             self.blurEffectView.isHidden = true
-            self.storyPostPopup.popupView.isHidden = true
-            self.storyPostPopup.popupView.transform = CGAffineTransform(scaleX: 1, y: 1)
+            self.viewPostPopup.popupView.isHidden = true
+            self.viewPostPopup.popupView.transform = CGAffineTransform(scaleX: 1, y: 1)
         }) { (finished: Bool) in
         }
     }
