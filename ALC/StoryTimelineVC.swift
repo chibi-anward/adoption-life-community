@@ -83,24 +83,24 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     let startStoryImageThumb: CustomImageView = {
         let imageThumb = CustomImageView()
         imageThumb.backgroundColor = UIColor.lightGray
-        imageThumb.layer.cornerRadius = 12
-        imageThumb.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
+        imageThumb.layer.cornerRadius = 25
+        imageThumb.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
         imageThumb.layer.masksToBounds = false
         imageThumb.clipsToBounds = true
         imageThumb.contentMode = .scaleAspectFill
-        imageThumb.image = UIImage(named: "")
+        imageThumb.image = UIImage(named: "addNewStoryTimeline")?.withRenderingMode(.alwaysOriginal)
         return imageThumb
     }()
     
     let endStoryImageThumb: CustomImageView = {
         let imageThumb = CustomImageView()
         imageThumb.backgroundColor = UIColor.lightGray
-        imageThumb.layer.cornerRadius = 12
-        imageThumb.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
+        imageThumb.layer.cornerRadius = 25
+        imageThumb.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
         imageThumb.layer.masksToBounds = false
         imageThumb.clipsToBounds = true
         imageThumb.contentMode = .scaleAspectFill
-        imageThumb.image = UIImage(named: "")
+        imageThumb.image = UIImage(named: "publishStory")?.withRenderingMode(.alwaysOriginal)
         return imageThumb
     }()
     
@@ -366,16 +366,14 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
         
         editIcon.anchor(top: nil, left: nil, bottom: coverImageThumb.bottomAnchor, right: coverImageThumb.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 8, paddingRight: 8, width: 25, height: 25)
         
-        startStoryImageThumb.anchor(top: coverImageThumb.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 24, height: 24)
+        startStoryImageThumb.anchor(top: coverImageThumb.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 7, paddingBottom: 0, paddingRight: 0, width: 50, height: 50)
         
-        
-        
-        let stackview = UIStackView(arrangedSubviews: [saveDraftStoryButton, publishStoryPostButton])
+        let stackview = UIStackView(arrangedSubviews: [saveDraftStoryButton])
         
         stackview.translatesAutoresizingMaskIntoConstraints = false
         stackview.distribution = .fillEqually
         stackview.axis = .horizontal
-        stackview.spacing = 5
+        stackview.spacing = 50
         
         view.addSubview(stackview)
         
@@ -383,7 +381,7 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
         
         collectionView.anchor(top: startStoryImageThumb.bottomAnchor, left: view.leftAnchor, bottom: stackview.topAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 16, paddingBottom: 32, paddingRight: 6, width: 0, height: 0)
         
-        endStoryImageThumb.anchor(top: collectionView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 24, height: 24)
+        endStoryImageThumb.anchor(top: collectionView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 7, paddingBottom: 0, paddingRight: 0, width: 50, height: 50)
         
         timeline.anchor(top: startStoryImageThumb.bottomAnchor, left: nil, bottom: endStoryImageThumb.topAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 2, height: 0)
         timeline.centerXAnchor.constraint(equalTo: startStoryImageThumb.centerXAnchor).isActive = true

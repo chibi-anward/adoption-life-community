@@ -134,12 +134,12 @@
 				78E49AE81F0BC6CD00E86B31 /* Cells */,
 				78E49AFB1F0DDB7000E86B31 /* Create Post */,
 				78E49AEF1F0BCE1C00E86B31 /* RegisterVC.swift */,
-				78E49AE61F0BC6C100E86B31 /* StartTutorialVC.swift */,
 				78E49AF11F0BD83C00E86B31 /* HomeVC.swift */,
 				78ECA1101F0E39FC00A6932B /* ProfileVC.swift */,
 				7875EBC51F0F93890096720A /* Story */,
-				7875EBBD1F0E8C0B0096720A /* CountryVC.swift */,
+				78F733931F2CB7A200367C2B /* ViewPostVC.swift */,
 				7875EBC11F0E905B0096720A /* AgencyVC.swift */,
+				7875EBBD1F0E8C0B0096720A /* CountryVC.swift */,
 				7875EBCA1F1570A80096720A /* MessageVC.swift */,
 				783116DE1F07D79D00397E4E /* Main.storyboard */,
 				783116E61F07D79D00397E4E /* LaunchScreen.storyboard */,
@@ -147,6 +147,7 @@
 				783116E91F07D79D00397E4E /* Info.plist */,
 				4BF673991F07DD3B008D53D5 /* GoogleService-Info.plist */,
 				783116E11F07D79D00397E4E /* ALC.xcdatamodeld */,
+				78E49AE61F0BC6C100E86B31 /* StartTutorialVC.swift */,
 				783116DC1F07D79D00397E4E /* ViewController.swift */,
 			);
 			path = ALC;
@@ -187,7 +188,6 @@
 				7875EBC31F0F8BAA0096720A /* StoryTimelineVC.swift */,
 				78F733951F2CDE3C00367C2B /* StoryCreateStoryVC.swift */,
 				7875EBBB1F0E87E00096720A /* StoryCreatePost.swift */,
-				78F733931F2CB7A200367C2B /* ViewPostVC.swift */,
 			);
 			name = Story;
 			sourceTree = "<group>";
