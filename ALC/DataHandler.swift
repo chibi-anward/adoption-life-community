@@ -46,8 +46,8 @@ struct PostsStories {
     var timestamp: Double {
         return post?.timestamp as? Double ?? story?.timestamp as? Double ?? 0
     }
-    let post: Post?
-    let story: Story?
+    var post: Post?
+    var story: Story?
 }
 
 struct Story {
