@@ -63,7 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]  // shouldn't be needed, but if you want something
         UINavigationBar.appearance().tintColor = UIColor.lightGray
         
-        UINavigationBar.appearance().isHidden = true
+        UINavigationBar.appearance().isHidden = false
         
         return true
     }

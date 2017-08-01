@@ -13,7 +13,8 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     
     
     var refresher = UIRefreshControl()
-  
+    var PostStory = [PostsStories]()
+    
     
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         collectionView.collectionViewLayout.invalidateLayout()
@@ -21,15 +22,6 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     
     let cellID = "cellID"
     let storyCellID = "storyCellID"
-    
-    let bgTopImage: UIImageView = {
-        let imageThumb = UIImageView()
-        imageThumb.layer.masksToBounds = false
-        imageThumb.clipsToBounds = true
-        imageThumb.contentMode = .scaleAspectFill
-        imageThumb.image = UIImage(named: "bgTopImage")
-        return imageThumb
-    }()
     
     let bgImage: UIImageView = {
         let imageView = UIImageView()
@@ -52,7 +44,7 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         label.text = "Home"
         label.textAlignment = .center
         label.textColor = UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 1)
-        label.font = UIFont.systemFont(ofSize: 16, weight: 12)
+        label.font = UIFont.systemFont(ofSize: 18, weight: 15)
         return label
     }()
     
@@ -60,8 +52,9 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     
     //MARK:
     func refresh() {
-        fetchPosts()
-        fetchStories()
+        // fetchPosts()
+        // fetchStories()
+        getPostsStories()
         refresher.endRefreshing()
     }
     
@@ -70,19 +63,15 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 1)
-        view.insertSubview(bgTopImage, at: 1)
-        view.insertSubview(bgImage, at: 2)
         
-        bgTopImage.anchor(top: topLayoutGuide.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 210)
-        
+        view.addSubview(bgImage)
         bgImage.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         refresher.addTarget(self, action: #selector(refresh), for: UIControlEvents.valueChanged)
         collectionView.addSubview(refresher)
         
-        fetchPosts()
-        fetchStories()
+        getPostsStories()
+        
         navigationItem.title = "Home"
         view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 1)
         
@@ -94,7 +83,7 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         view.addSubview(collectionView)
         collectionView.anchor(top: topLayoutGuide.topAnchor, left: view.leftAnchor, bottom: bottomLayoutGuide.topAnchor, right: view.rightAnchor, paddingTop: 75, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        //setupNavigationButtons()
+        setupNavigationButtons()
         //Variables.Posts.append(Variables.Stories)
     }
     
@@ -105,60 +94,86 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! HomePostCell
+        if let post = PostStory[indexPath.item].post {
+            //let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! HomePostCell
+            cell.delegate = self
+            cell.post = post
+            cell.likeIcon.tag = indexPath.item
+            
+            if post.IHaveLiked == true {
+                cell.likeIcon.setImage(UIImage(named: "like_selected"), for: .normal)
+                cell.likeIcon.removeTarget(self, action: nil, for: .allEvents)
+                //cell.likeIcon.addTarget(self, action: #selector(unlikePost), for: .touchUpInside)
+            } else {
+                cell.likeIcon.setImage(UIImage(named: "like_unselected"), for: .normal)
+                cell.likeIcon.removeTarget(self, action: nil, for: .allEvents)
+                //cell.likeIcon.addTarget(self, action: #selector(likePost), for: .touchUpInside)
+            }
+            
+            //Check for POST USER ID
+            let postUID = post.postUID
+            Database.database().reference().child("agencies").child(Variables.Agency).child("users").child(postUID).observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                guard let dictionary = snapshot.value as? [String: Any] else { return }
+                
+                guard let username = dictionary["username"] as? String else { return }
+                cell.usernameLabel.text = username
+                
+                if let profileImageUrl = dictionary["ProfileImageUrl"] as? String {
+                    cell.profileImageThumb.loadImageUsingCacheWithUrlString(urlString: profileImageUrl)
+                }
+                
+                
+                
+                
+            }) { (err) in
+                print("Can't fetch profile information", err)
+            }
+        }
         
-        if indexPath.row == 0 {
+        if let story = PostStory[indexPath.item].story {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: storyCellID, for: indexPath) as! StoryCell
             cell.viewStoryHomeFeed()
+            
+            cell.story = story
+            
+            //            cell.descriptionLabel.text = story.title
+            //            cell.postImageView.loadImageUsingCacheWithUrlString(urlString: story.coverImageUrl)
+            
+            //Check for POST USER ID
+            let postUID = story.uid
+            Database.database().reference().child("agencies").child(Variables.Agency).child("users").child(postUID).observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                guard let dictionary = snapshot.value as? [String: Any] else { return }
+                
+                guard let username = dictionary["username"] as? String else { return }
+                cell.usernameLabel.text = username
+                
+                if let profileImageUrl = dictionary["ProfileImageUrl"] as? String {
+                    cell.profileImageThumb.loadImageUsingCacheWithUrlString(urlString: profileImageUrl)
+                }
+                
+                
+                
+                
+            }) { (err) in
+                print("Can't fetch profile information", err)
+            }
+            
             return cell
         }
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! HomePostCell
-        /*
-        cell.contentView.layer.cornerRadius = 8
-        cell.contentView.layer.masksToBounds = true
-        */
-        
-        //cell.postContainerView.roundCorners(corners: [.topLeft, .topRight], radius: 8)
-        //cell.postBottomContainerView.roundCorners(corners: [.bottomLeft, .bottomRight], radius: 8)
-        
-        cell.delegate = self
-        
-        cell.post = Variables.Posts[indexPath.item]
-        cell.likeIcon.tag = indexPath.item
-        
-        if Variables.Posts[indexPath.item].IHaveLiked == true {
-            cell.likeIcon.setImage(UIImage(named: "like_selected"), for: .normal)
-            cell.likeIcon.removeTarget(self, action: nil, for: .allEvents)
-            //cell.likeIcon.addTarget(self, action: #selector(unlikePost), for: .touchUpInside)
-        } else {
-            cell.likeIcon.setImage(UIImage(named: "like_unselected"), for: .normal)
-            cell.likeIcon.removeTarget(self, action: nil, for: .allEvents)
-            //cell.likeIcon.addTarget(self, action: #selector(likePost), for: .touchUpInside)
-        }
-        
-        //Check for POST USER ID
-        let postUID = Variables.Posts[indexPath.item].postUID
-        Database.database().reference().child("agencies").child(Variables.Agency).child("users").child(postUID).observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            guard let dictionary = snapshot.value as? [String: Any] else { return }
-            
-            guard let username = dictionary["username"] as? String else { return }
-            cell.usernameLabel.text = username
-            
-            if let profileImageUrl = dictionary["ProfileImageUrl"] as? String {
-                cell.profileImageThumb.loadImageUsingCacheWithUrlString(urlString: profileImageUrl)
-            }
-            
-            
-        }) { (err) in
-            print("Can't fetch profile information", err)
-        }
-        
         return cell
+        
+        
     }
     
+    
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return Variables.Posts.count
+        // return Variables.Posts.count
+        return PostStory.count
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -167,10 +182,38 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     //Other Functions
-    func fetchPosts() {
-        if ( Variables.Agency != "" ) {
-        Variables.Posts.removeAll()
+    func getPostsStories() {
+        fetchPosts { (success) in
+            self.fetchStories(completionHandler: { (success) in
+                // merge array
+                
+                var res:[Story] = []
+                Variables.Stories.forEach { (p) -> () in
+                    if !res.contains (where: { $0.id == p.id }) {
+                        res.append(p)
+                    }
+                }
+                
+                Variables.Stories = res
+                
+                
+                let sortedArray = (Variables.Posts.map { PostsStories(post: $0, story: nil) } + Variables.Stories.map { PostsStories(post: nil, story: $0)}).sorted { $0.timestamp > $1.timestamp }
+                
+                self.PostStory = sortedArray
+                
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                    print("REALOAD DATA HomeFeedCV : 139")
+                }
+            })
+        }
         
+    }
+    
+    func fetchPosts(completionHandler:@escaping (Bool) -> ()) {
+        if ( Variables.Agency != "" ) {
+            Variables.Posts.removeAll()
+            
             
             let ref = Database.database().reference().child("agencies").child(Variables.Agency).child("posts").observe(.childAdded, with: { (snapshot) in
                 //queryOrdered(byChild: "timestamp")
@@ -187,28 +230,32 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
                     let dataHandler = DataHandler()
                     // Check if current user has liked post
                     if (post.userWhoLike != nil) {
-                    for people in post.userWhoLike {
-                        if people.value as? String == dataHandler.getLocalData(object: "uid")  {
-                           post.IHaveLiked = true
+                        for people in post.userWhoLike {
+                            if people.value as? String == dataHandler.getLocalData(object: "uid")  {
+                                post.IHaveLiked = true
+                            }
                         }
-                    }
                     }
                     Variables.Posts.append(post)
                 })
                 
                 Variables.Posts.sort(by: { $0.timestamp?.compare($1.timestamp!) == .orderedDescending})
-                DispatchQueue.main.async {
-                    self.collectionView.reloadData()
-                    print("REALOAD DATA HomeFeedCV : 139")
-                }
+                completionHandler(true)
+                //                DispatchQueue.main.async {
+                //                    self.collectionView.reloadData()
+                //                    print("REALOAD DATA HomeFeedCV : 139")
+                //                }
             }) { (err) in
                 print("Failed to fetch posts:", err)
+                completionHandler(false)
             }
             
         }
         
     }
-    func fetchStories() {
+    
+
+    func fetchStories(completionHandler:@escaping (Bool) -> ()) {
         if ( Variables.Agency != "" ) {
             Variables.Stories.removeAll()
             
@@ -230,19 +277,21 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
                             story.posts?.append(p)
                         }
                     }
-
                     
- 
+                    
+                    
                     Variables.Stories.append(story)
                 })
                 
                 Variables.Stories.sort(by: { $0.timestamp?.compare($1.timestamp!) == .orderedDescending})
-                DispatchQueue.main.async {
-                    self.collectionView.reloadData()
-                    print("REALOAD DATA HomeFeedCV : 139")
-                }
+                completionHandler(true)
+                //                DispatchQueue.main.async {
+                //                    self.collectionView.reloadData()
+                //                    print("REALOAD DATA HomeFeedCV : 139")
+                //               }
             }) { (err) in
                 print("Failed to fetch posts:", err)
+                completionHandler(false)
             }
             
         }
@@ -322,7 +371,7 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
                 keyToPost = people.key
                 Variables.Posts[indexPath.item].userWhoLike.removeValue(forKey: keyToPost!) // ?[keyToPost!] = nil
                 if ( Variables.Posts[indexPath.item].userWhoLike.count == 0 ) {
-                    Variables.Posts[indexPath.item].userWhoLike = [:] 
+                    Variables.Posts[indexPath.item].userWhoLike = [:]
                 }
                 ref.child("agencies").child(Variables.Agency).child("posts").child(postUID).child(selectedPost).child("userWhoLike").child(keyToPost!).removeValue()
             }
