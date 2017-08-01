@@ -289,8 +289,11 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         if let post = PostStory[indexPath.item].post {
             print("post")
             // Check currentUser post or else
-            //editPostPopupAction(indexPath: indexPath)
-            viewPostPopupAction(indexPath: indexPath)
+            if (Variables.CurrentUser?.uid == post.postUID) {
+                editPostPopupAction(indexPath: indexPath)
+            } else {
+                viewPostPopupAction(indexPath: indexPath)
+            }
         }
         if let story = PostStory[indexPath.item].story {
             print("story")

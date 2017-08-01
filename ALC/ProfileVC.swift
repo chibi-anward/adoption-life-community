@@ -368,8 +368,12 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         print("\(indexPath.row)")
         if isGridView {
             print("Grid")
-            editPostPopupAction(indexPath: indexPath)
-           // viewPostPopupAction(indexPath: indexPath)
+            // Check currentUser post or else
+            if (Variables.CurrentUser?.uid == self.posts[indexPath.item].postUID) {
+                editPostPopupAction(indexPath: indexPath)
+            } else {
+                viewPostPopupAction(indexPath: indexPath)
+            }
         } else {
             print("List")
                 goToYourStory(indexPath: indexPath)
