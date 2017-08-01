@@ -48,19 +48,23 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         return label
     }()
     
+    let blurEffectView: UIVisualEffectView = {
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+        let view = UIVisualEffectView(effect: blurEffect)
+        view.isHidden = true
+        return view
+    }()
     
+    var viewPostPopup = ViewPostVC()
     
     //MARK:
     func refresh() {
-        // fetchPosts()
-        // fetchStories()
         getPostsStories()
         refresher.endRefreshing()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        //fetchPosts()
-    }
+   var window: UIWindow?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -85,14 +89,104 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         
         setupNavigationButtons()
         //Variables.Posts.append(Variables.Stories)
+        
+        blurEffect()
+        self.navigationController!.view.insertSubview(viewPostPopup.popupView, at: 17)
+        viewPostPopup.backNavButton.addTarget(self, action: #selector(close), for: .touchUpInside)
+        //viewPostPopup.saveNavButton.addTarget(self, action: #selector(save), for: .touchUpInside)
     }
     
+    func blurEffect() {
+        window = UIWindow(frame: UIScreen.main.bounds)
+        blurEffectView.frame = self.navigationController!.view.bounds
+        //blurEffectView.frame = self.tabBarController!.tabBar.bounds
+        self.navigationController!.view.insertSubview(blurEffectView, at: 15)
+    }
+    
+    func editPostPopupAction(indexPath: IndexPath) {
+        UIView.animate(withDuration: 1.8, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
+            self.tabBarController?.tabBar.isHidden = true
+            self.viewPostPopup.editMode()
+            self.blurEffectView.isHidden = false
+            self.viewPostPopup.popupView.isHidden = false
+            self.viewPostPopup.popupView.transform = CGAffineTransform(scaleX: 0.9, y: 0.89)
+        }) { (finished: Bool) in
+            
+        }
+    }
+    
+    func viewPostPopupAction(indexPath: IndexPath) {
+        UIView.animate(withDuration: 1.8, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
+            self.tabBarController?.tabBar.isHidden = true
+            self.viewPostPopup.viewMode()
+            self.blurEffectView.isHidden = false
+            self.viewPostPopup.popupView.isHidden = false
+            self.viewPostPopup.popupView.transform = CGAffineTransform(scaleX: 0.9, y: 0.89)
+        }) { (finished: Bool) in
+            
+        }
+    }
+    
+    func close() {
+        UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 0.1, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
+            self.tabBarController?.tabBar.isHidden = false
+            self.blurEffectView.isHidden = true
+            self.viewPostPopup.popupView.isHidden = true
+            self.viewPostPopup.popupView.transform = CGAffineTransform(scaleX: 1, y: 1)
+        }) { (finished: Bool) in
+        }
+    }
+    
+    /*
+ func save() {
+ UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 0.1, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
+ print("save story post")
+ 
+ 
+ AppDelegate.instance().showActivityIndicator()
+ 
+ let userPostRef = Database.database().reference().child("agencies").child(Variables.Agency).child("stories").child((Variables.CurrentUser?.uid)!).child(self.story.id).child("posts")
+ let userPostAutoId = userPostRef.childByAutoId()
+ let key = userPostAutoId.key
+ 
+ let values = self.post.dictionaryRepresentation
+ 
+ 
+ userPostAutoId.updateChildValues(values) { (error, reference) in
+ if error != nil {
+ AppDelegate.instance().dismissActivityIndicator()
+ self.navigationItem.rightBarButtonItem?.isEnabled = true
+ print("Failed to save post")
+ return
+ }
+ print("success")
+ AppDelegate.instance().dismissActivityIndicator()
+ //self.backFunction()
+ 
+ self.storyPosts.append(self.post)
+ 
+ DispatchQueue.main.async {
+ self.collectionView.reloadData()
+ }
+ }
+ 
+ 
+ 
+ self.blurEffectView.isHidden = true
+ self.viewPostPopup.popupView.isHidden = true
+ self.viewPostPopup.popupView.transform = CGAffineTransform(scaleX: 1, y: 1)
+ }) { (finished: Bool) in
+ }
+ }
+ */
+
+ 
     //CollectionView
     fileprivate func registerCell() {
         collectionView.register(HomePostCell.self, forCellWithReuseIdentifier: cellID)
         collectionView.register(StoryCell.self, forCellWithReuseIdentifier: storyCellID)
     }
-    
+ 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! HomePostCell
         if let post = PostStory[indexPath.item].post {
@@ -188,6 +282,12 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
 
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let post = PostStory[indexPath.item].post {
+            print("post")
+            // Check currentUser post or else
+            editPostPopupAction(indexPath: indexPath)
+            viewPostPopupAction(indexPath: indexPath)
+        }
         if let story = PostStory[indexPath.item].story {
             print("story")
             goToStory(indexPath: indexPath)
