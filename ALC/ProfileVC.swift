@@ -186,6 +186,8 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         UIView.animate(withDuration: 1.8, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
             self.tabBarController?.tabBar.isHidden = true
             self.viewPostPopup.editMode()
+            self.viewPostPopup.post = self.posts[indexPath.item]
+            self.viewPostPopup.loadPost()
             self.blurEffectView.isHidden = false
             self.viewPostPopup.popupView.isHidden = false
             self.viewPostPopup.popupView.transform = CGAffineTransform(scaleX: 0.9, y: 0.89)
@@ -198,6 +200,8 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         UIView.animate(withDuration: 1.8, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
             self.tabBarController?.tabBar.isHidden = true
             self.viewPostPopup.viewMode()
+            self.viewPostPopup.post = self.posts[indexPath.item]
+            self.viewPostPopup.loadPost()
             self.blurEffectView.isHidden = false
             self.viewPostPopup.popupView.isHidden = false
             self.viewPostPopup.popupView.transform = CGAffineTransform(scaleX: 0.9, y: 0.89)
@@ -365,6 +369,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         if isGridView {
             print("Grid")
             editPostPopupAction(indexPath: indexPath)
+           // viewPostPopupAction(indexPath: indexPath)
         } else {
             print("List")
                 goToYourStory(indexPath: indexPath)
