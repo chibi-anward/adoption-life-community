@@ -10,6 +10,36 @@ import UIKit
 
 class StoryCell: BaseCollectionCell {
     
+    var story: Story? {
+        didSet {
+            
+            guard let title = story?.title else {return}
+            self.descriptionLabel.text = title
+            
+//            guard let likes = post?.likes else {return}
+//            self.likeLabel.text = "\(likes)"
+//            
+//            guard let comments = post?.comments else {return}
+//            self.commentLabel.text = "\(comments)"
+            
+            //            guard let username = post?.postUserName else {return}
+            //            self.usernameLabel.text = "\(username)"
+            
+//            guard let locationTag = post?.location else {return}
+//            self.locationLabel.text = locationTag
+            
+            if let seconds = story?.timestamp?.doubleValue {
+                let timestampDate = NSDate(timeIntervalSince1970: seconds)
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "hh:mm:ss a"
+                self.timeLabel.text = dateFormatter.string(from: timestampDate as Date)
+            }
+            
+            guard let imageUrl = story?.coverImageUrl else {return}
+            postImageView.loadImageUsingCacheWithUrlString(urlString: imageUrl)
+        }
+    }
+    
     // ============================
     // This is: Story cell, viewed in StoryTimeLine (the look)
     //

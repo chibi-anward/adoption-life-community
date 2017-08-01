@@ -35,11 +35,19 @@ struct Variables {
     static var IsLoggedIn : Bool = false
     static var CurrentUser: User? = nil
     static var CurrentUserProfile: Profile? = nil
-    static var Agency: String = ""
+    static var Agency: String = "css"
     static var Posts = [Post]()
     static var Stories = [Story]()
     static var StoryTitle : String = ""
     static var StoryCoverImageUrl : String = ""
+}
+
+struct PostsStories {
+    var timestamp: Double {
+        return post?.timestamp as? Double ?? story?.timestamp as? Double ?? 0
+    }
+    let post: Post?
+    let story: Story?
 }
 
 struct Story {
