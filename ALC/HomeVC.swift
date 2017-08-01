@@ -107,6 +107,8 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         UIView.animate(withDuration: 1.8, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
             self.tabBarController?.tabBar.isHidden = true
             self.viewPostPopup.editMode()
+            self.viewPostPopup.post = self.PostStory[indexPath.item].post
+            self.viewPostPopup.loadPost()
             self.blurEffectView.isHidden = false
             self.viewPostPopup.popupView.isHidden = false
             self.viewPostPopup.popupView.transform = CGAffineTransform(scaleX: 0.9, y: 0.89)
@@ -119,6 +121,8 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         UIView.animate(withDuration: 1.8, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
             self.tabBarController?.tabBar.isHidden = true
             self.viewPostPopup.viewMode()
+            self.viewPostPopup.post = self.PostStory[indexPath.item].post
+            self.viewPostPopup.loadPost()
             self.blurEffectView.isHidden = false
             self.viewPostPopup.popupView.isHidden = false
             self.viewPostPopup.popupView.transform = CGAffineTransform(scaleX: 0.9, y: 0.89)
@@ -285,8 +289,11 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         if let post = PostStory[indexPath.item].post {
             print("post")
             // Check currentUser post or else
-            editPostPopupAction(indexPath: indexPath)
-            viewPostPopupAction(indexPath: indexPath)
+            if (Variables.CurrentUser?.uid == post.postUID) {
+                editPostPopupAction(indexPath: indexPath)
+            } else {
+                viewPostPopupAction(indexPath: indexPath)
+            }
         }
         if let story = PostStory[indexPath.item].story {
             print("story")

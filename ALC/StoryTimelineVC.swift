@@ -430,8 +430,42 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
         return 0
     }
     
+    func editPostPopupAction(indexPath: IndexPath) {
+        UIView.animate(withDuration: 1.8, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
+            self.tabBarController?.tabBar.isHidden = true
+            self.viewPostPopup.editMode()
+            self.viewPostPopup.post = self.storyPosts[indexPath.item]
+            self.viewPostPopup.loadPost()
+            self.blurEffectView.isHidden = false
+            self.viewPostPopup.popupView.isHidden = false
+            self.viewPostPopup.popupView.transform = CGAffineTransform(scaleX: 0.9, y: 0.89)
+        }) { (finished: Bool) in
+            
+        }
+    }
+    
+    func viewPostPopupAction(indexPath: IndexPath) {
+        UIView.animate(withDuration: 1.8, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
+            self.tabBarController?.tabBar.isHidden = true
+            self.viewPostPopup.viewMode()
+            self.viewPostPopup.post = self.storyPosts[indexPath.item]
+            self.viewPostPopup.loadPost()
+            self.blurEffectView.isHidden = false
+            self.viewPostPopup.popupView.isHidden = false
+            self.viewPostPopup.popupView.transform = CGAffineTransform(scaleX: 0.9, y: 0.89)
+        }) { (finished: Bool) in
+            
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        viewStoryPostPopupAction(indexPath: indexPath)
+        //viewStoryPostPopupAction(indexPath: indexPath)
+        // Check currentUser post or else
+        if (Variables.CurrentUser?.uid == post.postUID) {
+            editPostPopupAction(indexPath: indexPath)
+        } else {
+            viewPostPopupAction(indexPath: indexPath)
+        }
     }
     
 }
