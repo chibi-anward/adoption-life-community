@@ -46,6 +46,9 @@ class StoryPostCell: BaseCollectionCell {
     let storyPostCardImage: CustomImageView = {
         let cardImage = CustomImageView()
         cardImage.image = UIImage(named: "storyPostCard_default")
+        cardImage.layer.cornerRadius = 8
+        cardImage.layer.masksToBounds = false
+        cardImage.clipsToBounds = true
         return cardImage
     }()
     

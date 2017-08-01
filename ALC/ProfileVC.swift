@@ -22,6 +22,15 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     var posts = [Post]()
     var stories = [Story]()
     
+    let bgTopImage: UIImageView = {
+        let imageThumb = UIImageView()
+        imageThumb.layer.masksToBounds = false
+        imageThumb.clipsToBounds = true
+        imageThumb.contentMode = .scaleAspectFill
+        imageThumb.image = UIImage(named: "bgTopImage")
+        return imageThumb
+    }()
+    
     let bgImage: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "bg_gradient")?.withRenderingMode(.alwaysOriginal)
@@ -34,7 +43,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         label.text = "Profile"
         label.textAlignment = .center
         label.textColor = UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 1)
-        label.font = UIFont.systemFont(ofSize: 18, weight: 15)
+        label.font = UIFont.systemFont(ofSize: 16, weight: 12)
         return label
     }()
     
@@ -77,10 +86,12 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 1)
+        view.insertSubview(bgTopImage, at: 1)
+        view.insertSubview(bgImage, at: 2)
         
-        navigationItem.title = "Profile"
+        bgTopImage.anchor(top: topLayoutGuide.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 210)
         
-        view.addSubview(bgImage)
         bgImage.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         view.addSubview(vcTitle)
@@ -279,6 +290,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
             //if indexPath.row == 1 {
             //STORIES (IF CURRENT USER, DONT SHOW PROFILE IMAGE & USERNAME)!
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: storyCellID, for: indexPath) as! StoryCell
+            cell.storyMode()
             cell.profileImageThumb.isHidden = true
             cell.usernameLabel.isHidden = true
                 cell.descriptionLabel.text = stories[indexPath.item].title

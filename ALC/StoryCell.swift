@@ -22,6 +22,8 @@ class StoryCell: BaseCollectionCell {
         let view = UIView()
         view.backgroundColor = UIColor.white
         view.layer.cornerRadius = 8
+        view.layer.masksToBounds = false
+        view.clipsToBounds = true
         return view
     }()
     
@@ -51,16 +53,25 @@ class StoryCell: BaseCollectionCell {
     let typeLabel: UILabel = {
         let label = UILabel()
         label.text = "POSTS 4"
-        label.font = UIFont.systemFont(ofSize: 11)
+        label.font = UIFont.systemFont(ofSize: 12)
         label.numberOfLines = 2
-        label.textAlignment = .right
+        label.textAlignment = .center
         label.textColor = UIColor.lightGray
         return label
     }()
     
+    //For Home feed
     let typeIconImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "typeIcon")
+        imageView.image = UIImage(named: "typeStoryIcon")
+        imageView.contentMode = .scaleAspectFill
+        return imageView
+    }()
+    
+    //For Profile view
+    let storyPostNumberImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "storyPostNumberPhl")
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
@@ -147,6 +158,7 @@ class StoryCell: BaseCollectionCell {
         insertSubview(profileImageThumb, at: 7)
         addSubview(usernameLabel)
         addSubview(typeIconImageView)
+        addSubview(storyPostNumberImageView)
         addSubview(typeLabel)
         postContainerView.insertSubview(postImageView, at: 1)
         insertSubview(descriptionContainerView, at: 4)
@@ -155,10 +167,11 @@ class StoryCell: BaseCollectionCell {
         addSubview(likeIcon)
         addSubview(commentIcon)
         
-        storyMode()
+        //storyMode()
         self.isUserInteractionEnabled = true
     }
     
+    //Profile View
     func storyMode() {
         postContainerView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
@@ -168,10 +181,10 @@ class StoryCell: BaseCollectionCell {
         
         usernameLabel.anchor(top: nil, left: profileImageThumb.rightAnchor, bottom: postImageView.topAnchor, right: nil, paddingTop: 2, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 180, height: 30)
         
-        typeIconImageView.anchor(top: postContainerView.topAnchor, left: nil, bottom: nil, right: postContainerView.rightAnchor, paddingTop: 24, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 10, height: 13)
+        storyPostNumberImageView.anchor(top: postContainerView.topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 18, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 98, height: 27)
         //typeIconImageView.centerYAnchor.constraint(equalTo: usernameLabel.centerYAnchor).isActive = true
         
-        typeLabel.anchor(top: postContainerView.topAnchor, left: nil, bottom: nil, right: typeIconImageView.leftAnchor, paddingTop: 12, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 180, height: 35)
+        typeLabel.anchor(top: storyPostNumberImageView.topAnchor, left: storyPostNumberImageView.leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 65, height: 18)
         
         typeLabel.textColor = UIColor.rgb(red: 237, green: 237, blue: 237, alpha: 1)
         
@@ -188,6 +201,7 @@ class StoryCell: BaseCollectionCell {
         commentIcon.anchor(top: postImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 34, height: 34)
     }
     
+    // Home feedView
     func viewStoryHomeFeed() {
         postContainerView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
@@ -195,11 +209,11 @@ class StoryCell: BaseCollectionCell {
         
         postImageView.anchor(top: profileImageThumb.centerYAnchor, left: leftAnchor, bottom: postContainerView.bottomAnchor, right: rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 50, paddingRight: 0, width: 0, height: 0)
         
-        usernameLabel.anchor(top: nil, left: profileImageThumb.rightAnchor, bottom: postImageView.topAnchor, right: nil, paddingTop: 2, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 180, height: 30)
+        usernameLabel.anchor(top: nil, left: profileImageThumb.rightAnchor, bottom: postImageView.topAnchor, right: nil, paddingTop: 2, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 180, height: 35)
         
-        typeIconImageView.anchor(top: nil, left: nil, bottom: nil, right: postContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 10, height: 13)
-        typeIconImageView.centerYAnchor.constraint(equalTo: usernameLabel.centerYAnchor).isActive = true
+        typeIconImageView.anchor(top: nil, left: nil, bottom: postImageView.topAnchor, right: postContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 10, paddingRight: 16, width: 21, height: 21)
         
+        typeLabel.textAlignment = .right
         typeLabel.anchor(top: nil, left: nil, bottom: usernameLabel.bottomAnchor, right: typeIconImageView.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 180, height: 35)
         
         descriptionContainerView.anchor(top: nil, left: leftAnchor, bottom: postImageView.bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 4, paddingRight: 0, width: 0, height: 40)

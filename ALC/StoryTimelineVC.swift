@@ -44,7 +44,7 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     let backNavButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("back", for: .normal)
-        button.setTitleColor(UIColor.rgb(red: 100, green: 100, blue: 100, alpha: 1), for: .normal)
+        button.setTitleColor(UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 0.9), for: .normal)
         button.addTarget(self, action: #selector(backAction), for: .touchDown)
         return button
     }()
@@ -53,6 +53,7 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
         let textView = UITextField()
         textView.text = "Story title"
         textView.textAlignment = .center
+        textView.textColor = UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 0.9)
         textView.font = UIFont.systemFont(ofSize: 17, weight: UIFontWeightSemibold)
         textView.isUserInteractionEnabled = true
         textView.autocorrectionType = .no
@@ -62,8 +63,8 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     
     let coverImageThumb: CustomImageView = {
         let imageThumb = CustomImageView()
-        //imageThumb.layer.masksToBounds = false
-        //imageThumb.clipsToBounds = true
+        imageThumb.layer.masksToBounds = false
+        imageThumb.clipsToBounds = true
         imageThumb.contentMode = .scaleAspectFill
         imageThumb.image = UIImage(named: "")
         return imageThumb
@@ -133,6 +134,8 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 1)
         
         view.insertSubview(coverImageThumb, at: 1)
         view.insertSubview(bgImage, at: 2)
@@ -348,7 +351,6 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     
     func setupContents() {
         view.addSubview(titleText)
-        view.addSubview(coverImageThumb)
         view.addSubview(startStoryImageThumb)
         view.addSubview(endStoryImageThumb)
         view.addSubview(editIcon)
@@ -361,11 +363,6 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
         view.addSubview(publishStoryPostButton)
         
         titleText.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 30, paddingLeft: 65, paddingBottom: 0, paddingRight: 30, width: 0, height: 30)
-        
-        coverImageThumb.anchor(top: titleText.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 150, height: 50)
-        coverImageThumb.centerXAnchor.constraint(equalTo: titleText.centerXAnchor).isActive = true
-        //coverImageThumb.image = UIImage(named: "storyCoverImageDefault") //Story Cover image!
-        //coverImageThumb.loadImageUsingCacheWithUrlString(urlString: (Variables.CurrentUserProfile?.ProfileImageUrl)!)
         
         editIcon.anchor(top: nil, left: nil, bottom: coverImageThumb.bottomAnchor, right: coverImageThumb.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 8, paddingRight: 8, width: 25, height: 25)
         

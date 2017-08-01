@@ -31,14 +31,14 @@ class ProfileHeaderCell: BaseCollectionCell {
     
     lazy var profileImageFrame: UIView = {
         let imageView = UIView()
-        imageView.frame = CGRect(x: 0, y: 0, width: 108, height: 108)
+        imageView.frame = CGRect(x: 0, y: 0, width: 110, height: 110)
         imageView.layer.masksToBounds = false
         imageView.layer.cornerRadius = imageView.frame.height / 2
         imageView.clipsToBounds = false
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.backgroundColor = UIColor.clear
         imageView.layer.borderWidth = 10
-        imageView.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 0.3).cgColor
+        imageView.layer.borderColor = UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 0.2).cgColor
         return imageView
     }()
     lazy var profileImageView: CustomImageView = {
@@ -175,7 +175,7 @@ class ProfileHeaderCell: BaseCollectionCell {
         profileFrame.anchor(top: profileImageView.topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         insertSubview(profileImageFrame, belowSubview: profileImageView)
-        profileImageFrame.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 108, height: 108)
+        profileImageFrame.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 110, height: 110)
         profileImageFrame.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor).isActive = true
         profileImageFrame.centerXAnchor.constraint(equalTo: profileImageView.centerXAnchor).isActive = true
         
