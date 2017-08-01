@@ -16,6 +16,10 @@ class StoryCell: BaseCollectionCell {
             guard let title = story?.title else {return}
             self.descriptionLabel.text = title
             
+            guard let postCount = story?.posts?.count else {return}
+            self.typeLabel.text = "POSTS \(postCount)"
+            
+            
 //            guard let likes = post?.likes else {return}
 //            self.likeLabel.text = "\(likes)"
 //            
@@ -82,7 +86,7 @@ class StoryCell: BaseCollectionCell {
     
     let typeLabel: UILabel = {
         let label = UILabel()
-        label.text = "POSTS 4"
+        label.text = "POSTS 0"
         label.font = UIFont.systemFont(ofSize: 12)
         label.numberOfLines = 2
         label.textAlignment = .center
