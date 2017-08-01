@@ -283,9 +283,11 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
         }
     }
     
-    func viewStoryPostPopupAction() {
+    func viewStoryPostPopupAction(indexPath: IndexPath) {
         UIView.animate(withDuration: 1.8, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
             self.viewPostPopup.viewMode()
+            self.viewPostPopup.post = self.storyPosts[indexPath.item]
+            self.viewPostPopup.loadPost()
             self.blurEffectView.isHidden = false
             self.viewPostPopup.popupView.isHidden = false
             self.viewPostPopup.popupView.transform = CGAffineTransform(scaleX: 0.9, y: 0.89)
@@ -429,7 +431,7 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        viewStoryPostPopupAction()
+        viewStoryPostPopupAction(indexPath: indexPath)
     }
     
 }

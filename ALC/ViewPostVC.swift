@@ -10,7 +10,36 @@ import UIKit
 
 class ViewPostVC: UIViewController {
     
-    var post = Post(dictionary: [:])
+    var post: Post? {
+        didSet {
+            
+//            guard let caption = post?.caption else {return}
+//            self.descriptionLabel.text = caption
+//            
+//            guard let likes = post?.likes else {return}
+//            self.likeLabel.text = "\(likes)"
+//            
+//            guard let comments = post?.comments else {return}
+//            self.commentLabel.text = "\(comments)"
+//            
+//            //            guard let username = post?.postUserName else {return}
+//            //            self.usernameLabel.text = "\(username)"
+//            
+//            guard let locationTag = post?.location else {return}
+//            self.locationLabel.text = locationTag
+//            
+//            if let seconds = post?.timestamp?.doubleValue {
+//                let timestampDate = NSDate(timeIntervalSince1970: seconds)
+//                let dateFormatter = DateFormatter()
+//                dateFormatter.dateFormat = "hh:mm:ss a"
+//                self.timeLabel.text = dateFormatter.string(from: timestampDate as Date)
+//            }
+//            
+//            guard let imageUrl = post?.imageUrl else {return}
+//            postImageView.loadImageUsingCacheWithUrlString(urlString: imageUrl)
+        }
+    }
+
     
     let popupView: UIView = {
         let view = UIView()
@@ -41,12 +70,15 @@ class ViewPostVC: UIViewController {
         return button
     }()
     
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         print("\nSTORY VIEW POST VC")
     }
-    
+    func loadPost() {
+        let selectedPost = post
+        print( selectedPost! )
+    }
     func viewMode() {
         popupView.insertSubview(backNavButton, at: 20)
         backNavButton.anchor(top: popupView.topAnchor, left: popupView.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
