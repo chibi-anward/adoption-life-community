@@ -39,7 +39,7 @@
 		78E49AFD1F0DDB8A00E86B31 /* SharePhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E49AFC1F0DDB8A00E86B31 /* SharePhotoController.swift */; };
 		78E49AFF1F0DDCFF00E86B31 /* CreatePostVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E49AFE1F0DDCFF00E86B31 /* CreatePostVC.swift */; };
 		78ECA1111F0E39FC00A6932B /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78ECA1101F0E39FC00A6932B /* ProfileVC.swift */; };
-		78F733941F2CB7A200367C2B /* StoryViewPostVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F733931F2CB7A200367C2B /* StoryViewPostVC.swift */; };
+		78F733941F2CB7A200367C2B /* ViewPostVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F733931F2CB7A200367C2B /* ViewPostVC.swift */; };
 		78F733961F2CDE3C00367C2B /* StoryCreateStoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F733951F2CDE3C00367C2B /* StoryCreateStoryVC.swift */; };
 		BA7F2389F2C16FF95A6F69BF /* Pods_ALC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 095A71C0D2FC9C02CAAA5C0C /* Pods_ALC.framework */; };
 /* End PBXBuildFile section */
@@ -82,7 +82,7 @@
 		78E49AFC1F0DDB8A00E86B31 /* SharePhotoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharePhotoController.swift; sourceTree = "<group>"; };
 		78E49AFE1F0DDCFF00E86B31 /* CreatePostVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePostVC.swift; sourceTree = "<group>"; };
 		78ECA1101F0E39FC00A6932B /* ProfileVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
-		78F733931F2CB7A200367C2B /* StoryViewPostVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryViewPostVC.swift; sourceTree = "<group>"; };
+		78F733931F2CB7A200367C2B /* ViewPostVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewPostVC.swift; sourceTree = "<group>"; };
 		78F733951F2CDE3C00367C2B /* StoryCreateStoryVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryCreateStoryVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -187,7 +187,7 @@
 				7875EBC31F0F8BAA0096720A /* StoryTimelineVC.swift */,
 				78F733951F2CDE3C00367C2B /* StoryCreateStoryVC.swift */,
 				7875EBBB1F0E87E00096720A /* StoryCreatePost.swift */,
-				78F733931F2CB7A200367C2B /* StoryViewPostVC.swift */,
+				78F733931F2CB7A200367C2B /* ViewPostVC.swift */,
 			);
 			name = Story;
 			sourceTree = "<group>";
@@ -367,7 +367,7 @@
 				7875EBBA1F0E85CF0096720A /* StoryCell.swift in Sources */,
 				7838C3271F0BC49400AAAA87 /* Extensions.swift in Sources */,
 				7875EBB11F0E3ED10096720A /* ProfileHeaderCell.swift in Sources */,
-				78F733941F2CB7A200367C2B /* StoryViewPostVC.swift in Sources */,
+				78F733941F2CB7A200367C2B /* ViewPostVC.swift in Sources */,
 				7875EBAF1F0E3C560096720A /* ProfilePostCell.swift in Sources */,
 				78E49AEC1F0BC74D00E86B31 /* BaseTableCell.swift in Sources */,
 				7875EBB31F0E4FE00096720A /* CreateTabVC.swift in Sources */,

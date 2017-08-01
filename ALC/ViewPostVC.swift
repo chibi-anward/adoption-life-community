@@ -1,5 +1,5 @@
 //
-//  StoryViewPostVC.swift
+//  ViewPostVC.swift
 //  ALC
 //
 //  Created by Chibi Anward on 2017-07-29.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class StoryViewPostVC: UIViewController {
+class ViewPostVC: UIViewController {
     
     
     let popupView: UIView = {
