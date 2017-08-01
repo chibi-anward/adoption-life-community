@@ -74,12 +74,12 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/RegisterVC.swift"
-                  timestampString = "523306642.221229"
+                  timestampString = "523309367.185908"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "316"
                   endingLineNumber = "316"
-                  offsetFromSymbolStart = "3383">
+                  offsetFromSymbolStart = "2468">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -89,7 +89,7 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/RegisterVC.swift"
-                  timestampString = "523306642.224476"
+                  timestampString = "523309367.187449"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "317"
@@ -170,12 +170,12 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/SharePhotoController.swift"
-                  timestampString = "523306642.242389"
+                  timestampString = "523309367.200904"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "158"
                   endingLineNumber = "158"
-                  offsetFromSymbolStart = "3715">
+                  offsetFromSymbolStart = "2888">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -185,12 +185,12 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/SharePhotoController.swift"
-                  timestampString = "523306642.244251"
+                  timestampString = "523309367.202358"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "159"
                   endingLineNumber = "159"
-                  offsetFromSymbolStart = "23">
+                  offsetFromSymbolStart = "28">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -282,11 +282,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ALC/HomeVC.swift"
-            timestampString = "523308148.983775"
+            timestampString = "523309365.819089"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "324"
-            endingLineNumber = "324"
+            startingLineNumber = "335"
+            endingLineNumber = "335"
             landmarkName = "didLike(for:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -298,59 +298,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ALC/HomeVC.swift"
-            timestampString = "523308148.983775"
+            timestampString = "523309365.819089"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "383"
-            endingLineNumber = "383"
-            landmarkName = "didUnLike(for:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "ALC.HomeVC.didUnLike (for : ALC.HomePostCell) -&gt; ()"
-                  moduleName = "ALC"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/HomeVC.swift"
-                  timestampString = "523306642.277122"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "369"
-                  endingLineNumber = "369"
-                  offsetFromSymbolStart = "3841">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "ALC.HomeVC.didUnLike (for : ALC.HomePostCell) -&gt; ()"
-                  moduleName = "ALC"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/HomeVC.swift"
-                  timestampString = "523306642.279335"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "369"
-                  endingLineNumber = "369"
-                  offsetFromSymbolStart = "12046">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ALC/HomeVC.swift"
-            timestampString = "523308148.983775"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "411"
-            endingLineNumber = "411"
+            startingLineNumber = "394"
+            endingLineNumber = "394"
             landmarkName = "didUnLike(for:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -362,12 +314,44 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ALC/HomeVC.swift"
-            timestampString = "523308148.983775"
+            timestampString = "523309365.819089"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "420"
-            endingLineNumber = "420"
+            startingLineNumber = "422"
+            endingLineNumber = "422"
             landmarkName = "didUnLike(for:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ALC/HomeVC.swift"
+            timestampString = "523309365.819089"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "431"
+            endingLineNumber = "431"
+            landmarkName = "didUnLike(for:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ALC/ViewPostVC.swift"
+            timestampString = "523309301.818712"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "47"
+            endingLineNumber = "47"
+            landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

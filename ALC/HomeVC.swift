@@ -169,8 +169,7 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         
     }
     
-    func goToYourStory(indexPath: IndexPath) {
-        print("\nGoToYourStory\n")
+    func goToStory(indexPath: IndexPath) {
         let storyTimeline = StoryTimelineVC()
         storyTimeline.titleText.text = PostStory[indexPath.item].story?.title
         storyTimeline.coverImageThumb.loadImageUsingCacheWithUrlString(urlString: (PostStory[indexPath.item].story?.coverImageUrl)!)
@@ -178,13 +177,25 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         storyTimeline.story = PostStory[indexPath.item].story!
         self.present(storyTimeline, animated: true, completion: nil)
     }
+    
+//    func goToPost(indexPath: IndexPath) {
+//        let postVC = ViewPostVC()
+//        postVC.post = PostStory[indexPath.item].post!
+//        postVC.viewMode()
+//        
+//        self.present(postVC, animated: true, completion: nil)
+//    }
 
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let story = PostStory[indexPath.item].story {
             print("story")
-            goToYourStory(indexPath: indexPath)
+            goToStory(indexPath: indexPath)
         }
+//        if let post = PostStory[indexPath.item].post {
+//            print("post")
+//            goToPost(indexPath: indexPath)
+//        }
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

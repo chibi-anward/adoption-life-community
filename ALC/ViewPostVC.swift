@@ -10,6 +10,7 @@ import UIKit
 
 class ViewPostVC: UIViewController {
     
+    var post = Post(dictionary: [:])
     
     let popupView: UIView = {
         let view = UIView()
@@ -42,6 +43,7 @@ class ViewPostVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         print("\nSTORY VIEW POST VC")
     }
     
