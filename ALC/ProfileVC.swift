@@ -75,6 +75,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     
     
     var createStoryPopup = StoryCreateStoryVC()
+    var viewPostPopup = ViewPostVC()
     
     override func viewDidAppear(_ animated: Bool) {
         fetchOrderedPosts()
@@ -84,6 +85,8 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         }
     }
     
+    var window: UIWindow?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 1)
@@ -92,7 +95,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         
         bgTopImage.anchor(top: topLayoutGuide.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 210)
         
-        bgImage.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        bgImage.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: bottomLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         view.addSubview(vcTitle)
         vcTitle.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 35, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 35)
@@ -101,12 +104,16 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         registerCell()
                
         blurEffect()
-        self.view.insertSubview(createStoryPopup.popupView, at: 17)
+        self.navigationController!.view.insertSubview(createStoryPopup.popupView, at: 17)
         createStoryPopup.backNavButton.addTarget(self, action: #selector(close), for: .touchUpInside)
         createStoryPopup.saveNavButton.addTarget(self, action: #selector(save), for: .touchUpInside)
         createStoryPopup.coverImageTextOverlay.addTarget(self, action: #selector(handleStoryCoverImage), for: .touchUpInside) //SAVE COVER IMAGE TO STORY
         
         createStoryPopup.storyTitle.delegate = self
+        
+        self.navigationController!.view.insertSubview(viewPostPopup.popupView, at: 17)
+        viewPostPopup.backNavButton.addTarget(self, action: #selector(closeViewPost), for: .touchUpInside)
+        viewPostPopup.saveNavButton.addTarget(self, action: #selector(saveEditPost), for: .touchUpInside)
         
         
         
@@ -158,13 +165,15 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     }
     
     func blurEffect() {
-        blurEffectView.frame = view.bounds
-        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        view.insertSubview(blurEffectView, at: 15)
+        window = UIWindow(frame: UIScreen.main.bounds)
+        blurEffectView.frame = self.navigationController!.view.bounds
+        //blurEffectView.frame = self.tabBarController!.tabBar.bounds
+        self.navigationController!.view.insertSubview(blurEffectView, at: 15)
     }
     
     func createStoryPopupAction() {
         UIView.animate(withDuration: 1.8, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
+            self.tabBarController?.tabBar.isHidden = true
             self.createStoryPopup.addMode()
             self.blurEffectView.isHidden = false
             self.createStoryPopup.popupView.isHidden = false
@@ -173,16 +182,55 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         }
     }
     
-   
+    func editPostPopupAction(indexPath: IndexPath) {
+        UIView.animate(withDuration: 1.8, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
+            self.tabBarController?.tabBar.isHidden = true
+            self.viewPostPopup.editMode()
+            self.blurEffectView.isHidden = false
+            self.viewPostPopup.popupView.isHidden = false
+            self.viewPostPopup.popupView.transform = CGAffineTransform(scaleX: 0.9, y: 0.89)
+        }) { (finished: Bool) in
+            
+        }
+    }
+    
+    func viewPostPopupAction(indexPath: IndexPath) {
+        UIView.animate(withDuration: 1.8, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
+            self.tabBarController?.tabBar.isHidden = true
+            self.viewPostPopup.viewMode()
+            self.blurEffectView.isHidden = false
+            self.viewPostPopup.popupView.isHidden = false
+            self.viewPostPopup.popupView.transform = CGAffineTransform(scaleX: 0.9, y: 0.89)
+        }) { (finished: Bool) in
+            
+        }
+    }
     
     func close() {
         UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 0.1, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
+            self.tabBarController?.tabBar.isHidden = false
             self.blurEffectView.isHidden = true
             self.createStoryPopup.popupView.isHidden = true
             self.createStoryPopup.popupView.transform = CGAffineTransform(scaleX: 1, y: 1)
         }) { (finished: Bool) in
         }
     }
+    
+    func closeViewPost() {
+        UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 0.1, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
+            self.tabBarController?.tabBar.isHidden = false
+            self.blurEffectView.isHidden = true
+            self.viewPostPopup.popupView.isHidden = true
+            self.viewPostPopup.popupView.transform = CGAffineTransform(scaleX: 1, y: 1)
+        }) { (finished: Bool) in
+        }
+    }
+    
+    func saveEditPost() {
+        print("saveEditPost")
+    }
+    
+    
 
     func save() {
         UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 0.1, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
@@ -231,7 +279,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     
     func addCollectionView() {
         view.addSubview(collectionView)
-        collectionView.anchor(top: topLayoutGuide.topAnchor, left: view.leftAnchor, bottom: bottomLayoutGuide.topAnchor, right: view.rightAnchor, paddingTop: 75, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        collectionView.anchor(top: topLayoutGuide.topAnchor, left: view.leftAnchor, bottom: bottomLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingTop: 75, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
     }
     
     func registerCell() {
@@ -316,6 +364,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         print("\(indexPath.row)")
         if isGridView {
             print("Grid")
+            editPostPopupAction(indexPath: indexPath)
         } else {
             print("List")
                 goToYourStory(indexPath: indexPath)
