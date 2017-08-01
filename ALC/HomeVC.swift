@@ -177,6 +177,11 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        if let story = PostStory[indexPath.item].story {
+            let width = UIScreen.main.bounds.width - 6
+            return CGSize(width: width, height: width - 50)
+        }
         let width = UIScreen.main.bounds.width - 6
         return CGSize(width: width, height: width)
     }
