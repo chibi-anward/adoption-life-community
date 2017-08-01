@@ -229,10 +229,11 @@ class StoryCell: BaseCollectionCell {
         
         timeLabel.anchor(top: nil, left: descriptionLabel.rightAnchor, bottom: nil, right: descriptionContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 0, height: 20)
         timeLabel.centerYAnchor.constraint(equalTo: descriptionContainerView.centerYAnchor).isActive = true
-        
+        /*
         likeIcon.anchor(top: postImageView.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 34, height: 34)
         
         commentIcon.anchor(top: postImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 34, height: 34)
+ */
     }
     
     // Home feedView
@@ -241,7 +242,7 @@ class StoryCell: BaseCollectionCell {
         
         profileImageThumb.anchor(top: postContainerView.topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 6, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 60, height: 60)
         
-        postImageView.anchor(top: profileImageThumb.centerYAnchor, left: leftAnchor, bottom: postContainerView.bottomAnchor, right: rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 50, paddingRight: 0, width: 0, height: 0)
+        postImageView.anchor(top: profileImageThumb.centerYAnchor, left: leftAnchor, bottom: postContainerView.bottomAnchor, right: rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         usernameLabel.anchor(top: nil, left: profileImageThumb.rightAnchor, bottom: postImageView.topAnchor, right: nil, paddingTop: 2, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 180, height: 35)
         
@@ -257,10 +258,11 @@ class StoryCell: BaseCollectionCell {
         
         timeLabel.anchor(top: nil, left: descriptionLabel.rightAnchor, bottom: nil, right: descriptionContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 0, height: 20)
         timeLabel.centerYAnchor.constraint(equalTo: descriptionContainerView.centerYAnchor).isActive = true
-        
+        /*
         likeIcon.anchor(top: postImageView.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 34, height: 34)
         
         commentIcon.anchor(top: postImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 34, height: 34)
+ */
     }
     
 }
