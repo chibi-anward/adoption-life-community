@@ -157,8 +157,8 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     func goToYourStory(indexPath: IndexPath) {
         print("\nGoToYourStory\n")
         let storyTimeline = StoryTimelineVC()
-        storyTimeline.titleText.text = stories[indexPath.item].title
-        storyTimeline.coverImageThumb.loadImageUsingCacheWithUrlString(urlString: stories[indexPath.item].coverImageUrl)
+        //storyTimeline.titleText.text = stories[indexPath.item].title
+        //storyTimeline.coverImageThumb.loadImageUsingCacheWithUrlString(urlString: stories[indexPath.item].coverImageUrl)
         storyTimeline.storyPosts = stories[indexPath.item].posts!
         storyTimeline.story = stories[indexPath.item]
         self.present(storyTimeline, animated: true, completion: nil)
