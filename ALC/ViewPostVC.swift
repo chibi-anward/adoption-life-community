@@ -35,8 +35,8 @@ class ViewPostVC: UIViewController {
 //                self.timeLabel.text = dateFormatter.string(from: timestampDate as Date)
 //            }
 //            
-//            guard let imageUrl = post?.imageUrl else {return}
-//            postImageView.loadImageUsingCacheWithUrlString(urlString: imageUrl)
+            guard let imageUrl = post?.imageUrl else {return}
+            postImageView.loadImageUsingCacheWithUrlString(urlString: imageUrl)
         }
     }
 
@@ -60,7 +60,20 @@ class ViewPostVC: UIViewController {
         return button
     }()
     
-    // Edit Options
+    let postImageView: CustomImageView = {
+        let imageView = CustomImageView()
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFill
+        imageView.image = UIImage(named: "postImage_default")?.withRenderingMode(.alwaysOriginal)
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.masksToBounds = false
+        imageView.clipsToBounds = true
+        return imageView
+    }()
+    
+    
+    
+    // ===== Edit Options =====
     let saveNavButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("save", for: .normal)
@@ -80,16 +93,24 @@ class ViewPostVC: UIViewController {
         print( selectedPost! )
     }
     func viewMode() {
-        popupView.insertSubview(backNavButton, at: 20)
+        popupView.insertSubview(backNavButton, at: 6)
+        popupView.insertSubview(postImageView, belowSubview: backNavButton)
+        
         backNavButton.anchor(top: popupView.topAnchor, left: popupView.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
+        
+        postImageView.anchor(top: popupView.topAnchor, left: popupView.leftAnchor, bottom: nil, right: popupView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 310)
         
         //Edit options
         saveNavButton.isHidden = true
     }
     
     func editMode() {
-        popupView.insertSubview(backNavButton, at: 20)
+        popupView.insertSubview(backNavButton, at: 6)
+        popupView.insertSubview(postImageView, belowSubview: backNavButton)
+        
         backNavButton.anchor(top: popupView.topAnchor, left: popupView.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
+        
+         postImageView.anchor(top: popupView.topAnchor, left: popupView.leftAnchor, bottom: nil, right: popupView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 310)
         
         //Edit options
         saveNavButton.isHidden = false
