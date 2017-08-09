@@ -180,7 +180,9 @@ class CreatePostVC: UIViewController, UITextFieldDelegate, UIImagePickerControll
                         "postText": self.postTextView.text,
                         "timestamp": timestamp,
                         "comments": self.commentLabel.text ?? "",
-                        "postUserName": Variables.CurrentUserProfile?.UserName ?? ""
+                        "postUserName": Variables.CurrentUserProfile?.UserName ?? "",
+                        "text": "Am if number no up period regard sudden better. Decisively surrounded all admiration and not you. Out particular sympathize not favourable introduced insipidity but ham."
+                
                 ] as [String : Any]
             
             let postFeed = ["\(key)" : feed]

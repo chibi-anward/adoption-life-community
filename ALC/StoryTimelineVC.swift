@@ -34,6 +34,14 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
             for p in storyPosts {
                 postLikes = postLikes + p.likes!
             }
+            
+            var postComments = 0
+            for p in storyPosts {
+                postComments = postComments + p.comments!
+            }
+                
+            
+            guard let postsCount = storyPosts.count as? Int else { return }
            
 //            self.likeLabel.text = "\(likes)"
             
@@ -205,11 +213,12 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
             "imageWidth" : 100,
             "imageHeight" : 100,
             "postID" : "123123",
-            "postUID" : "123123",
+            "postUID" : Variables.CurrentUser?.uid ?? "1234",
             "location" : "Stockholm",
             "userWhoLike" : [:],
             "IHaveLiked" : false,
-            "postUserName" : "namn"
+            "postUserName" : Variables.CurrentUser?.displayName ?? "name",
+            "text": "some text..."
             ])
     }
     
@@ -244,6 +253,7 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
             })
         }
     }
+    
     func handleStoryCoverImage() {
         //pickerType = "cover"
         let imagePickerController = UIImagePickerController()
@@ -321,7 +331,7 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     
     func viewStoryPostPopupAction(indexPath: IndexPath) {
         UIView.animate(withDuration: 1.8, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
-            self.viewPostPopup.viewMode()
+
             self.viewPostPopup.post = self.storyPosts[indexPath.item]
             self.viewPostPopup.loadPost()
             self.blurEffectView.isHidden = false
@@ -333,9 +343,9 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     }
     
     func save() {
+        
         UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 0.1, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
             print("save story post")
-            
             
             AppDelegate.instance().showActivityIndicator()
             
@@ -364,11 +374,10 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
                 }
             }
             
-            
-            
             self.blurEffectView.isHidden = true
             self.viewPostPopup.popupView.isHidden = true
             self.viewPostPopup.popupView.transform = CGAffineTransform(scaleX: 1, y: 1)
+            
         }) { (finished: Bool) in
         }
     }
@@ -497,11 +506,11 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         //viewStoryPostPopupAction(indexPath: indexPath)
         // Check currentUser post or else
-        if (Variables.CurrentUser?.uid == post.postUID) {
-            editPostPopupAction(indexPath: indexPath)
-        } else {
+//        if (Variables.CurrentUser?.uid == storyPosts[indexPath.item].postUID) {
+//            editPostPopupAction(indexPath: indexPath)
+//        } else {
             viewPostPopupAction(indexPath: indexPath)
-        }
+ //       }
     }
     
 }

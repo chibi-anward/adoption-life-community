@@ -8,16 +8,20 @@
 
 import UIKit
 
-class ViewPostVC: UIViewController {
+class ViewPostVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var post: Post? {
         didSet {
-            
             guard let caption = post?.caption else {return}
             self.descriptionLabel.text = caption
-//            
+            
+            guard let text = post?.text else {return}
+            self.descriptionText.text = text
+            
+
+//
 //            guard let likes = post?.likes else {return}
-//            self.likeLabel.text = "\(likes)"
+//            self.likeLabel.text = "\(likes)"  
 //            
 //            guard let comments = post?.comments else {return}
 //            self.commentLabel.text = "\(comments)"
@@ -34,7 +38,7 @@ class ViewPostVC: UIViewController {
 //                dateFormatter.dateFormat = "hh:mm:ss a"
 //                self.timeLabel.text = dateFormatter.string(from: timestampDate as Date)
 //            }
-//            
+//
             guard let imageUrl = post?.imageUrl else {return}
             postImageView.loadImageUsingCacheWithUrlString(urlString: imageUrl)
         }
@@ -153,6 +157,8 @@ class ViewPostVC: UIViewController {
         popupView.addSubview(likeIcon)
         popupView.addSubview(descriptionText)
         
+        postImageView.isUserInteractionEnabled = false
+        
         backNavButton.anchor(top: popupView.topAnchor, left: popupView.leftAnchor, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
         
         postImageView.anchor(top: popupView.topAnchor, left: popupView.leftAnchor, bottom: nil, right: popupView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 310)
@@ -193,7 +199,9 @@ class ViewPostVC: UIViewController {
         saveNavButton.isHidden = false
         popupView.insertSubview(saveNavButton, at: 20)
         saveNavButton.anchor(top: popupView.topAnchor, left: nil, bottom: nil, right: popupView.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, width: 40, height: 40)
+     
     }
+    
  
     
 }
