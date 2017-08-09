@@ -16,6 +16,7 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     var PostStory = [PostsStories]()
     
     
+    
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         collectionView.collectionViewLayout.invalidateLayout()
     }
@@ -282,8 +283,8 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     
     func goToStory(indexPath: IndexPath) {
         let storyTimeline = StoryTimelineVC()
-        storyTimeline.titleText.text = PostStory[indexPath.item].story?.title
-        storyTimeline.coverImageThumb.loadImageUsingCacheWithUrlString(urlString: (PostStory[indexPath.item].story?.coverImageUrl)!)
+        //storyTimeline.titleText.text = PostStory[indexPath.item].story?.title
+        //storyTimeline.coverImageThumb.loadImageUsingCacheWithUrlString(urlString: (PostStory[indexPath.item].story?.coverImageUrl)!)
         storyTimeline.storyPosts = (PostStory[indexPath.item].story?.posts!)!
         storyTimeline.story = PostStory[indexPath.item].story!
         self.present(storyTimeline, animated: true, completion: nil)

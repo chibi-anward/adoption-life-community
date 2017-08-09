@@ -17,10 +17,46 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     // Filter by date
     // ============================
     
+    
     var storyPosts = [Post]()
-    var story = Story(dictionary: [:])
+    //var story = Story(dictionary: [:])
     var post = Post(dictionary: [:])
     var textTitle = ""
+    
+    var story: Story? {
+        didSet {
+            
+            guard let title = story?.title else {return}
+            self.titleText.text = title
+//
+            
+//            var postLikes = 0
+//            for p in storyPosts {
+//                postLikes = postLikes + p.likes!
+//            }
+//            guard let likes = postLikes else {return}
+//            self.likeLabel.text = "\(likes)"
+            
+            //            guard let comments = post?.comments else {return}
+            //            self.commentLabel.text = "\(comments)"
+            
+            //            guard let username = post?.postUserName else {return}
+            //            self.usernameLabel.text = "\(username)"
+            
+            //            guard let locationTag = post?.location else {return}
+            //            self.locationLabel.text = locationTag
+            
+//            if let seconds = story?.timestamp?.doubleValue {
+//                let timestampDate = NSDate(timeIntervalSince1970: seconds)
+//                let dateFormatter = DateFormatter()
+//                dateFormatter.dateFormat = "hh:mm:ss a"
+//                self.timeLabel.text = dateFormatter.string(from: timestampDate as Date)
+//            }
+//            
+            guard let imageUrl = story?.coverImageUrl else {return}
+            coverImageThumb.loadImageUsingCacheWithUrlString(urlString: imageUrl)
+        }
+    }
     
     let cellID = "cellID"
     
@@ -187,12 +223,12 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     func textFieldDidEndEditing(_ textField: UITextField) {
         if ( textField.text != textTitle ) {
             guard let uid = Auth.auth().currentUser?.uid else {return}
-            Database.database().reference().child("agencies").child(Variables.Agency).child("stories").child(uid).child(self.story.id).observeSingleEvent(of: .value, with: {( snapshot ) in
+            Database.database().reference().child("agencies").child(Variables.Agency).child("stories").child(uid).child((self.story?.id)!).observeSingleEvent(of: .value, with: {( snapshot ) in
                 
                 let values =  snapshot.value as! NSMutableDictionary
                 values.setValue(textField.text, forKey: "title")
                 
-                Database.database().reference().child("agencies").child(Variables.Agency).child("stories").child(uid).child(self.story.id).updateChildValues(values as! [AnyHashable : Any]) { (error, reference) in
+                Database.database().reference().child("agencies").child(Variables.Agency).child("stories").child(uid).child((self.story?.id)!).updateChildValues(values as! [AnyHashable : Any]) { (error, reference) in
                     if error != nil {
                         AppDelegate.instance().dismissActivityIndicator()
                         //self.navigationItem.rightBarButtonItem?.isEnabled = true
@@ -244,12 +280,12 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
                 
                 
                 
-                Database.database().reference().child("agencies").child(Variables.Agency).child("stories").child(uid).child(self.story.id).observeSingleEvent(of: .value, with: {( snapshot ) in
+                Database.database().reference().child("agencies").child(Variables.Agency).child("stories").child(uid).child((self.story?.id)!).observeSingleEvent(of: .value, with: {( snapshot ) in
                     
                     let values =  snapshot.value as! NSMutableDictionary
                     values.setValue(storyCoverImageUrl, forKey: "coverImageUrl")
                     
-                    Database.database().reference().child("agencies").child(Variables.Agency).child("stories").child(uid).child(self.story.id).updateChildValues(values as! [AnyHashable : Any]) { (error, reference) in
+                    Database.database().reference().child("agencies").child(Variables.Agency).child("stories").child(uid).child((self.story?.id)!).updateChildValues(values as! [AnyHashable : Any]) { (error, reference) in
                         if error != nil {
                             AppDelegate.instance().dismissActivityIndicator()
                             //self.navigationItem.rightBarButtonItem?.isEnabled = true
@@ -303,7 +339,7 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
             
             AppDelegate.instance().showActivityIndicator()
             
-            let userPostRef = Database.database().reference().child("agencies").child(Variables.Agency).child("stories").child((Variables.CurrentUser?.uid)!).child(self.story.id).child("posts")
+            let userPostRef = Database.database().reference().child("agencies").child(Variables.Agency).child("stories").child((Variables.CurrentUser?.uid)!).child((self.story?.id)!).child("posts")
             let userPostAutoId = userPostRef.childByAutoId()
             let key = userPostAutoId.key
             
