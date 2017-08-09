@@ -30,11 +30,11 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
             self.titleText.text = title
 //
             
-//            var postLikes = 0
-//            for p in storyPosts {
-//                postLikes = postLikes + p.likes!
-//            }
-//            guard let likes = postLikes else {return}
+            var postLikes = 0
+            for p in storyPosts {
+                postLikes = postLikes + p.likes!
+            }
+           
 //            self.likeLabel.text = "\(likes)"
             
             //            guard let comments = post?.comments else {return}
