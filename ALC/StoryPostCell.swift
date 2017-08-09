@@ -45,7 +45,8 @@ class StoryPostCell: BaseCollectionCell {
     
     let storyPostCardImage: CustomImageView = {
         let cardImage = CustomImageView()
-        cardImage.image = UIImage(named: "storyPostCard_default")
+        cardImage.image = UIImage(named: "storyPostCard_default")?.withRenderingMode(.alwaysOriginal)
+        cardImage.contentMode = .scaleAspectFill
         cardImage.layer.cornerRadius = 8
         cardImage.layer.masksToBounds = false
         cardImage.clipsToBounds = true
@@ -57,6 +58,7 @@ class StoryPostCell: BaseCollectionCell {
         textView.isUserInteractionEnabled = false
         textView.text = "Post Title... g"
         textView.font = UIFont.systemFont(ofSize: 14, weight: UIFontWeightMedium)
+        textView.backgroundColor = UIColor.clear
         textView.textAlignment = .left
         return textView
     }()
