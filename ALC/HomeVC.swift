@@ -14,6 +14,8 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     
     var refresher = UIRefreshControl()
     var PostStory = [PostsStories]()
+    var selectedPost: Post? = nil
+    var selectedIndexPath: IndexPath? = nil
     
     
     
@@ -107,7 +109,9 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         blurEffect()
         self.navigationController!.view.insertSubview(viewPostPopup.popupView, at: 17)
         viewPostPopup.backNavButton.addTarget(self, action: #selector(close), for: .touchUpInside)
-        //viewPostPopup.saveNavButton.addTarget(self, action: #selector(save), for: .touchUpInside)
+        viewPostPopup.saveNavButton.addTarget(self, action: #selector(deleteUserPost), for: .touchUpInside)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name:NSNotification.Name(rawValue: "refreshHome"), object: nil)
     }
     
     func blurEffect() {
@@ -136,13 +140,41 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
             self.tabBarController?.tabBar.isHidden = true
             self.viewPostPopup.viewMode()
             self.viewPostPopup.post = self.PostStory[indexPath.item].post
+            self.disableEditMode()
+            if ( Variables.CurrentUser?.uid == self.PostStory[indexPath.item].post?.postUID ) {
+                self.viewPostPopup.editButton.isHidden = false
+                self.viewPostPopup.editButton.addTarget(self, action: #selector(self.enableEditMode), for: .touchUpInside)
+            } else {
+                self.viewPostPopup.editButton.isHidden = true
+            }
             self.viewPostPopup.loadPost()
+            Variables.isStoryPost = false
             self.blurEffectView.isHidden = false
             self.viewPostPopup.popupView.isHidden = false
             self.viewPostPopup.popupView.transform = CGAffineTransform(scaleX: 0.9, y: 0.89)
         }) { (finished: Bool) in
             
+            
         }
+    }
+    
+    func disableEditMode() {
+        self.viewPostPopup.saveNavButton.isHidden = true
+        self.viewPostPopup.descriptionText.isUserInteractionEnabled = false
+        self.viewPostPopup.descriptionText.isEditable = false
+        self.viewPostPopup.descriptionLabel.isUserInteractionEnabled = false
+    }
+    
+    func enableEditMode() {
+        let alertController = UIAlertController(title: "Edit mode enabled", message: "Select text you want to edit", preferredStyle: .alert)
+        let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        alertController.addAction(defaultAction)
+        self.present(alertController, animated: true, completion: nil)
+        
+        self.viewPostPopup.saveNavButton.isHidden = false
+        self.viewPostPopup.descriptionText.isUserInteractionEnabled = true
+        self.viewPostPopup.descriptionText.isEditable = true
+        self.viewPostPopup.descriptionLabel.isUserInteractionEnabled = true
     }
     
     func close() {
@@ -152,51 +184,22 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
             self.viewPostPopup.popupView.isHidden = true
             self.viewPostPopup.popupView.transform = CGAffineTransform(scaleX: 1, y: 1)
         }) { (finished: Bool) in
+            self.refresh()
         }
     }
     
-    /*
- func save() {
- UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 0.1, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
- print("save story post")
- 
- 
- AppDelegate.instance().showActivityIndicator()
- 
- let userPostRef = Database.database().reference().child("agencies").child(Variables.Agency).child("stories").child((Variables.CurrentUser?.uid)!).child(self.story.id).child("posts")
- let userPostAutoId = userPostRef.childByAutoId()
- let key = userPostAutoId.key
- 
- let values = self.post.dictionaryRepresentation
- 
- 
- userPostAutoId.updateChildValues(values) { (error, reference) in
- if error != nil {
- AppDelegate.instance().dismissActivityIndicator()
- self.navigationItem.rightBarButtonItem?.isEnabled = true
- print("Failed to save post")
- return
- }
- print("success")
- AppDelegate.instance().dismissActivityIndicator()
- //self.backFunction()
- 
- self.storyPosts.append(self.post)
- 
- DispatchQueue.main.async {
- self.collectionView.reloadData()
- }
- }
- 
- 
- 
- self.blurEffectView.isHidden = true
- self.viewPostPopup.popupView.isHidden = true
- self.viewPostPopup.popupView.transform = CGAffineTransform(scaleX: 1, y: 1)
- }) { (finished: Bool) in
- }
- }
- */
+    
+    func deleteUserPost() {
+        print("delete post")
+        let dataHandler = DataHandler()
+        dataHandler.deletePost(post: selectedPost!, isStory: false, story: nil) { (success) in
+            print("post deleted")
+            self.close()
+            self.refresh()
+            
+        }
+    }
+    
 
  
     //CollectionView
@@ -283,10 +286,11 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     
     func goToStory(indexPath: IndexPath) {
         let storyTimeline = StoryTimelineVC()
-        //storyTimeline.titleText.text = PostStory[indexPath.item].story?.title
-        //storyTimeline.coverImageThumb.loadImageUsingCacheWithUrlString(urlString: (PostStory[indexPath.item].story?.coverImageUrl)!)
         storyTimeline.storyPosts = (PostStory[indexPath.item].story?.posts!)!
         storyTimeline.story = PostStory[indexPath.item].story!
+        if( Variables.CurrentUser?.uid == PostStory[indexPath.item].story?.uid  ) {
+            storyTimeline.editButton.isHidden = false
+        }
         self.present(storyTimeline, animated: true, completion: nil)
     }
     
@@ -302,12 +306,14 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let post = PostStory[indexPath.item].post {
             print("post")
+            selectedPost = post
+            selectedIndexPath = indexPath
             // Check currentUser post or else
-            if (Variables.CurrentUser?.uid == post.postUID) {
-                editPostPopupAction(indexPath: indexPath)
-            } else {
+//            if (Variables.CurrentUser?.uid == post.postUID) {
+//                editPostPopupAction(indexPath: indexPath)
+//            } else {
                 viewPostPopupAction(indexPath: indexPath)
-            }
+ //           }
         }
         if let story = PostStory[indexPath.item].story {
             print("story")
@@ -426,14 +432,25 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
                     if (dictionary["posts"]) != nil {
                         let posts = dictionary["posts"] as! NSDictionary
                         for post in posts {
-                            let p = Post(dictionary: post.value as! [String : Any])
-                            story.posts?.append(p)
+                            
+                            var p = Post(dictionary: post.value as! [String : Any])
+                            
+                            if ( p.userWhoLike != nil ) {
+                                for people in p.userWhoLike as NSDictionary {
+                                   
+                                    if( people.value as? String ==  Variables.CurrentUser?.uid ) {
+                                        p.IHaveLiked = true
+                                    }
+                                }
+                            }
+                                story.posts?.append(p)
                         }
                     }
                     
                     
-                    
-                    Variables.Stories.append(story)
+                    if ( story.state == "public" ) {
+                        Variables.Stories.append(story)
+                    }
                 })
                 
                 Variables.Stories.sort(by: { $0.timestamp?.compare($1.timestamp!) == .orderedDescending})

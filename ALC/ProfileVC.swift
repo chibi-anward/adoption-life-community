@@ -19,8 +19,10 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     var isGridView = true
     var pickerType = ""
     
+    var refresher = UIRefreshControl()
     var posts = [Post]()
     var stories = [Story]()
+    var selectedPost: Post? = nil
     
     let bgTopImage: UIImageView = {
         let imageThumb = UIImageView()
@@ -77,6 +79,12 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     var createStoryPopup = StoryCreateStoryVC()
     var viewPostPopup = ViewPostVC()
     
+    func refresh() {
+        fetchOrderedPosts()
+        fetchOrderedStories()
+        refresher.endRefreshing()
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         fetchOrderedPosts()
         fetchOrderedStories()
@@ -113,9 +121,14 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         
         self.navigationController!.view.insertSubview(viewPostPopup.popupView, at: 17)
         viewPostPopup.backNavButton.addTarget(self, action: #selector(closeViewPost), for: .touchUpInside)
-        viewPostPopup.saveNavButton.addTarget(self, action: #selector(saveEditPost), for: .touchUpInside)
+        viewPostPopup.saveNavButton.addTarget(self, action: #selector(deleteUserPost), for: .touchUpInside)
         
+        refresher.addTarget(self, action: #selector(refresh), for: UIControlEvents.valueChanged)
+        collectionView.addSubview(refresher)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(fetchOrderedPosts), name:NSNotification.Name(rawValue: "refreshPosts"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(fetchOrderedStories), name:NSNotification.Name(rawValue: "refreshStories"), object: nil)
+
         
     }
 
@@ -153,14 +166,19 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         isGridView = false
         collectionView.reloadData()
     }
-    
+    let storyTimeline = StoryTimelineVC()
     func goToYourStory(indexPath: IndexPath) {
         print("\nGoToYourStory\n")
-        let storyTimeline = StoryTimelineVC()
-        //storyTimeline.titleText.text = stories[indexPath.item].title
-        //storyTimeline.coverImageThumb.loadImageUsingCacheWithUrlString(urlString: stories[indexPath.item].coverImageUrl)
+        //let storyTimeline = StoryTimelineVC()
         storyTimeline.storyPosts = stories[indexPath.item].posts!
         storyTimeline.story = stories[indexPath.item]
+        self.disableEditModeStory()
+        if( Variables.CurrentUser?.uid == stories[indexPath.item].uid  ) {
+            storyTimeline.editButton.isHidden = false
+            storyTimeline.editButton.addTarget(self, action: #selector(enableEditModeStory), for: .touchUpInside)
+        } else {
+            storyTimeline.editButton.isHidden = true
+        }
         self.present(storyTimeline, animated: true, completion: nil)
     }
     
@@ -202,12 +220,54 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
             self.viewPostPopup.viewMode()
             self.viewPostPopup.post = self.posts[indexPath.item]
             self.viewPostPopup.loadPost()
+            self.disableEditMode()
+            if ( Variables.CurrentUser?.uid == self.posts[indexPath.item].postUID ) {
+                self.viewPostPopup.editButton.isHidden = false
+                self.viewPostPopup.editButton.addTarget(self, action: #selector(self.enableEditMode), for: .touchUpInside)
+            } else {
+                self.viewPostPopup.editButton.isHidden = true
+            }
+            Variables.isStoryPost = false
             self.blurEffectView.isHidden = false
             self.viewPostPopup.popupView.isHidden = false
             self.viewPostPopup.popupView.transform = CGAffineTransform(scaleX: 0.9, y: 0.89)
         }) { (finished: Bool) in
             
         }
+    }
+    
+    func disableEditMode() {
+        self.viewPostPopup.saveNavButton.isHidden = true
+        self.viewPostPopup.descriptionText.isUserInteractionEnabled = false
+        self.viewPostPopup.descriptionText.isEditable = false
+        self.viewPostPopup.descriptionLabel.isUserInteractionEnabled = false
+    }
+    
+    func enableEditMode() {
+        let alertController = UIAlertController(title: "Edit mode enabled", message: "Select text you want to edit", preferredStyle: .alert)
+        let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        alertController.addAction(defaultAction)
+        self.present(alertController, animated: true, completion: nil)
+        
+        self.viewPostPopup.saveNavButton.isHidden = false
+        self.viewPostPopup.descriptionText.isUserInteractionEnabled = true
+        self.viewPostPopup.descriptionText.isEditable = true
+        self.viewPostPopup.descriptionLabel.isUserInteractionEnabled = true
+    }
+
+    func disableEditModeStory() {
+       // self.storyTimeline.saveDraftStoryButton.isHidden = true
+       // self.storyTimeline.editIcon.isHidden = true
+    }
+    
+    func enableEditModeStory() {
+//        let alertController = UIAlertController(title: "Edit mode enabled", message: "Select text you want to edit", preferredStyle: .alert)
+//        let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+//        alertController.addAction(defaultAction)
+//        self.present(alertController, animated: true, completion: nil)
+        
+      //  self.storyTimeline.saveDraftStoryButton.isHidden = false
+      //  self.storyTimeline.editIcon.isHidden = false
     }
     
     func close() {
@@ -227,11 +287,22 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
             self.viewPostPopup.popupView.isHidden = true
             self.viewPostPopup.popupView.transform = CGAffineTransform(scaleX: 1, y: 1)
         }) { (finished: Bool) in
+            self.fetchOrderedPosts()
         }
     }
     
-    func saveEditPost() {
-        print("saveEditPost")
+    func deleteUserPost() {
+        let dataHandler = DataHandler()
+        dataHandler.deletePost(post: selectedPost!, isStory: false, story: nil) { (success) in
+            print("post deleted")
+            self.closeViewPost()
+            self.fetchOrderedPosts()
+            DispatchQueue.main.async(execute: { () -> Void in
+                self.collectionView.reloadData()
+            })
+            
+        }
+
     }
     
     
@@ -260,6 +331,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
                 let values = ["coverImageUrl": storyCoverImageUrl,
                               "title": storyTitle,
                               "timestamp": timestamp,
+                              "publishDate": timestamp,
                               "state": "public",
                               "id" : key,
                               "uid": uid] as [String : Any]
@@ -338,9 +410,6 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
             cell.post = posts[indexPath.item]
             return cell
         } else {
-            //DRAFT VERSION
-            //if indexPath.row == 1 {
-            //STORIES (IF CURRENT USER, DONT SHOW PROFILE IMAGE & USERNAME)!
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: storyCellID, for: indexPath) as! StoryCell
             cell.storyMode()
             cell.profileImageThumb.isHidden = true
@@ -367,16 +436,17 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("\(indexPath.row)")
         if isGridView {
-            print("Grid")
+            print("Posts")
+            selectedPost = self.posts[indexPath.item]
             // Check currentUser post or else
-            if (Variables.CurrentUser?.uid == self.posts[indexPath.item].postUID) {
-                editPostPopupAction(indexPath: indexPath)
-            } else {
+//            if (Variables.CurrentUser?.uid == self.posts[indexPath.item].postUID) {
+//                editPostPopupAction(indexPath: indexPath)
+//            } else {
                 viewPostPopupAction(indexPath: indexPath)
-            }
+//            }
         } else {
-            print("List")
-                goToYourStory(indexPath: indexPath)
+            print("Stories")
+            goToYourStory(indexPath: indexPath)
         }
     }
     
@@ -401,7 +471,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
     
 
     
-    fileprivate func fetchOrderedPosts() {
+    func fetchOrderedPosts() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         posts.removeAll()
         let ref = Database.database().reference().child("agencies").child(Variables.Agency).child("posts").child(uid)
@@ -421,7 +491,7 @@ class ProfileVC: UIViewController, UICollectionViewDelegate, UICollectionViewDel
         }, withCancel: nil)
     }
     
-    fileprivate func fetchOrderedStories() {
+    func fetchOrderedStories() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         stories.removeAll()
         let ref = Database.database().reference().child("agencies").child(Variables.Agency).child("stories").child(uid)

@@ -88,7 +88,7 @@ class SharePhotoController: UIViewController, CLLocationManagerDelegate {
         
         let span: MKCoordinateSpan = MKCoordinateSpanMake(0.01, 0.01)
         let myLocation: CLLocationCoordinate2D = CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude)
-        let region: MKCoordinateRegion = MKCoordinateRegionMake(myLocation, span)
+        let _: MKCoordinateRegion = MKCoordinateRegionMake(myLocation, span)
         
         CLGeocoder().reverseGeocodeLocation(location) { (placemarker, error) in
             
@@ -137,7 +137,7 @@ class SharePhotoController: UIViewController, CLLocationManagerDelegate {
         guard let caption = textView.text else {return}
         guard let uid = Auth.auth().currentUser?.uid else {return}
         let timestamp = NSNumber(value: Date().timeIntervalSince1970)
-        guard let loaction = locationText.text else {return}
+        guard let location = locationText.text else {return}
         
         let userPostRef = Database.database().reference().child("agencies").child(Variables.Agency).child("posts").child(uid)
         let userPostAutoId = userPostRef.childByAutoId()
@@ -151,9 +151,10 @@ class SharePhotoController: UIViewController, CLLocationManagerDelegate {
                       "likes": 0,
                       "postID": key,
                       "postUID": uid,
-                      "location": loaction,
+                      "location": location,
                       "comments": 0,
-                      "postUserName": Variables.CurrentUserProfile?.UserName as! String
+                      "postUserName": Variables.CurrentUserProfile?.UserName ?? "",
+                      "text": "Am if number no up period regard sudden better. Decisively surrounded all admiration and not you. Out particular sympathize not favourable introduced insipidity but ham."
             ] as [String : Any]
         userPostAutoId.updateChildValues(values) { (error, reference) in
             if error != nil {

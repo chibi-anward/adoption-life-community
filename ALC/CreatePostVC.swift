@@ -192,7 +192,7 @@ class CreatePostVC: UIViewController, UITextFieldDelegate, UIImagePickerControll
             // 1. * = * = * Fan Out Data USER * = * = *
             ref.updateChildValues(postFeed, withCompletionBlock: { (error, ref) in
                 if error != nil {
-                    print(error)
+                    print(error!)
                     return
                 }
                 let userPostsRef = Database.database().reference().child("agencies").child(Variables.Agency).child("user-posts").child(creator)

@@ -7,8 +7,15 @@
 //
 
 import UIKit
+import Firebase
 
 class ViewPostVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    var story: Story? {
+        didSet{
+            
+        }
+    }
     
     var post: Post? {
         didSet {
@@ -18,8 +25,15 @@ class ViewPostVC: UIViewController, UITextFieldDelegate, UIImagePickerController
             guard let text = post?.text else {return}
             self.descriptionText.text = text
             
+            guard let iHaveLikes = post?.IHaveLiked else {return}
+            if( iHaveLikes == true ) {
+                self.likeIcon.setImage(UIImage(named: "like_selected"), for: .normal)
+            } else {
+                self.likeIcon.setImage(UIImage(named: "like_unselected"), for: .normal)
+            }
+            
 
-//
+
 //            guard let likes = post?.likes else {return}
 //            self.likeLabel.text = "\(likes)"  
 //            
@@ -66,6 +80,7 @@ class ViewPostVC: UIViewController, UITextFieldDelegate, UIImagePickerController
         return button
     }()
     
+    
     let postImageView: CustomImageView = {
         let imageView = CustomImageView()
         imageView.contentMode = .scaleAspectFill
@@ -76,12 +91,13 @@ class ViewPostVC: UIViewController, UITextFieldDelegate, UIImagePickerController
         return imageView
     }()
     
-    let descriptionLabel: UILabel = {
-        let label = UILabel()
+    let descriptionLabel: UITextField = {
+        let label = UITextField()
         label.text = ""
         label.font = UIFont.systemFont(ofSize: 18, weight: 15)
         label.textAlignment = .center
         label.textColor = UIColor.rgb(red: 55, green: 55, blue: 55, alpha: 1)
+        label.isUserInteractionEnabled = false
         return label
     }()
     
@@ -104,10 +120,10 @@ class ViewPostVC: UIViewController, UITextFieldDelegate, UIImagePickerController
     
     lazy var likeIcon: UIButton = {
         let btn = UIButton()
-        let likeImage = UIImage (named: "viewPostLike_selected")?.withRenderingMode(.alwaysOriginal)
+        let likeImage = UIImage (named: "like_unselected")?.withRenderingMode(.alwaysOriginal)
         btn.setImage(likeImage, for: .normal)
         btn.isUserInteractionEnabled = true
-        //btn.addTarget(self, action: #selector(likePost), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(likePost), for: .touchUpInside)
         btn.isEnabled = true
         return btn
     }()
@@ -132,10 +148,19 @@ class ViewPostVC: UIViewController, UITextFieldDelegate, UIImagePickerController
     // ===== Edit Options =====
     let saveNavButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("save", for: .normal)
+        button.setTitle("delete", for: .normal)
         button.setTitleColor(UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 1), for: .normal)
-        button.isHidden = true
+        button.isHidden = false
         //button.addTarget(self, action: #selector(backAction), for: .touchDown)
+        return button
+    }()
+    
+    let editButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("•••", for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 24)
+        button.setTitleColor(UIColor.rgb(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
+        button.isHidden = true
         return button
     }()
     
@@ -143,8 +168,132 @@ class ViewPostVC: UIViewController, UITextFieldDelegate, UIImagePickerController
     override func viewDidLoad() {
         super.viewDidLoad()
         print("\nSTORY VIEW POST VC")
+    }
+    
+    func likePost() {
+        print("I like this!")
+        
+        print("\(String(describing: post?.likes))\n\n" )
+        
+        if (post?.IHaveLiked == true) {
+            post?.likes = (post?.likes)! - 1
+            post?.IHaveLiked = false
+            likeIcon.setImage(UIImage(named: "like_unselected"), for: .normal)
+            didUnLike()
+        } else {
+            post?.likes = (post?.likes)! + 1
+            post?.IHaveLiked = true
+            likeIcon.setImage(UIImage(named: "like_selected"), for: .normal)
+            didLike()
+        }
+        
+        
+        print("\(String(describing: post?.likes))\n\n" )
         
     }
+    
+    func didLike() {
+        let ref = Database.database().reference()
+        var refPost = DatabaseReference()
+        
+        if ( story == nil ) {
+            refPost = ref.child("agencies").child(Variables.Agency).child("posts").child((post?.postUID)!).child((post?.postID)!)
+        } else {
+            refPost = ref.child("agencies").child(Variables.Agency).child("stories").child((story?.uid)!).child((story?.id)!).child("posts").child((post?.postID)!)
+        }
+        
+        let keyToPost = refPost.key
+        
+        //get values of the post
+        refPost.observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            let updateLikes: [String : Any] = ["userWhoLike/\(keyToPost)": Variables.CurrentUser?.uid ?? ""]
+            
+            
+            refPost.updateChildValues(updateLikes, withCompletionBlock: { (error, reference) in
+                if error == nil {
+                    refPost.observeSingleEvent(of: .value, with: { (snap) in
+                        if let properties = snap.value as? [String: AnyObject] {
+                            //check how many people who's in "userWhoLike"
+                            if let likes = properties["userWhoLike"] as? [String: AnyObject] {
+                                let count = likes.count
+                                let update = ["likes": count] as [String : Any]
+                                refPost.updateChildValues(update, withCompletionBlock: { (error, reference) in
+                                    
+                                    refPost.observeSingleEvent(of: .value, with: { (snapshot) in
+                                        let dictionary = snapshot.value as! [String: Any]
+                                        
+                                        var p = Post(dictionary: dictionary)
+                                        p.IHaveLiked = true
+                                        self.post = p
+                                    })
+                                })
+                            }
+                        }
+                    }, withCancel: nil)
+                }
+            })
+        }, withCancel: nil)
+        
+        ref.removeAllObservers()
+            
+        
+    }
+    
+    
+    func didUnLike() {
+        
+        let ref = Database.database().reference()
+        var refPost = DatabaseReference()
+        
+        if ( story == nil ) {
+            refPost = ref.child("agencies").child(Variables.Agency).child("posts").child((post?.postUID)!).child((post?.postID)!)
+        } else {
+            refPost = ref.child("agencies").child(Variables.Agency).child("stories").child((story?.uid)!).child((story?.id)!).child("posts").child((post?.postID)!)
+        }
+        
+        var keyToPost = ""
+       
+        for people in (post?.userWhoLike)! {
+            if people.value as? String == Variables.CurrentUser?.uid {
+                keyToPost = people.key
+                post?.userWhoLike.removeValue(forKey: keyToPost) // ?[keyToPost!] = nil
+                if ( post?.userWhoLike.count == 0 ) {
+                    post?.userWhoLike = [:]
+                }
+
+                refPost.child("userWhoLike").child(keyToPost).removeValue()
+
+            }
+        }
+        
+        //get values of the post
+        refPost.observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            refPost.observeSingleEvent(of: .value, with: { (snap) in
+                if let properties = snap.value as? [String: AnyObject] {
+                    //check how many people who's in "userWhoLike"
+                    
+                    if let likes = properties["userWhoLike"] as? [String: AnyObject] {
+                        let count = likes.count
+                        let update = ["likes": count] as [String : Any]
+                        refPost.updateChildValues(update)
+                        self.post?.likes = count
+                        self.post?.IHaveLiked = false
+                        
+                    } else {
+                        let count = 0
+                        let update = ["likes": count] as [String : Any]
+                        refPost.updateChildValues(update)
+                        self.post?.likes = count
+                        self.post?.IHaveLiked = false
+                    }
+                }
+            }, withCancel: nil)
+        })
+        ref.removeAllObservers()
+    }
+    
     func loadPost() {
         let selectedPost = post
         print( selectedPost! )
@@ -156,6 +305,7 @@ class ViewPostVC: UIViewController, UITextFieldDelegate, UIImagePickerController
         popupView.addSubview(line)
         popupView.addSubview(likeIcon)
         popupView.addSubview(descriptionText)
+        popupView.addSubview(editButton)
         
         postImageView.isUserInteractionEnabled = false
         
@@ -171,8 +321,15 @@ class ViewPostVC: UIViewController, UITextFieldDelegate, UIImagePickerController
         
         descriptionText.anchor(top: likeIcon.bottomAnchor, left: popupView.leftAnchor, bottom: popupView.bottomAnchor, right: popupView.rightAnchor, paddingTop: 17, paddingLeft: 16, paddingBottom: 16, paddingRight: 16, width: 0, height: 0)
         
+        
+        editButton.anchor(top: postImageView.bottomAnchor, left: nil, bottom: nil, right: line.rightAnchor, paddingTop: 6, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 24, height: 17)
+        
+        
+        popupView.insertSubview(saveNavButton, at: 20)
+        saveNavButton.anchor(top: popupView.topAnchor, left: nil, bottom: nil, right: popupView.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, width: 50, height: 40)
+        
         //Edit options
-        saveNavButton.isHidden = true
+        //saveNavButton.isHidden = true
     }
     
     func editMode() {
@@ -196,9 +353,10 @@ class ViewPostVC: UIViewController, UITextFieldDelegate, UIImagePickerController
         descriptionText.anchor(top: likeIcon.bottomAnchor, left: popupView.leftAnchor, bottom: popupView.bottomAnchor, right: popupView.rightAnchor, paddingTop: 17, paddingLeft: 16, paddingBottom: 16, paddingRight: 16, width: 0, height: 0)
         
         //Edit options
-        saveNavButton.isHidden = false
+        //saveNavButton.isHidden = false
         popupView.insertSubview(saveNavButton, at: 20)
-        saveNavButton.anchor(top: popupView.topAnchor, left: nil, bottom: nil, right: popupView.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, width: 40, height: 40)
+        saveNavButton.anchor(top: popupView.topAnchor, left: nil, bottom: nil, right: popupView.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, width: 50, height: 40)
+        
      
     }
     

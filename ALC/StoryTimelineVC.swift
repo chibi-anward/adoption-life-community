@@ -19,7 +19,8 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     
     
     var storyPosts = [Post]()
-    //var story = Story(dictionary: [:])
+    var selectedPost: Post? = nil
+    var selectedIndexPath: IndexPath? = nil
     var post = Post(dictionary: [:])
     var textTitle = ""
     
@@ -121,6 +122,7 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
         btn.isUserInteractionEnabled = true
         btn.isEnabled = true
         btn.addTarget(self, action: #selector(handleStoryCoverImage), for: .touchUpInside) // Change Cover Image
+        btn.isHidden = false
         return btn
     }()
     
@@ -152,6 +154,7 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
         let btn = UIButton(type: .system)
         btn.setImage(#imageLiteral(resourceName: "saveDraftStoryBtn").withRenderingMode(.alwaysOriginal), for: .normal)
         btn.addTarget(self, action: #selector(createStoryPostPopupAction), for: .touchUpInside)
+        btn.isHidden = false
         return btn
     }()
     
@@ -172,6 +175,15 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
         let view = UIVisualEffectView(effect: blurEffect)
         view.isHidden = true
         return view
+    }()
+    
+    let editButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("•••", for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 24)
+        button.setTitleColor(UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 1), for: .normal)
+        button.isHidden = true
+        return button
     }()
     
     var viewPostPopup = ViewPostVC()
@@ -200,15 +212,15 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
         blurEffect()
         self.view.insertSubview(viewPostPopup.popupView, at: 17)
         viewPostPopup.backNavButton.addTarget(self, action: #selector(close), for: .touchUpInside)
-        viewPostPopup.saveNavButton.addTarget(self, action: #selector(save), for: .touchUpInside)
+        viewPostPopup.saveNavButton.addTarget(self, action: #selector(deleteStoryPost), for: .touchUpInside)
         //let dictionary =
         //let dummyPost = Post.init(dictionary: <#T##[String : Any]#>) (dictionary: <#T##[String : Any]#>)
         
         post = Post.init(dictionary: [
             "caption" : "dummy",
-            "imageUrl" : "https://firebasestorage.googleapis.com/v0/b/adoption-life-community.appspot.com/o/posts-image%2F6C4A0F48-9A10-4EA9-9CE4-C4B7797F53A8?alt=media&token=452f3b96-b176-49b1-abe6-850836f61edd",
+            "imageUrl" : "https://firebasestorage.googleapis.com/v0/b/adoption-life-community.appspot.com/o/Taipei.jpg?alt=media&token=4d105e67-73ae-446e-8eaf-efe53d83f39c",
             "timestamp" : 1501325124.306627,
-            "likes" : 1,
+            "likes" : 0,
             "comments" : 0,
             "imageWidth" : 100,
             "imageHeight" : 100,
@@ -320,9 +332,13 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     
     func createStoryPostPopupAction() {
         UIView.animate(withDuration: 1.8, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
-            self.viewPostPopup.editMode()
+            self.viewPostPopup.viewMode()
+            self.viewPostPopup.saveNavButton.removeTarget(nil, action: nil, for: .allEvents)
+            self.viewPostPopup.saveNavButton.addTarget(self, action: #selector(self.save), for: .touchUpInside)
+            self.viewPostPopup.saveNavButton.setTitle("save", for: .normal)
             self.blurEffectView.isHidden = false
             self.viewPostPopup.popupView.isHidden = false
+
             self.viewPostPopup.popupView.transform = CGAffineTransform(scaleX: 0.9, y: 0.89)
         }) { (finished: Bool) in
             
@@ -331,15 +347,33 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     
     func viewStoryPostPopupAction(indexPath: IndexPath) {
         UIView.animate(withDuration: 1.8, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
-
+            self.selectedIndexPath = indexPath
             self.viewPostPopup.post = self.storyPosts[indexPath.item]
+            self.viewPostPopup.story = self.story
             self.viewPostPopup.loadPost()
+            self.viewPostPopup.saveNavButton.removeTarget(nil, action: nil, for: .allEvents)
+            self.viewPostPopup.saveNavButton.addTarget(self, action: #selector(self.deleteStoryPost), for: .touchUpInside)
             self.blurEffectView.isHidden = false
+            self.viewPostPopup.story = self.story
             self.viewPostPopup.popupView.isHidden = false
             self.viewPostPopup.popupView.transform = CGAffineTransform(scaleX: 0.9, y: 0.89)
         }) { (finished: Bool) in
             
         }
+    }
+    
+    func deleteStoryPost() {
+        let dataHandler = DataHandler()
+        dataHandler.deletePost(post: selectedPost!, isStory: true, story: story) { (success) in
+            print("post deleted")
+            self.close()
+            self.storyPosts.remove(at: (self.selectedIndexPath?.item)!)
+            DispatchQueue.main.async(execute: { () -> Void in
+                self.collectionView.reloadData()
+            })
+            
+        }
+
     }
     
     func save() {
@@ -352,6 +386,8 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
             let userPostRef = Database.database().reference().child("agencies").child(Variables.Agency).child("stories").child((Variables.CurrentUser?.uid)!).child((self.story?.id)!).child("posts")
             let userPostAutoId = userPostRef.childByAutoId()
             let key = userPostAutoId.key
+            
+            self.post.postID = key
             
             let values = self.post.dictionaryRepresentation
             
@@ -387,6 +423,10 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
             self.blurEffectView.isHidden = true
             self.viewPostPopup.popupView.isHidden = true
             self.viewPostPopup.popupView.transform = CGAffineTransform(scaleX: 1, y: 1)
+        
+            DispatchQueue.main.async(execute: { () -> Void in
+                self.collectionView.reloadData()
+            })
         }) { (finished: Bool) in
         }
     }
@@ -401,6 +441,7 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
         view.addSubview(startStoryImageThumb)
         view.addSubview(endStoryImageThumb)
         view.addSubview(editIcon)
+        view.addSubview(editButton)
         
         
         view.addSubview(collectionView)
@@ -414,6 +455,8 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
         editIcon.anchor(top: nil, left: nil, bottom: coverImageThumb.bottomAnchor, right: coverImageThumb.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 8, paddingRight: 8, width: 25, height: 25)
         
         startStoryImageThumb.anchor(top: coverImageThumb.bottomAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 7, paddingBottom: 0, paddingRight: 0, width: 50, height: 50)
+        
+        editButton.anchor(top: view.topAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 36, paddingLeft: 0, paddingBottom: 0, paddingRight: 30, width: 24, height: 17)
         
         let stackview = UIStackView(arrangedSubviews: [saveDraftStoryButton])
         
@@ -436,6 +479,7 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
     
     func backAction() {
         self.dismiss(animated: true, completion: nil)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "refreshHome"), object: nil)
     }
     
     //
@@ -494,7 +538,15 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
             self.tabBarController?.tabBar.isHidden = true
             self.viewPostPopup.viewMode()
             self.viewPostPopup.post = self.storyPosts[indexPath.item]
+            self.viewPostPopup.story = self.story
             self.viewPostPopup.loadPost()
+            self.disableEditMode()
+            if( Variables.CurrentUser?.uid == self.storyPosts[indexPath.item].postUID ) {
+                self.viewPostPopup.editButton.isHidden = false
+                self.viewPostPopup.editButton.addTarget(self, action: #selector(self.enableEditMode), for: .touchUpInside)
+            } else {
+                self.viewPostPopup.editButton.isHidden = true
+            }
             self.blurEffectView.isHidden = false
             self.viewPostPopup.popupView.isHidden = false
             self.viewPostPopup.popupView.transform = CGAffineTransform(scaleX: 0.9, y: 0.89)
@@ -502,8 +554,28 @@ class StoryTimelineVC: UIViewController, UICollectionViewDelegate, UICollectionV
             
         }
     }
+    func disableEditMode() {
+        self.viewPostPopup.saveNavButton.isHidden = true
+        self.viewPostPopup.descriptionText.isUserInteractionEnabled = false
+        self.viewPostPopup.descriptionText.isEditable = false
+        self.viewPostPopup.descriptionLabel.isUserInteractionEnabled = false
+    }
+    
+    func enableEditMode() {
+        let alertController = UIAlertController(title: "Edit mode enabled", message: "Select text you want to edit", preferredStyle: .alert)
+        let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        alertController.addAction(defaultAction)
+        self.present(alertController, animated: true, completion: nil)
+        
+        self.viewPostPopup.saveNavButton.isHidden = false
+        self.viewPostPopup.descriptionText.isUserInteractionEnabled = true
+        self.viewPostPopup.descriptionText.isEditable = true
+        self.viewPostPopup.descriptionLabel.isUserInteractionEnabled = true
+    }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        selectedPost = storyPosts[indexPath.item]
+        selectedIndexPath = indexPath
         //viewStoryPostPopupAction(indexPath: indexPath)
         // Check currentUser post or else
 //        if (Variables.CurrentUser?.uid == storyPosts[indexPath.item].postUID) {

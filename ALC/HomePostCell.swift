@@ -110,6 +110,7 @@ class HomePostCell: BaseCollectionCell {
         let commentImage = UIImage (named: "comment_unselected")
         btn.setImage(commentImage, for: .normal)
         btn.isUserInteractionEnabled = true
+        btn.addTarget(self, action: #selector(comment), for: .touchUpInside)
         btn.isEnabled = true
         return btn
     }()
@@ -184,6 +185,10 @@ class HomePostCell: BaseCollectionCell {
         delegate?.didLike(for: self)
     }
     
+    func comment() {
+        
+    }
+    
     func setupPostView() {
         
         //postContainerView.roundCorners(corners: [.topLeft, .topRight], radius: 8)
@@ -210,7 +215,7 @@ class HomePostCell: BaseCollectionCell {
         
         usernameLabel.anchor(top: nil, left: profileImageThumb.rightAnchor, bottom: postImageView.topAnchor, right: nil, paddingTop: 2, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 180, height: 35)
         
-        locationPinImageView.anchor(top: nil, left: nil, bottom: postImageView.topAnchor, right: postContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 12, paddingRight: 16, width: 14, height: 17)
+        locationPinImageView.anchor(top: nil, left: nil, bottom: nil, right: postContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 14, height: 17)
         locationPinImageView.centerYAnchor.constraint(equalTo: usernameLabel.centerYAnchor).isActive = true
         
         locationLabel.anchor(top: nil, left: nil, bottom: usernameLabel.bottomAnchor, right: locationPinImageView.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 180, height: 35)
