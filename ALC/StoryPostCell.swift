@@ -39,7 +39,7 @@ class StoryPostCell: BaseCollectionCell {
     //Story Post
     let timeLineImage: UIImageView = {
         let image = UIImageView()
-        image.image = UIImage(named: "timeLineImage")
+        image.image = UIImage(named: "timelineDatePhl")
         return image
     }()
     
@@ -99,7 +99,7 @@ class StoryPostCell: BaseCollectionCell {
     
     //Story Post
     func setupStoryPostCell() {
-        timeLineImage.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 13, paddingBottom: 0, paddingRight: 0, width: 22, height: 22)
+        timeLineImage.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 13, paddingBottom: 0, paddingRight: 0, width: 42, height: 22)
         timeLineImage.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
 
         storyPostCardImage.anchor(top: nil, left: timeLineImage.rightAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 7, paddingBottom: 0, paddingRight: 14, width: 0, height: 150)

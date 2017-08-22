@@ -154,7 +154,9 @@ class SharePhotoController: UIViewController, CLLocationManagerDelegate {
                       "location": location,
                       "comments": 0,
                       "postUserName": Variables.CurrentUserProfile?.UserName ?? "",
-                      "text": "Am if number no up period regard sudden better. Decisively surrounded all admiration and not you. Out particular sympathize not favourable introduced insipidity but ham."
+                      "text": "Am if number no up period regard sudden better. Decisively surrounded all admiration and not you. Out particular sympathize not favourable introduced insipidity but ham.",
+                      "publishDate": timestamp,
+                      "profileUserImageUrl": Variables.CurrentUserProfile?.ProfileImageUrl ?? ""
             ] as [String : Any]
         userPostAutoId.updateChildValues(values) { (error, reference) in
             if error != nil {

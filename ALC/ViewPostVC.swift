@@ -50,7 +50,10 @@ class ViewPostVC: UIViewController, UITextFieldDelegate, UIImagePickerController
 //                let timestampDate = NSDate(timeIntervalSince1970: seconds)
 //                let dateFormatter = DateFormatter()
 //                dateFormatter.dateFormat = "hh:mm:ss a"
-//                self.timeLabel.text = dateFormatter.string(from: timestampDate as Date)
+//                let nowDate = Date()
+//                let fullString = nowDate.offsetFrom(date: timestampDate as Date)
+//                let toShow = fullString.components(separatedBy: " ")[0]
+//                self.timeLabel.text = toShow
 //            }
 //
             guard let imageUrl = post?.imageUrl else {return}
@@ -148,16 +151,25 @@ class ViewPostVC: UIViewController, UITextFieldDelegate, UIImagePickerController
     // ===== Edit Options =====
     let saveNavButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("delete", for: .normal)
+        button.setTitle("save", for: .normal)
         button.setTitleColor(UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 1), for: .normal)
         button.isHidden = false
         //button.addTarget(self, action: #selector(backAction), for: .touchDown)
         return button
     }()
     
+    let deleteNavButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("delete", for: .normal)
+        button.setTitleColor(UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 1), for: .normal)
+        button.isHidden = true
+        //button.addTarget(self, action: #selector(backAction), for: .touchDown)
+        return button
+    }()
+    
     let editButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("•••", for: .normal)
+        button.setImage(#imageLiteral(resourceName: "editIcon").withRenderingMode(.alwaysOriginal), for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 24)
         button.setTitleColor(UIColor.rgb(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
         button.isHidden = true
@@ -171,10 +183,6 @@ class ViewPostVC: UIViewController, UITextFieldDelegate, UIImagePickerController
     }
     
     func likePost() {
-        print("I like this!")
-        
-        print("\(String(describing: post?.likes))\n\n" )
-        
         if (post?.IHaveLiked == true) {
             post?.likes = (post?.likes)! - 1
             post?.IHaveLiked = false
@@ -186,10 +194,6 @@ class ViewPostVC: UIViewController, UITextFieldDelegate, UIImagePickerController
             likeIcon.setImage(UIImage(named: "like_selected"), for: .normal)
             didLike()
         }
-        
-        
-        print("\(String(describing: post?.likes))\n\n" )
-        
     }
     
     func didLike() {
@@ -236,7 +240,7 @@ class ViewPostVC: UIViewController, UITextFieldDelegate, UIImagePickerController
         }, withCancel: nil)
         
         ref.removeAllObservers()
-            
+        //NotificationCenter.default.post(name: NSNotification.Name(rawValue: "refreshPosts"), object: nil)
         
     }
     
@@ -292,6 +296,8 @@ class ViewPostVC: UIViewController, UITextFieldDelegate, UIImagePickerController
             }, withCancel: nil)
         })
         ref.removeAllObservers()
+        
+        //NotificationCenter.default.post(name: NSNotification.Name(rawValue: "refresh"), object: nil)
     }
     
     func loadPost() {
@@ -313,7 +319,7 @@ class ViewPostVC: UIViewController, UITextFieldDelegate, UIImagePickerController
         
         postImageView.anchor(top: popupView.topAnchor, left: popupView.leftAnchor, bottom: nil, right: popupView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 310)
         
-        descriptionLabel.anchor(top: postImageView.bottomAnchor, left: popupView.leftAnchor, bottom: nil, right: popupView.rightAnchor, paddingTop: 10, paddingLeft: 16, paddingBottom: 0, paddingRight: 16, width: 0, height: 20)
+        descriptionLabel.anchor(top: postImageView.bottomAnchor, left: popupView.leftAnchor, bottom: nil, right: popupView.rightAnchor, paddingTop: 10, paddingLeft: 16, paddingBottom: 0, paddingRight: 55, width: 0, height: 20)
         
         line.anchor(top: descriptionLabel.bottomAnchor, left: popupView.leftAnchor, bottom: nil, right: popupView.rightAnchor, paddingTop: 9, paddingLeft: 16, paddingBottom: 0, paddingRight: 16, width: 0, height: 2)
         
@@ -322,11 +328,14 @@ class ViewPostVC: UIViewController, UITextFieldDelegate, UIImagePickerController
         descriptionText.anchor(top: likeIcon.bottomAnchor, left: popupView.leftAnchor, bottom: popupView.bottomAnchor, right: popupView.rightAnchor, paddingTop: 17, paddingLeft: 16, paddingBottom: 16, paddingRight: 16, width: 0, height: 0)
         
         
-        editButton.anchor(top: postImageView.bottomAnchor, left: nil, bottom: nil, right: line.rightAnchor, paddingTop: 6, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 24, height: 17)
+        editButton.anchor(top: postImageView.bottomAnchor, left: nil, bottom: nil, right: line.rightAnchor, paddingTop: 4, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 34, height: 34)
         
         
         popupView.insertSubview(saveNavButton, at: 20)
         saveNavButton.anchor(top: popupView.topAnchor, left: nil, bottom: nil, right: popupView.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, width: 50, height: 40)
+        
+        popupView.insertSubview(deleteNavButton, at: 20)
+        deleteNavButton.anchor(top: saveNavButton.topAnchor, left: nil, bottom: nil, right: popupView.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, width: 50, height: 40)
         
         //Edit options
         //saveNavButton.isHidden = true

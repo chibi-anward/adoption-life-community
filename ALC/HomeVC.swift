@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, HomePostCellDelegate {
+class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, HomePostCellDelegate, StoryCellDelegate {
     
     
     var refresher = UIRefreshControl()
@@ -68,14 +68,22 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     }()
     
     var viewPostPopup = ViewPostVC()
+    var window: UIWindow?
     
     //MARK:
     func refresh() {
         getPostsStories()
         refresher.endRefreshing()
     }
+    func refreshPost() {
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
+    }
     
-   var window: UIWindow?
+    override func viewDidAppear(_ animated: Bool) {
+        Variables.SelectedProfileUser = nil
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -109,9 +117,11 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         blurEffect()
         self.navigationController!.view.insertSubview(viewPostPopup.popupView, at: 17)
         viewPostPopup.backNavButton.addTarget(self, action: #selector(close), for: .touchUpInside)
-        viewPostPopup.saveNavButton.addTarget(self, action: #selector(deleteUserPost), for: .touchUpInside)
+        viewPostPopup.deleteNavButton.addTarget(self, action: #selector(deleteUserPost), for: .touchUpInside)
+        viewPostPopup.saveNavButton.addTarget(self, action: #selector(updateUserPost), for: .touchUpInside)
         
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name:NSNotification.Name(rawValue: "refreshHome"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshPost), name:NSNotification.Name(rawValue: "refreshPost"), object: nil)
     }
     
     func blurEffect() {
@@ -121,6 +131,7 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         self.navigationController!.view.insertSubview(blurEffectView, at: 15)
     }
     
+    // POST
     func editPostPopupAction(indexPath: IndexPath) {
         UIView.animate(withDuration: 1.8, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
             self.tabBarController?.tabBar.isHidden = true
@@ -143,9 +154,11 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
             self.disableEditMode()
             if ( Variables.CurrentUser?.uid == self.PostStory[indexPath.item].post?.postUID ) {
                 self.viewPostPopup.editButton.isHidden = false
+                //self.viewPostPopup.saveNavButton.isHidden = false
                 self.viewPostPopup.editButton.addTarget(self, action: #selector(self.enableEditMode), for: .touchUpInside)
             } else {
                 self.viewPostPopup.editButton.isHidden = true
+                self.viewPostPopup.saveNavButton.isHidden = true
             }
             self.viewPostPopup.loadPost()
             Variables.isStoryPost = false
@@ -159,6 +172,7 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func disableEditMode() {
+        self.viewPostPopup.deleteNavButton.isHidden = true
         self.viewPostPopup.saveNavButton.isHidden = true
         self.viewPostPopup.descriptionText.isUserInteractionEnabled = false
         self.viewPostPopup.descriptionText.isEditable = false
@@ -166,11 +180,7 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func enableEditMode() {
-        let alertController = UIAlertController(title: "Edit mode enabled", message: "Select text you want to edit", preferredStyle: .alert)
-        let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-        alertController.addAction(defaultAction)
-        self.present(alertController, animated: true, completion: nil)
-        
+        self.viewPostPopup.deleteNavButton.isHidden = false
         self.viewPostPopup.saveNavButton.isHidden = false
         self.viewPostPopup.descriptionText.isUserInteractionEnabled = true
         self.viewPostPopup.descriptionText.isEditable = true
@@ -183,11 +193,11 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
             self.blurEffectView.isHidden = true
             self.viewPostPopup.popupView.isHidden = true
             self.viewPostPopup.popupView.transform = CGAffineTransform(scaleX: 1, y: 1)
-        }) { (finished: Bool) in
             self.refresh()
+        }) { (finished: Bool) in
+            
         }
     }
-    
     
     func deleteUserPost() {
         print("delete post")
@@ -196,12 +206,36 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
             print("post deleted")
             self.close()
             self.refresh()
-            
+            self.dismissKeyboard()
         }
     }
     
+    func updateUserPost() {
+        print("save / update post")
+        print( selectedPost! )
+        selectedPost?.caption = viewPostPopup.descriptionLabel.text!
+        selectedPost?.text = viewPostPopup.descriptionText.text
+        
+        PostStory[(selectedIndexPath?.item)!].post?.caption = (selectedPost?.caption)!
+        PostStory[(selectedIndexPath?.item)!].post?.text = (selectedPost?.text)!
+        
+        
+        let dataHandler = DataHandler()
+        dataHandler.editPost(post: selectedPost!, isStory: false, story: nil) { (success) in
+            print("post updated")
+            //self.fetchPosts(completionHandler: { (nil) in
+                self.close()
+                self.collectionView.reloadItems(at: [self.selectedIndexPath!])
+                self.dismissKeyboard()
+            //})
+            
+            
+        }
+        
+    }
 
- 
+
+
     //CollectionView
     fileprivate func registerCell() {
         collectionView.register(HomePostCell.self, forCellWithReuseIdentifier: cellID)
@@ -211,7 +245,6 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! HomePostCell
         if let post = PostStory[indexPath.item].post {
-            //let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! HomePostCell
             cell.delegate = self
             cell.post = post
             cell.likeIcon.tag = indexPath.item
@@ -225,56 +258,14 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
                 cell.likeIcon.removeTarget(self, action: nil, for: .allEvents)
                 //cell.likeIcon.addTarget(self, action: #selector(likePost), for: .touchUpInside)
             }
-            
-            //Check for POST USER ID
-            let postUID = post.postUID
-            Database.database().reference().child("agencies").child(Variables.Agency).child("users").child(postUID).observeSingleEvent(of: .value, with: { (snapshot) in
-                
-                guard let dictionary = snapshot.value as? [String: Any] else { return }
-                
-                guard let username = dictionary["username"] as? String else { return }
-                cell.usernameLabel.text = username
-                
-                if let profileImageUrl = dictionary["ProfileImageUrl"] as? String {
-                    cell.profileImageThumb.loadImageUsingCacheWithUrlString(urlString: profileImageUrl)
-                }
-                
-                
-                
-                
-            }) { (err) in
-                print("Can't fetch profile information", err)
-            }
         }
         
         if let story = PostStory[indexPath.item].story {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: storyCellID, for: indexPath) as! StoryCell
+            cell.delegate = self
             cell.viewStoryHomeFeed()
             
             cell.story = story
-            
-            //            cell.descriptionLabel.text = story.title
-            //            cell.postImageView.loadImageUsingCacheWithUrlString(urlString: story.coverImageUrl)
-            
-            //Check for POST USER ID
-            let postUID = story.uid
-            Database.database().reference().child("agencies").child(Variables.Agency).child("users").child(postUID).observeSingleEvent(of: .value, with: { (snapshot) in
-                
-                guard let dictionary = snapshot.value as? [String: Any] else { return }
-                
-                guard let username = dictionary["username"] as? String else { return }
-                cell.usernameLabel.text = username
-                
-                if let profileImageUrl = dictionary["ProfileImageUrl"] as? String {
-                    cell.profileImageThumb.loadImageUsingCacheWithUrlString(urlString: profileImageUrl)
-                }
-                
-                
-                
-                
-            }) { (err) in
-                print("Can't fetch profile information", err)
-            }
             
             return cell
         }
@@ -289,25 +280,19 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         storyTimeline.storyPosts = (PostStory[indexPath.item].story?.posts!)!
         storyTimeline.story = PostStory[indexPath.item].story!
         if( Variables.CurrentUser?.uid == PostStory[indexPath.item].story?.uid  ) {
-            storyTimeline.editButton.isHidden = false
+            storyTimeline.storyEditMode()
+        } else {
+            storyTimeline.storyViewMode()
         }
         self.present(storyTimeline, animated: true, completion: nil)
     }
-    
-//    func goToPost(indexPath: IndexPath) {
-//        let postVC = ViewPostVC()
-//        postVC.post = PostStory[indexPath.item].post!
-//        postVC.viewMode()
-//        
-//        self.present(postVC, animated: true, completion: nil)
-//    }
 
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let post = PostStory[indexPath.item].post {
-            print("post")
+    
             selectedPost = post
             selectedIndexPath = indexPath
+            Variables.SelectedIndexPath = indexPath
             // Check currentUser post or else
 //            if (Variables.CurrentUser?.uid == post.postUID) {
 //                editPostPopupAction(indexPath: indexPath)
@@ -319,10 +304,6 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
             print("story")
             goToStory(indexPath: indexPath)
         }
-//        if let post = PostStory[indexPath.item].post {
-//            print("post")
-//            goToPost(indexPath: indexPath)
-//        }
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -342,10 +323,11 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     
     //Other Functions
     func getPostsStories() {
+        Variables.Posts.removeAll()
+        Variables.Stories.removeAll()
         fetchPosts { (success) in
             self.fetchStories(completionHandler: { (success) in
                 // merge array
-                
                 var res:[Story] = []
                 Variables.Stories.forEach { (p) -> () in
                     if !res.contains (where: { $0.id == p.id }) {
@@ -355,10 +337,10 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
                 
                 Variables.Stories = res
                 
-                
                 let sortedArray = (Variables.Posts.map { PostsStories(post: $0, story: nil) } + Variables.Stories.map { PostsStories(post: nil, story: $0)}).sorted { $0.timestamp > $1.timestamp }
                 
                 self.PostStory = sortedArray
+                Variables.PostStory = sortedArray
                 
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
@@ -372,14 +354,10 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     func fetchPosts(completionHandler:@escaping (Bool) -> ()) {
         if ( Variables.Agency != "" ) {
             Variables.Posts.removeAll()
-            
-            
+  
             let ref = Database.database().reference().child("agencies").child(Variables.Agency).child("posts").observe(.childAdded, with: { (snapshot) in
-                //queryOrdered(byChild: "timestamp")
-                //    ref.queryOrdered(byChild: "timestamp").observe(.value, with: { (snapshot) in
                 
                 guard let dictionaries = snapshot.value as? [String: Any] else { return }
-                
                 
                 dictionaries.forEach({ (key, value) in
                     
@@ -400,10 +378,6 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
                 
                 Variables.Posts.sort(by: { $0.timestamp?.compare($1.timestamp!) == .orderedDescending})
                 completionHandler(true)
-                //                DispatchQueue.main.async {
-                //                    self.collectionView.reloadData()
-                //                    print("REALOAD DATA HomeFeedCV : 139")
-                //                }
             }) { (err) in
                 print("Failed to fetch posts:", err)
                 completionHandler(false)
@@ -417,8 +391,7 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     func fetchStories(completionHandler:@escaping (Bool) -> ()) {
         if ( Variables.Agency != "" ) {
             Variables.Stories.removeAll()
-            
-            
+  
             let ref = Database.database().reference().child("agencies").child(Variables.Agency).child("stories").observe(.childAdded, with: { (snapshot) in
                 
                 guard let dictionaries = snapshot.value as? [String: Any] else { return }
@@ -455,10 +428,7 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
                 
                 Variables.Stories.sort(by: { $0.timestamp?.compare($1.timestamp!) == .orderedDescending})
                 completionHandler(true)
-                //                DispatchQueue.main.async {
-                //                    self.collectionView.reloadData()
-                //                    print("REALOAD DATA HomeFeedCV : 139")
-                //               }
+
             }) { (err) in
                 print("Failed to fetch posts:", err)
                 completionHandler(false)
@@ -466,6 +436,49 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
             
         }
         
+    }
+    
+    func showStoryProfile(for cell: StoryCell) {
+        // TODO: Chibi hide edit items
+        let profileVC = ProfileVC()
+        guard let indexPath = collectionView.indexPath(for: cell) else {return}
+        let story =  PostStory[indexPath.item].story
+        //profileVC.profileUid = post?.postUID
+        
+        if ( story?.uid == Variables.CurrentUser?.uid ) {
+            Variables.SelectedProfileUser = nil
+            self.tabBarController?.selectedIndex = 4
+            
+            return
+        }
+        
+        let dataHandler = DataHandler()
+        dataHandler.fetchUser(uid: (story?.uid)!) { (profile) in
+            Variables.SelectedProfileUser = profile
+            self.navigationController?.pushViewController(profileVC, animated: true)
+        }
+
+    }
+    
+    func showProfile(for cell: HomePostCell) {
+        // TODO: Chibi hide edit items
+        let profileVC = ProfileVC()
+        guard let indexPath = collectionView.indexPath(for: cell) else {return}
+        let post =  PostStory[indexPath.item].post
+        //profileVC.profileUid = post?.postUID
+        
+        if ( post?.postUID == Variables.CurrentUser?.uid ) {
+            Variables.SelectedProfileUser = nil
+            self.tabBarController?.selectedIndex = 4
+            
+            return
+        }
+        
+        let dataHandler = DataHandler()
+        dataHandler.fetchUser(uid: (post?.postUID)!) { (profile) in
+            Variables.SelectedProfileUser = profile
+            self.navigationController?.pushViewController(profileVC, animated: true)
+        }
     }
     
     func didLike(for cell: HomePostCell) {
@@ -488,8 +501,7 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
         ref.child("agencies").child(Variables.Agency).child("posts").child(postUID!).child(selectedPost!).observeSingleEvent(of: .value, with: { (snapshot) in
             
             let updateLikes: [String : Any] = ["userWhoLike/\(keyToPost)": Variables.CurrentUser?.uid ?? ""]
-            
-            
+  
             ref.child("agencies").child(Variables.Agency).child("posts").child(postUID!).child(selectedPost!).updateChildValues(updateLikes, withCompletionBlock: { (error, reference) in
                 if error == nil {
                     ref.child("agencies").child(Variables.Agency).child("posts").child(postUID!).child(selectedPost!).observeSingleEvent(of: .value, with: { (snap) in
@@ -499,10 +511,8 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
                                 let count = likes.count
                                 let update = ["likes": count] as [String : Any]
                                 ref.child("agencies").child(Variables.Agency).child("posts").child(postUID!).child(selectedPost!).updateChildValues(update, withCompletionBlock: { (error, reference) in
-                                    
-                                    
                                     ref.child("agencies").child(Variables.Agency).child("posts").child(postUID!).child(selectedPost!).observeSingleEvent(of: .value, with: { (snapshot) in
-                                        var dictionary = snapshot.value as! [String: Any]
+                                        let dictionary = snapshot.value as! [String: Any]
                                         
                                         var post = Post(dictionary: dictionary)
                                         post.IHaveLiked = true
@@ -585,7 +595,15 @@ class HomeVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func handleLogOut() {
+        
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        
+        // if iPads
+        alertController.popoverPresentationController?.sourceView = self.view
+        alertController.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+        alertController.popoverPresentationController?.permittedArrowDirections = []
+        
         alertController.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { (_) in
             print("Perform log out action")
             

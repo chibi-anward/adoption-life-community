@@ -14,23 +14,23 @@ class CustomTabBar: UITabBarController, UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         let index = viewControllers?.index(of: viewController)
         if index == 2 {
-            /*
-            let createTab = CreateTabVC()
-            let navController = UINavigationController(rootViewController: createTab)
-            present(navController, animated: true, completion: nil)
+          
+            create()
             return false
-            */
-           
+ 
+           /*
             let layout = UICollectionViewFlowLayout()
             let photoSelectorController = PhotoSelectorVC(collectionViewLayout: layout)
             let navController = UINavigationController(rootViewController: photoSelectorController)
             present(navController, animated: true, completion: nil)
             return false
-
+             */
+            
         }
         return true
     }
-    
+
+    var createOptionVC = CreateOptionsVC()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,6 +41,11 @@ class CustomTabBar: UITabBarController, UITabBarControllerDelegate {
         
         tabBar.barTintColor = UIColor.rgb(red: 39, green: 47, blue: 62, alpha: 0.8)
         tabBar.isTranslucent = false
+        
+        view.addSubview(createOptionVC)
+        createOptionVC.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        createOptionVC.isHidden = true
+        
         
     }
     
@@ -54,7 +59,10 @@ class CustomTabBar: UITabBarController, UITabBarControllerDelegate {
                     let startController = StartTutorialVC()
                     self.present(startController, animated: true, completion: nil)
                 }
+            } else {
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "refreshStories"), object: nil)
             }
+            
         }
     }
     
@@ -67,7 +75,7 @@ class CustomTabBar: UITabBarController, UITabBarControllerDelegate {
         let profileNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "profileTabIcon_default").withRenderingMode(.alwaysOriginal), selectedImage: #imageLiteral(resourceName: "profileTabIcon_selected").withRenderingMode(.alwaysOriginal), title: "Profile", rootViewController: ProfileVC())
         
         //CreatePost
-        let createPostNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "createPost_tab").withRenderingMode(.alwaysOriginal), selectedImage: #imageLiteral(resourceName: "createPost_tab").withRenderingMode(.alwaysOriginal), title: "", rootViewController: CreatePostVC())
+        let createPostNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "addBtn").withRenderingMode(.alwaysOriginal), selectedImage: #imageLiteral(resourceName: "addBtn").withRenderingMode(.alwaysOriginal), title: "", rootViewController: CreatePostVC())
         
         //Country
         let countryNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "countryTabBar_default").withRenderingMode(.alwaysOriginal), selectedImage: #imageLiteral(resourceName: "countryTabBar_selected").withRenderingMode(.alwaysOriginal), title: "Country", rootViewController: CountryVC())
@@ -86,6 +94,13 @@ class CustomTabBar: UITabBarController, UITabBarControllerDelegate {
         }
         
         
+    }
+    
+    // UITabBarDelegate
+    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+        if ( item.title == "Profile" ) {
+           //Variables.SelectedProfileUser = nil
+        }
     }
     
     //    public func setbadge() {
@@ -107,7 +122,44 @@ class CustomTabBar: UITabBarController, UITabBarControllerDelegate {
         navController.tabBarItem.selectedImage = selectedImage
         navController.tabBarItem.title = title
         return navController
-        
+    }
+    
+    //CREATE
+    func create() {
+        print("create")
+        createOptionVC.backNavButton.addTarget(self, action: #selector(close), for: .touchUpInside)
+        createOptionVC.createPostIcon.addTarget(self, action: #selector(createPost), for: .touchUpInside)
+        createOptionVC.createStoryIcon.addTarget(self, action: #selector(createStory), for: .touchUpInside)
+        createOptionVC.isHidden = false
+    }
+    
+    func close() {
+        print("close")
+        UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 0.1, initialSpringVelocity: 0, options: .allowUserInteraction, animations: {
+            self.tabBarController?.tabBar.isHidden = false
+            self.createOptionVC.isHidden = true
+            
+        }) { (finished: Bool) in
+            //self.refresh()
+        }
+    }
+    
+    func createPost() {
+        let layout = UICollectionViewFlowLayout()
+        let photoSelectorController = PhotoSelectorVC(collectionViewLayout: layout)
+        let navController = UINavigationController(rootViewController: photoSelectorController)
+    
+        present(navController, animated: true, completion: {
+            self.close()
+        })
+    }
+    
+    func createStory() {
+        let storyTimelineVC = StoryTimelineVC()
+        close()
+        present(storyTimelineVC, animated: true, completion: {
+            self.close()
+        })
     }
     
 }

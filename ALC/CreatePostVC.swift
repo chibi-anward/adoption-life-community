@@ -13,6 +13,77 @@ import FirebaseDatabase
 
 class CreatePostVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    let publishPostButton: UIButton = {
+        let btn = UIButton(type: .system)
+        let image = UIImage (named: "btn_default")?.withRenderingMode(.alwaysOriginal)
+        btn.setImage(image, for: .normal)
+        //btn.addTarget(self, action: #selector(handlePublish), for: .touchUpInside)
+        btn.isEnabled = true
+        return btn
+    }()
+    
+    let popupView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 1)
+        view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        view.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        view.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        view.isHidden = true
+        view.layer.masksToBounds = true
+        view.clipsToBounds = true
+        view.layer.cornerRadius = 6
+        return view
+    }()
+    
+    let backNavButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("close", for: .normal)
+        button.setTitleColor(UIColor.rgb(red: 255, green: 255, blue: 255, alpha: 1), for: .normal)
+        //button.addTarget(self, action: #selector(backAction), for: .touchDown)
+        return button
+    }()
+    
+    
+    let postImageView: CustomImageView = {
+        let imageView = CustomImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.image = UIImage(named: "postImage_default")?.withRenderingMode(.alwaysOriginal)
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.masksToBounds = true
+        imageView.clipsToBounds = true
+        return imageView
+    }()
+    
+    let descriptionLabel: UITextField = {
+        let label = UITextField()
+        label.text = ""
+        label.font = UIFont.systemFont(ofSize: 18, weight: 15)
+        label.textAlignment = .center
+        label.textColor = UIColor.rgb(red: 55, green: 55, blue: 55, alpha: 1)
+        label.isUserInteractionEnabled = false
+        return label
+    }()
+    
+    let line: UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(named: "lineImage")?.withRenderingMode(.alwaysOriginal)
+        return view
+    }()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+    }
+    
+    func setupContents() {
+        
+    }
+    
+    func sizeStyle() {
+        
+    }
+    
+    /*
     let sendButton: UIButton = {
         let btn = UIButton(type: .system)
         btn.setTitle("Publish user-post", for: .normal)
@@ -181,7 +252,8 @@ class CreatePostVC: UIViewController, UITextFieldDelegate, UIImagePickerControll
                         "timestamp": timestamp,
                         "comments": self.commentLabel.text ?? "",
                         "postUserName": Variables.CurrentUserProfile?.UserName ?? "",
-                        "text": "Am if number no up period regard sudden better. Decisively surrounded all admiration and not you. Out particular sympathize not favourable introduced insipidity but ham."
+                        "text": "Am if number no up period regard sudden better. Decisively surrounded all admiration and not you. Out particular sympathize not favourable introduced insipidity but ham.",
+                        "publishDate": timestamp
                 
                 ] as [String : Any]
             
@@ -230,5 +302,5 @@ class CreatePostVC: UIViewController, UITextFieldDelegate, UIImagePickerControll
         }
         dismiss(animated: true, completion: nil)
     }
-    
+    */
 }

@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 
 protocol HomePostCellDelegate {
+    func showProfile(for cell: HomePostCell)
     func didLike(for cell: HomePostCell)
 }
 
@@ -31,8 +32,8 @@ class HomePostCell: BaseCollectionCell {
             guard let comments = post?.comments else {return}
             self.commentLabel.text = "\(comments)"
             
-//            guard let username = post?.postUserName else {return}
-//            self.usernameLabel.text = "\(username)"
+            guard let username = post?.postUserName else {return}
+            self.usernameLabel.text = "\(username)"
             
             guard let locationTag = post?.location else {return}
             self.locationLabel.text = locationTag
@@ -41,11 +42,18 @@ class HomePostCell: BaseCollectionCell {
                 let timestampDate = NSDate(timeIntervalSince1970: seconds)
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "hh:mm:ss a"
-                self.timeLabel.text = dateFormatter.string(from: timestampDate as Date)
+                let nowDate = Date()
+                let fullString = nowDate.offsetFrom(date: timestampDate as Date)
+                let toShow = fullString.components(separatedBy: " ")[0]
+                self.timeLabel.text = toShow
+                
             }
             
             guard let imageUrl = post?.imageUrl else {return}
             postImageView.loadImageUsingCacheWithUrlString(urlString: imageUrl)
+            
+            guard let profileImageUrl = post?.profileUserImageUrl else {return}
+            profileImageThumb.loadImageUsingCacheWithUrlString(urlString: profileImageUrl)
         }
     }
     
@@ -56,7 +64,6 @@ class HomePostCell: BaseCollectionCell {
         return view
     }()
 
-    
     let profileImageThumb: CustomImageView = {
         let imageThumb = CustomImageView()
         imageThumb.backgroundColor = UIColor.lightGray
@@ -68,8 +75,21 @@ class HomePostCell: BaseCollectionCell {
         imageThumb.layer.borderWidth = 3
         imageThumb.layer.borderColor = UIColor.white.cgColor
         imageThumb.image = UIImage(named: "")
+        //imageThumb.isUserInteractionEnabled = true
+        //imageThumb.addGestureRecognizer(UIGestureRecognizer(target: self, action: #selector(showUserProfile)))
         return imageThumb
     }()
+    
+    lazy var profileOverLay: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = UIColor.clear
+        button.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
+        button.isUserInteractionEnabled = true
+        button.isEnabled = true
+        button.addTarget(self, action: #selector(showUserProfile), for: .touchUpInside)
+        return button
+    }()
+
     
     let usernameLabel: UILabel = {
         let label = UILabel()
@@ -185,6 +205,10 @@ class HomePostCell: BaseCollectionCell {
         delegate?.didLike(for: self)
     }
     
+    func showUserProfile() {
+        delegate?.showProfile(for: self)
+    }
+    
     func comment() {
         
     }
@@ -196,6 +220,7 @@ class HomePostCell: BaseCollectionCell {
         
         insertSubview(postContainerView, at: 1)
         insertSubview(profileImageThumb, at: 7)
+        addSubview(profileOverLay)
         addSubview(usernameLabel)
         addSubview(locationPinImageView)
         addSubview(locationLabel)
@@ -210,6 +235,8 @@ class HomePostCell: BaseCollectionCell {
         postContainerView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         profileImageThumb.anchor(top: postContainerView.topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 6, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 60, height: 60)
+        
+        profileOverLay.anchor(top: postContainerView.topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 6, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 60, height: 60)
         
         postImageView.anchor(top: profileImageThumb.centerYAnchor, left: leftAnchor, bottom: postContainerView.bottomAnchor, right: rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 50, paddingRight: 0, width: 0, height: 0)
         

@@ -136,7 +136,6 @@ class ProfileHeaderCell: BaseCollectionCell {
     }
     
     func handleChangeToListView() {
-        
         addNewStoryPostButton.isHidden = false
         addNewStoryPostButton.isEnabled = true
         delegate?.didChangeToListView()
@@ -182,6 +181,7 @@ class ProfileHeaderCell: BaseCollectionCell {
         addSubview(usernameLabel)
         usernameLabel.anchor(top: profileImageView.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 6, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: profileImageView.frame.width, height: 18)
         usernameLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        
         
         addNewStoryPostButton.anchor(top: usernameLabel.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 6, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 36)
         addNewStoryPostButton.centerXAnchor.constraint(equalTo: usernameLabel.centerXAnchor).isActive = true

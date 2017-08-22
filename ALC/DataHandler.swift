@@ -10,151 +10,16 @@ import Foundation
 import FirebaseCore
 import FirebaseAuth
 import FirebaseDatabase
+import FirebaseStorage
 
 var databaseRef: DatabaseReference!
 
-struct DummyB {
-    static var Email = "patriktest@test.se"
-    static var Password = "password"
-    static var InviteCode = "C1456" // css
-}
-
-struct Dummy {
-    static var Email = "chibi@mooi.ninja"
-    static var Password = "password"
-    static var InviteCode = "C1456" // css
-}
-
-
-enum Roles: Int {
-    case Unknown = 0, SuperAdmin = 1, Admin = 2, Parent = 3, Adoptee = 4, Common = 5
-}
-
-
-struct Variables {
-    static var IsLoggedIn : Bool = false
-    static var CurrentUser: User? = nil
-    static var CurrentUserProfile: Profile? = nil
-    static var Agency: String = "css"
-    static var Posts = [Post]()
-    static var Stories = [Story]()
-    static var StoryTitle : String = ""
-    static var StoryCoverImageUrl : String = ""
-}
-
-struct PostsStories {
-    var timestamp: Double {
-        return post?.timestamp as? Double ?? story?.timestamp as? Double ?? 0
-    }
-    var post: Post?
-    var story: Story?
-}
-
-struct Story {
-    var id : String
-    var title: String
-    var coverImageUrl: String
-    var uid: String
-    var timestamp: NSNumber?
-    var state: String
-    var posts: [Post]?
-    
-    init(dictionary: [String: Any]) {
-        self.id = dictionary["id"] as? String ?? ""
-        self.title = dictionary["title"] as? String ?? ""
-        self.coverImageUrl = dictionary["coverImageUrl"] as? String ?? ""
-        self.uid = dictionary["uid"] as? String ?? ""
-        self.state = dictionary["state"] as? String ?? ""
-        self.timestamp = dictionary["timestamp"] as? NSNumber
-        self.posts = dictionary["posts"] as? [Post] ?? []
-    }
-}
-
-struct Post {
-    var caption: String
-    var imageUrl: String
-    var timestamp: NSNumber?
-    var likes: Int?
-    var comments: Int?
-    var imageWidth: String
-    var imageHeight: String
-    var postID: String
-    var postUID: String
-    var location: String
-    var userWhoLike: [String: Any]
-    var IHaveLiked: Bool
-    var postUserName: String
-
-    init(dictionary: [String: Any]) {
-        self.caption = dictionary["caption"] as? String ?? ""
-        self.imageUrl = dictionary["imageUrl"] as? String ?? ""
-        self.timestamp = (dictionary["timestamp"] as? NSNumber) ?? 0.0
-        self.likes = (dictionary["likes"] as? Int) ?? 0
-        self.comments = (dictionary["comments"] as? Int) ?? 0
-        self.imageWidth = dictionary["imageWidth"] as? String ?? ""
-        self.imageHeight = dictionary["imageHeight"] as? String ?? ""
-        self.postID = dictionary["postID"] as? String ?? ""
-        self.postUID = dictionary["postUID"] as? String ?? ""
-        self.location = dictionary["location"] as? String ?? ""
-        self.userWhoLike = ((dictionary["userWhoLike"] as? [String : Any]) ?? [:])!
-        self.IHaveLiked = dictionary["IHaveLiked"] as? Bool ?? false
-        self.postUserName = dictionary["postUserName"] as? String ?? ""
-    }
-    
-    
-    var dictionaryRepresentation: [String: Any] {
-        return [
-            "caption" : caption,
-            "imageUrl" : imageUrl,
-            "timestamp" : timestamp,
-            "likes" : likes,
-            "comments" : comments,
-            "imageWidth" : imageWidth,
-            "imageHeight" : imageHeight,
-            "postID" : postID,
-            "postUID" : postUID,
-            "location" : location,
-            "userWhoLike" : userWhoLike,
-            "IHaveLiked" : IHaveLiked,
-            "postUserName" : postUserName
-        ]
-    }
-}
-
-struct Profile {
-    var UID: String
-    var InviteCode: String
-    var FirstName: String
-    var LastName: String
-    var Email: String
-    var Country: String
-    var City: String
-    var Role: Int
-    var ProfileImageUrl: String
-    var Agency: String?
-    var Birth: Date?
-    var UserName: String
-    
-    init(dictionary: [String: Any]) {
-        self.UID = dictionary["uid"] as? String ?? ""
-        self.InviteCode = dictionary["invitecode"] as? String ?? ""
-        self.FirstName = dictionary["firstname"] as? String ?? ""
-        self.LastName = dictionary["lastname"] as? String ?? ""
-        self.Email = dictionary["email"] as? String ?? ""
-        self.Country = dictionary["country"] as? String ?? ""
-        self.City = dictionary["city"] as? String ?? ""
-        self.Role = dictionary["role"] as? Int ?? 0
-        self.ProfileImageUrl = dictionary["ProfileImageUrl"] as? String ?? ""
-        self.Agency = dictionary["agency"] as? String ?? ""
-        self.Birth = dictionary["birth"] as? Date
-        self.UserName = dictionary["username"] as? String ?? ""
-    }
-}
-
-
-
 class DataHandler {
-    
+    // ******************************************************
+    // 
+    // Helper Functions
+    //
+    // ******************************************************
     func getLocalData(object: String) -> String {
         let defaults = UserDefaults.standard
         let _object = defaults.object(forKey: object)
@@ -171,15 +36,26 @@ class DataHandler {
         defaults.synchronize()
     }
     
-    func clearLocalData() {
+    func deleteLocalData(object: String) {
         let defaults = UserDefaults.standard
-        let dictionary = defaults.dictionaryRepresentation()
-        dictionary.keys.forEach { key in
-            defaults.removeObject(forKey: key)
-        }
+        defaults.removeObject(forKey: object)
         defaults.synchronize()
     }
     
+    func clearLocalData() {
+        deleteLocalData(object: "uid")
+        deleteLocalData(object: "email")
+        deleteLocalData(object: "password")
+        deleteLocalData(object: "invitecode")
+        deleteLocalData(object: "agency")
+
+    }
+    
+    // ******************************************************
+    //
+    // FIrebase Functions
+    //
+    // ******************************************************
     func isLoggedIn(completionHandler:@escaping (Bool) -> ()) {
         
         if (Auth.auth().currentUser != nil)  {
@@ -207,13 +83,14 @@ class DataHandler {
                 return
             }
             return
+        } else {
+            completionHandler(false)
         }
     }
     
     func handleInviteCode(inviteCode: String, completionHandler:@escaping (Bool) -> ()) {
         databaseRef = Database.database().reference()
         databaseRef.child("inviteCodes").child(inviteCode).observeSingleEvent(of: .value, with: {( snapshot ) in
-            
             
             if ( snapshot.exists() ) {
                 if let agency = snapshot.value {
@@ -234,7 +111,6 @@ class DataHandler {
             completionHandler(false)
             
         })
-        
     }
     
     func registerUser(email: String, password: String, inviteCode: String, completionHandler:@escaping (Bool) -> ()) {
@@ -265,10 +141,10 @@ class DataHandler {
                     
                     self.storeLocalData(object: "invitecode", value: inviteCode)
                     
-                    let userDetails = ["uid": user?.uid,
-                                       "invitecode": inviteCode,
-                                       "agency": Variables.Agency,
-                                       "username": "PatrikAdolfsson"]
+                    guard let userDetails = ["uid": user?.uid,
+                                             "invitecode": inviteCode,
+                                             "agency": Variables.Agency,
+                                             "username": "PatrikAdolfsson"] as? [String: String] else { return }
                     
                     databaseRef = Database.database().reference()
                     databaseRef.child("agencies").child(Variables.Agency).child("users").child((user?.uid)!).updateChildValues(userDetails)
@@ -294,10 +170,10 @@ class DataHandler {
                 self.storeLocalData(object: "agency", value: Variables.Agency)
                 self.storeLocalData(object: "invitecode", value: inviteCode)
                 
-                let userDetails = ["uid": user?.uid,
-                                   "invitecode": inviteCode,
-                                   "agency": Variables.Agency,
-                                   "username": "CCTestUser"]
+                guard let userDetails = ["uid": user?.uid,
+                                         "invitecode": inviteCode,
+                                         "agency": Variables.Agency,
+                                         "username": "CCTestUser"] as? [String: String] else { return }
                 
                 databaseRef = Database.database().reference()
                 databaseRef.child("agencies").child(Variables.Agency).child("users").child((user?.uid)!).updateChildValues(userDetails)
@@ -305,14 +181,10 @@ class DataHandler {
                 self.fetchUser(uid: (user?.uid)!, completionHandler: { (profile) in
                     Variables.CurrentUserProfile = profile
                 })
-                
                 completionHandler(true)
-                
             }
-            
         }
     }
-    
     
     func loginALCUser(email: String, password: String, inviteCode: String, completionHandler:@escaping (Bool) -> ()) {
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
@@ -337,10 +209,8 @@ class DataHandler {
                     completionHandler(true)
                 })
             })
-            
         }
     }
-    
     
     func loginCCUser(email: String, password: String, completionHandler:@escaping (Bool) -> ()) {
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
@@ -363,7 +233,6 @@ class DataHandler {
                 self.storeLocalData(object: "agency", value: Variables.Agency)
                 completionHandler(true)
             })
-            
         }
     }
     
@@ -394,7 +263,6 @@ class DataHandler {
             print("Failed to sign out", err)
         }
         completionHandler(false)
-        
     }
     
     func fetchUser(uid: String, completionHandler:@escaping (Profile) -> ()) {
@@ -407,6 +275,55 @@ class DataHandler {
                 completionHandler(profile)
             }
         }, withCancel: nil)
+    }
+    
+    func editPost(post: Post, isStory: Bool,story: Story?, completionHandler:@escaping (Bool) -> ()) {
+        var ref: DatabaseReference? = nil
+        if ( isStory ) {
+            ref = Database.database().reference().child("agencies").child(Variables.Agency).child("stories").child((Variables.CurrentUser?.uid)!).child((story?.id)!).child("posts")
+        } else {
+            ref = Database.database().reference().child("agencies").child(Variables.Agency).child("posts").child((Variables.CurrentUser?.uid)!)
+        }
+        let updatedValues = ["caption": post.caption,
+                             "text" : post.text
+                             ]
+        ref?.child(post.postID).updateChildValues(updatedValues as [AnyHashable : Any], withCompletionBlock: { (err , ref ) in
+            if let err = err {
+                print( "Failed to store data in db", err )
+                completionHandler(false)
+                return
+            }
+        completionHandler(true)
+        })
+    }
+    
+    func deletePost(post: Post, isStory: Bool,story: Story?, completionHandler:@escaping (Bool) -> ()) {
+        var ref: DatabaseReference? = nil
+        if ( isStory ) {
+            ref = Database.database().reference().child("agencies").child(Variables.Agency).child("stories").child((Variables.CurrentUser?.uid)!).child((story?.id)!).child("posts")
+        } else {
+            ref = Database.database().reference().child("agencies").child(Variables.Agency).child("posts").child((Variables.CurrentUser?.uid)!)
+        }
+        
+        // Remove the post from the DB
+        ref?.child(post.postID).removeValue { err in
+            if( isStory == false ) {
+                
+            // Remove the image from Storage
+            let storageRef = Storage.storage().reference(forURL: post.imageUrl)
+            storageRef.delete { (err) in
+                if let err = err {
+                    print( "Failed to delete image in db", err )
+                    completionHandler(false)
+                    return
+                }
+                
+                completionHandler(true)
+            }
+            } else {
+                completionHandler(true)
+            }
+        }
     }
 }
 

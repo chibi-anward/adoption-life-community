@@ -260,6 +260,11 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
     
     func loginAlert() {
         let alertController = UIAlertController(title: "Sorry", message: "Wrong email or password", preferredStyle: .alert)
+        // if iPads
+        alertController.popoverPresentationController?.sourceView = self.view
+        alertController.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+        alertController.popoverPresentationController?.permittedArrowDirections = []
+
         let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
         alertController.addAction(defaultAction)
         self.present(alertController, animated: true, completion: nil)
@@ -267,6 +272,11 @@ class RegisterVC: UIViewController, UITextFieldDelegate, UIImagePickerController
     
     func registerAlert() {
         let alertController = UIAlertController(title: "Please", message: "Enter all the needed information.", preferredStyle: .alert)
+        // if iPads
+        alertController.popoverPresentationController?.sourceView = self.view
+        alertController.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+        alertController.popoverPresentationController?.permittedArrowDirections = []
+
         let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
         alertController.addAction(defaultAction)
         self.present(alertController, animated: true, completion: nil)

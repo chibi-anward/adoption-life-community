@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ALC/RegisterVC.swift"
-            timestampString = "521031276.70609"
+            timestampString = "524340696.345184"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "305"
-            endingLineNumber = "305"
+            startingLineNumber = "315"
+            endingLineNumber = "315"
             landmarkName = "checkLoginRegisterBtn()"
             landmarkType = "7">
          </BreakpointContent>
@@ -31,8 +31,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "155"
             endingLineNumber = "155"
-            landmarkName = "handlePublish()"
-            landmarkType = "7">
+            landmarkName = "CreatePostVC"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ALC/RegisterVC.swift"
-            timestampString = "521041661.631913"
+            timestampString = "524340696.345184"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "313"
-            endingLineNumber = "313"
+            startingLineNumber = "323"
+            endingLineNumber = "323"
             landmarkName = "checkLoginRegisterBtn()"
             landmarkType = "7">
          </BreakpointContent>
@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ALC/RegisterVC.swift"
-            timestampString = "521041745.618745"
+            timestampString = "524340696.345184"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "316"
-            endingLineNumber = "316"
+            startingLineNumber = "326"
+            endingLineNumber = "326"
             landmarkName = "checkLoginRegisterBtn()"
             landmarkType = "7">
             <Locations>
@@ -74,12 +74,12 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/RegisterVC.swift"
-                  timestampString = "524306736.955053"
+                  timestampString = "525101497.496828"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "316"
-                  endingLineNumber = "316"
-                  offsetFromSymbolStart = "3383">
+                  startingLineNumber = "326"
+                  endingLineNumber = "326"
+                  offsetFromSymbolStart = "2468">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -89,11 +89,11 @@
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/RegisterVC.swift"
-                  timestampString = "524306736.957275"
+                  timestampString = "525101497.498431"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "317"
-                  endingLineNumber = "317"
+                  startingLineNumber = "327"
+                  endingLineNumber = "327"
                   offsetFromSymbolStart = "12">
                </Location>
             </Locations>
@@ -106,11 +106,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ALC/RegisterVC.swift"
-            timestampString = "521041751.640246"
+            timestampString = "524340696.345184"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "318"
-            endingLineNumber = "318"
+            startingLineNumber = "328"
+            endingLineNumber = "328"
             landmarkName = "checkLoginRegisterBtn()"
             landmarkType = "7">
          </BreakpointContent>
@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ALC/RegisterVC.swift"
-            timestampString = "521041753.157707"
+            timestampString = "524340696.345184"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "320"
-            endingLineNumber = "320"
+            startingLineNumber = "330"
+            endingLineNumber = "330"
             landmarkName = "checkLoginRegisterBtn()"
             landmarkType = "7">
          </BreakpointContent>
@@ -143,8 +143,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "175"
             endingLineNumber = "175"
-            landmarkName = "handlePublish()"
-            landmarkType = "7">
+            landmarkName = "CreatePostVC"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -153,76 +153,44 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ALC/StoryTimelineVC.swift"
-            timestampString = "524250794.690095"
+            filePath = "ALC/DataHandler.swift"
+            timestampString = "525088911.504286"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "525"
-            endingLineNumber = "525"
-            landmarkName = "editPostPopupAction(indexPath:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ALC/StoryTimelineVC.swift"
-            timestampString = "524234252.77852"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "357"
-            endingLineNumber = "357"
-            landmarkName = "viewStoryPostPopupAction(indexPath:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "ALC/StoryTimelineVC.swift"
-            timestampString = "524250322.230806"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "422"
-            endingLineNumber = "422"
-            landmarkName = "close()"
+            startingLineNumber = "309"
+            endingLineNumber = "309"
+            landmarkName = "deletePost(post:isStory:story:completionHandler:)"
             landmarkType = "7">
             <Locations>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "ALC.StoryTimelineVC.close () -&gt; ()"
+                  symbolName = "ALC.DataHandler.deletePost (post : ALC.Post, isStory : Swift.Bool, story : Swift.Optional&lt;ALC.Story&gt;, completionHandler : (Swift.Bool) -&gt; ()) -&gt; ()"
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/StoryTimelineVC.swift"
-                  timestampString = "524306736.985102"
+                  urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/DataHandler.swift"
+                  timestampString = "525101497.509396"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "422"
-                  endingLineNumber = "422"
-                  offsetFromSymbolStart = "15">
+                  startingLineNumber = "309"
+                  endingLineNumber = "309"
+                  offsetFromSymbolStart = "2928">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "ALC.StoryTimelineVC.(close () -&gt; ()).(closure #1)"
+                  symbolName = "ALC.DataHandler.(deletePost (post : ALC.Post, isStory : Swift.Bool, story : Swift.Optional&lt;ALC.Story&gt;, completionHandler : (Swift.Bool) -&gt; ()) -&gt; ()).(closure #1)"
                   moduleName = "ALC"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/StoryTimelineVC.swift"
-                  timestampString = "524306736.987832"
+                  urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/DataHandler.swift"
+                  timestampString = "525101497.511364"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "423"
-                  endingLineNumber = "423"
-                  offsetFromSymbolStart = "22">
+                  startingLineNumber = "310"
+                  endingLineNumber = "310"
+                  offsetFromSymbolStart = "576">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -233,14 +201,110 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ALC/ProfileVC.swift"
-            timestampString = "524305058.397685"
+            filePath = "ALC/StoryTimelineVC.swift"
+            timestampString = "525101476.399044"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "83"
-            endingLineNumber = "83"
-            landmarkName = "refresh()"
+            startingLineNumber = "483"
+            endingLineNumber = "483"
+            landmarkName = "saveStory(state:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ALC/StoryTimelineVC.swift"
+            timestampString = "525101476.399044"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "300"
+            endingLineNumber = "300"
+            landmarkName = "handlePublishStory()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ALC.StoryTimelineVC.(handlePublishStory () -&gt; ()).(closure #1).(closure #1)"
+                  moduleName = "ALC"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/StoryTimelineVC.swift"
+                  timestampString = "525101497.518586"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "300"
+                  endingLineNumber = "300"
+                  offsetFromSymbolStart = "2604">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ALC.StoryTimelineVC.(handlePublishStory () -&gt; ()).(closure #1).(closure #1)"
+                  moduleName = "ALC"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/StoryTimelineVC.swift"
+                  timestampString = "525101497.520192"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "300"
+                  endingLineNumber = "300"
+                  offsetFromSymbolStart = "4540">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ALC/StoryTimelineVC.swift"
+            timestampString = "525101476.399044"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "449"
+            endingLineNumber = "449"
+            landmarkName = "deleteStoryPost()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ALC.StoryTimelineVC.deleteStoryPost () -&gt; ()"
+                  moduleName = "ALC"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/StoryTimelineVC.swift"
+                  timestampString = "525101497.524112"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "449"
+                  endingLineNumber = "449"
+                  offsetFromSymbolStart = "56">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ALC.StoryTimelineVC.(deleteStoryPost () -&gt; ()).(closure #1)"
+                  moduleName = "ALC"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/patrikadolfsson/Documents/mooi/alc/ALC/StoryTimelineVC.swift"
+                  timestampString = "525101497.525775"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "450"
+                  endingLineNumber = "450"
+                  offsetFromSymbolStart = "28">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -8,7 +8,13 @@
 
 import UIKit
 
+protocol StoryCellDelegate {
+    func showStoryProfile(for cell: StoryCell)
+}
+
 class StoryCell: BaseCollectionCell {
+    
+     var delegate: StoryCellDelegate?
     
     var story: Story? {
         didSet {
@@ -20,14 +26,20 @@ class StoryCell: BaseCollectionCell {
             self.typeLabel.text = "POSTS \(postCount)"
             
             
-//            guard let likes = post?.likes else {return}
-//            self.likeLabel.text = "\(likes)"
-//            
-//            guard let comments = post?.comments else {return}
-//            self.commentLabel.text = "\(comments)"
+            var postLikes = 0
+            for p in (story?.posts)! {
+                postLikes = postLikes + p.likes!
+            }
+            self.likeLabel.text = "\(postLikes)"
             
-            //            guard let username = post?.postUserName else {return}
-            //            self.usernameLabel.text = "\(username)"
+            var postComments = 0
+            for p in (story?.posts)! {
+                postComments = postComments + p.comments!
+            }
+            self.commentLabel.text = "\(postComments)"
+            
+            guard let username = story?.profileUserName else {return}
+            self.usernameLabel.text = "\(username)"
             
 //            guard let locationTag = post?.location else {return}
 //            self.locationLabel.text = locationTag
@@ -36,11 +48,19 @@ class StoryCell: BaseCollectionCell {
                 let timestampDate = NSDate(timeIntervalSince1970: seconds)
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "hh:mm:ss a"
-                self.timeLabel.text = dateFormatter.string(from: timestampDate as Date)
+                let nowDate = Date()
+                let fullString = nowDate.offsetFrom(date: timestampDate as Date)
+                let toShow = fullString.components(separatedBy: " ")[0]
+                self.timeLabel.text = toShow
+                
             }
             
             guard let imageUrl = story?.coverImageUrl else {return}
             postImageView.loadImageUsingCacheWithUrlString(urlString: imageUrl)
+            
+            guard let profileImageUrl = story?.profileUserImageUrl else {return}
+            profileImageThumb.loadImageUsingCacheWithUrlString(urlString: profileImageUrl)
+           
         }
     }
     
@@ -75,6 +95,16 @@ class StoryCell: BaseCollectionCell {
         return imageThumb
     }()
     
+    lazy var profileOverLay: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = UIColor.clear
+        button.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
+        button.isUserInteractionEnabled = true
+        button.isEnabled = true
+        button.addTarget(self, action: #selector(showUserProfile), for: .touchUpInside)
+        return button
+    }()
+    
     let usernameLabel: UILabel = {
         let label = UILabel()
         label.text = "@username"
@@ -97,7 +127,7 @@ class StoryCell: BaseCollectionCell {
     //For Home feed
     let typeIconImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "typeStoryIcon")
+        imageView.image = UIImage(named: "storyIcon_small")
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
@@ -190,6 +220,7 @@ class StoryCell: BaseCollectionCell {
         
         insertSubview(postContainerView, at: 1)
         insertSubview(profileImageThumb, at: 7)
+        addSubview(profileOverLay)
         addSubview(usernameLabel)
         addSubview(typeIconImageView)
         addSubview(storyPostNumberImageView)
@@ -205,11 +236,17 @@ class StoryCell: BaseCollectionCell {
         self.isUserInteractionEnabled = true
     }
     
+    func showUserProfile() {
+        delegate?.showStoryProfile(for: self)
+    }
+    
     //Profile View
     func storyMode() {
         postContainerView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         profileImageThumb.anchor(top: postContainerView.topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 6, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 60, height: 60)
+        
+        profileOverLay.anchor(top: postContainerView.topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 6, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 60, height: 60)
         
         postImageView.anchor(top: postContainerView.topAnchor, left: leftAnchor, bottom: postContainerView.bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         

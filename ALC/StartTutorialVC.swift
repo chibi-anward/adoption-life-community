@@ -76,8 +76,10 @@ class StartTutorialVC: UIViewController, UITextFieldDelegate, UIImagePickerContr
             if ( object == true ) {
                 // TODO: Chibi - Open viewcontroller after succefully created new user.
                 self.dismiss(animated: true, completion: nil)
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "refreshHome"), object: nil)
             } else {
                 // TODO: Failed to login. Show info to user
+                AlertHelper.displayError(title: "Error", message: "Error login in", viewController: self)
             }
         
         }
